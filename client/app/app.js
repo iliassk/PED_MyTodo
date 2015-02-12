@@ -3,6 +3,7 @@
 /* App Module */
 angular.module('todoManager', [
   'ngRoute',
+  'LoginCtrl',
   'TODOManager'
 ])
 
