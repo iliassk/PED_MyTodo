@@ -14,9 +14,37 @@
 </head>
 <body>
    
-	<div class="container">
-		<div ng-view></div>
-	</div>
+	<nav class="navbar navbar-fixed-top navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar" class="navbar-toggle collapsed"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a href="#/list" class="navbar-brand">Project QCM</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#" class="btn">New Todo</a></li>
+            <li><a href="#/login" class="btn">login</a></li>
+            <li><a href="#" class="btn">Help</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container-fluid" id="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+          <ul class="nav nav-sidebar">
+            <li><a href="#/dashboard">Home <span class="sr-only">(current)</span></a></li>
+            <li><a href="#">New Todo</a></li>
+            <li><a href="#/test">Help</a></li>
+            <li><a href="#/login">login</a></li>
+          </ul>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+          <div class="table-responsive">
+            <div ng-view=""></div>
+          </div>
+        </div>
+      </div>
+    </div>
 
   <!-- Bibliotheques-->
   <script src="./../bower_components/jquery/dist/jquery.js"></script>
@@ -32,5 +60,5 @@
 
   <!-- Controllers -->
   <script src="sources/login/login.js"></script>
-  <p>tototto</p>
+
 </body></html>
