@@ -10,7 +10,6 @@ angular.module('todoManager', [
 .config(['$routeProvider',
   function($routeProvider) {
     $routeProvider.
-      otherwise({
-        redirectTo: '/dashboard'
-      });
+      when('/login', { templateUrl: 'sources/login/login.html'}).
+      otherwise({ redirectTo: '/dashboard'});
 }]);
