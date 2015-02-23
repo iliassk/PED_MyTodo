@@ -1,0 +1,34 @@
+<div class="row">
+    <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
+		<form ng-submit = "submit()" name="register" role="form" novalidate>
+			<h2>Please Sign Up <small>It's free and always will be.</small></h2>
+			<hr class="colorgraph">
+			<div class="form-group">
+				<input type="text" name="username" ng-model ="username" id="username" class="form-control input-lg" placeholder="Username" tabindex="3" required>
+			</div>
+			<div class="form-group">
+				<input type="email" name="email" ng-model ="email" id="email" class="form-control input-lg" placeholder="Email Address" tabindex="4" required>
+			</div>
+				<p class="help-block" ng-show="register.email.$dirty && register.email.$invalid">Please enter a proper email.</p>
+			<div class="row">
+				<div class="col-xs-12 col-sm-6 col-md-6">
+					<div class="form-group">
+						<input type="password" name="password" ng-model ="password" id="password" class="form-control input-lg" placeholder="Password" tabindex="5" required>
+					</div>
+				</div>
+				<div class="col-xs-12 col-sm-6 col-md-6">
+					<div class="form-group">
+						<input type="password" name="password_confirm" ng-model ="password_confirm" id="password_confirmation" class="form-control input-lg" placeholder="Confirm Password" tabindex="6" validate-equals='password' required>
+					</div>
+				</div>
+				<p class="help-block" ng-show="register.password_confirm.$dirty && register.password_confirm.$invalid">Please match the passwords.</p>
+			</div>
+		
+			<hr class="colorgraph">
+			<div class="row">
+				<div class="col-xs-12 col-md-6"><input ng-disabled="register.$invalid" type="submit" value="Register" class="btn btn-primary btn-block btn-lg" tabindex="7"></div>
+				<div class="col-xs-12 col-md-6"><a ui-sref="login" class="btn btn-success btn-block btn-lg">Sign In</a></div>
+			</div>
+		</form>
+	</div>
+</div>
