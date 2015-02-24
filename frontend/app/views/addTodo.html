@@ -1,0 +1,33 @@
+<div class="form-group col-lg-4">
+    <form class="form-signin" role="form" ng-submit="login()">
+        <h2 class="form-signin-heading">Add a Todo</h2>
+        <input type="text" class="form-control" placeholder="Title" ng-model="title" required autofocus>
+        <input type="text" class="form-control" placeholder="Description" ng-model="description" >
+        <select class="form-control" id="sel1">
+            <option value="" disabled selected>Priority</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+        </select>
+        <input type="text" class="form-control" placeholder="Context" ng-model="context">
+        <div class='input-group'>
+            <input type="text" class="form-control" placeholder="Date" datepicker-popup="{{format}}" ng-model="dt" is-open="opened" min-date="minDate" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
+            <span class="input-group-btn">
+                <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+            </span>
+        </div>
+        <timepicker ng-model="mytime" ng-change="changed()" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></timepicker>
+        
+    <input id="input-file" type="file" multiple="false">
+    <input type="text" class="form-control" placeholder="Url" ng-model="context">
+    <button type="button" class="btn btn-default"><i class="glyphicon glyphicon-map-marker"></i>Add a location</button>
+
+        <button type="submit" id="connection_button" class="btn btn-lg btn-primary btn-block">Add</button>
+    </form>
+</div>
+
+    
+
+
