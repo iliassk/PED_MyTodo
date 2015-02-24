@@ -76,6 +76,44 @@ app.post('/register', function(req, res, next) {
     });
 })
 
+app.post('/todolist', function(req, res) {
+	//var objBD = BD();
+
+	//validation
+
+
+	//req.assert('name', 'Name is required').notEmpty();
+	//req.assert('description', 'description is required').notEmpty();
+	//req.assert('color', 'color is required').notEmpty();
+
+	var errors = req.validationErrors();
+	if (errors) {
+		
+		res.status(422).json(errors);
+		return;
+	}
+
+	//get data from the request
+	var data = {
+		name: req.body.name,
+		description: req.body.description,
+		color: req.body.color
+	};
+	console.info(req.body);
+
+	
+	//does the job : inserting data into mysql
+	connection.query('INSERT INTO TODOLIST SET ?', data, function(err, rows) {
+		if (err) {
+			console.log(err);
+			return next("Mysql error, check your query");
+		}
+		res.sendStatus(200);
+	});
+
+})
+
+
 
 app.post('/login', function(req, res, next) {
 

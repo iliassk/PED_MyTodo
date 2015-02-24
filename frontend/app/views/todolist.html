@@ -1,0 +1,26 @@
+<div class="page-header">
+	<h1><center>New TodoList</center></h1>
+</div>
+	{{test}}
+<form role="form" ng-submit="submit()">
+	<div class="form-group">
+		<label><h2>TodoList Name</h2></label>
+		<input type="text" ng-model="name" class="form-control" id="TodoListName" placeholder="Enter a TodoList name" required>
+		<label><h2>Description</h2></label>
+		<textarea ng-model="description" class="form-control" id="Qcmnbr" placeholder="Enter the Description" required></textarea>
+		<label><h2>color</h2></label>
+		<input type="color" ng-model="color" class="form-control" id="TodoListColor" size="20" />
+	</div>
+	
+	<p><hr></p>
+	<div class="row">
+		<div class="col-xs-6">
+			<a href="#/register" class="btn btn-default" role="button"><span class="glyphicon glyphicon-arrow-left"></span> Back to Home</a>
+		</div>
+		<div class="col-xs-6">
+			<button class="btn btn-primary pull-right" type="submit"><span class="glyphicon glyphicon-saved"></span> Create TodoList &raquo;</button>
+		</div>
+	</div>
+	
+	<p>&nbsp;</p>
+</form>
