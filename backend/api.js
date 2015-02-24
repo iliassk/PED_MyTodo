@@ -30,7 +30,7 @@ app.use(function(req, res, next) {
 	next();
 })
 
-app.post('/register', function(req, res) {
+app.post('/register', function(req, res, next) {
  
     //validation
     req.assert('username', 'Username is required').notEmpty();
@@ -77,7 +77,7 @@ app.post('/register', function(req, res) {
 })
 
 
-app.post('/login', function(req, res) {
+app.post('/login', function(req, res, next) {
 
 	//validation
 	req.assert('email', 'Email is required').notEmpty();
@@ -128,7 +128,7 @@ var todos = [
 
 
 
-app.get('/todos', function(req, res) {
+app.get('/todos', function(req, res, next) {
 	if (!req.headers.authorization) {
 		return res.status(401).send({
 			message: 'You are not authorized !'
