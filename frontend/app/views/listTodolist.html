@@ -1,0 +1,41 @@
+<div class="page-header">
+	<h1>List de todolist  {{test}}:</h1>
+</div>
+<div class="row"  ng-switch on="TODOLIST.length" ng-cloak>
+	<ul ng-switch-when="0">
+		<li><em>Pas de todolist disponible !!! vous voulez crée un ? ------> <a href="#/todolist">créer todolist</a>?</li>
+	</ul>
+
+<div ng-switch-default ng-cloak >
+
+			<div class="panel panel-default">
+ 		        <div class="panel-heading">
+			<p class="text-left"><strong>Liste des todolist</strong></p><label class="text-right"><input  type="text" ng-model="query" placeholder="Rechercher un todolist" > </label>
+			</div>
+			</div>
+			
+			<table class="table">
+			<tr>
+				<td align="center"><strong>#</strong></td>
+				<td align="center"><span><strong>Nom</strong></span></td>
+				<td align="center" ><span><strong>Supprimer</strong></span></td>
+			</tr>
+
+			<tr  ng-repeat="list in TODOLIST | filter:query ">
+				
+				
+
+				<td align="center">{{$index+1}}</td>
+				<td align="center"><a ng-href="#/todolist/{{list._id}}"><span  >{{list.name}}</span></td>
+				<td align="center" ><a class="btn btn-default btn-xs btn-danger " ng-click="deleteTodoList(list.id_list)">Delete</a></td>
+
+			</tr>
+
+			</table>
+			</div>
+			</div>		
+</div>
+
+
+</div>
+<p>&nbsp;</p>
