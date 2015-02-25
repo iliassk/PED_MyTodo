@@ -1,4 +1,32 @@
+<script type="text/ng-template" id="localizaton_map.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Choose a location</h3>
+    </div>
+    <div class="modal-body" ng-init="init()">
+        <input id="input-address" class="controls" type="text" placeholder="Enter a location">
+        <div id="type-selector" class="controls">
+            <input type="radio" name="type" id="changetype-all" checked="checked">
+            <label for="changetype-all">All</label>
+
+            <input type="radio" name="type" id="changetype-establishment">
+            <label for="changetype-establishment">Etablissement</label>
+
+            <input type="radio" name="type" id="changetype-address">
+            <label for="changetype-address">Adresses</label>
+
+            <input type="radio" name="type" id="changetype-geocode">
+            <label for="changetype-geocode">Géocode</label>
+        </div>
+        <div id="map-canvas"></div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="ok()">Ok</button>
+        <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+    </div>
+</script>
+
 <div class="form-group col-lg-4">
+
     <form class="form-signin" role="form" ng-submit="login()">
         <h2 class="form-signin-heading">Add a Todo</h2>
         <input type="text" class="form-control" placeholder="Title" ng-model="title" required autofocus>
@@ -21,13 +49,16 @@
         <timepicker ng-model="mytime" ng-change="changed()" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></timepicker>
         
     <input id="input-file" type="file" multiple="false">
-    <input type="text" class="form-control" placeholder="Url" ng-model="context">
-    <button type="button" class="btn btn-default"><i class="glyphicon glyphicon-map-marker"></i>Add a location</button>
+    <input type="text" class="form-control" placeholder="Url" ng-model="url">
+    <button type="button" class="btn btn-default" ng-click="showLocation('lg')" ><i class="glyphicon glyphicon-map-marker"></i>Add a location</button>
+    <input type="text" class="form-control" placeholder="Address" ng-model="address">
 
-        <button type="submit" id="connection_button" class="btn btn-lg btn-primary btn-block">Add</button>
+    <button type="submit" id="connection_button" class="btn btn-lg btn-primary btn-block">Add</button>
     </form>
-</div>
 
     
+    
+
+</div>
 
 

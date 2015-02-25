@@ -3,9 +3,9 @@
 angular.module('ToDoManagerApp')
 
 
-.controller('AddTodoCtrl', ['$scope', '$location', '$log', function($scope, $location, $log) {
+.controller('AddTodoCtrl', ['$scope', '$location', '$log', '$modal', function($scope, $location, $log, $modal) {
   //$("#input-4").fileinput({showCaption: false}); 
-  angular.element("#input-file").fileinput({showCaption: false,showUpload: false}); 
+  angular.element('#input-file').fileinput({showCaption: false,showUpload: false}); 
 $scope.today = function() {
     var today = new Date();
     var dd = today.getDate();
@@ -72,4 +72,47 @@ $scope.today = function() {
   $scope.clear = function() {
     $scope.mytime = null;
   };  
-}]);
+
+  ////////////////Localization /////////////////
+
+  $scope.showLocation = function(size){
+
+    var modalInstance = $modal.open({
+      templateUrl: 'localizaton_map.html',
+      controller: 'MapCtrl',
+      size: size
+    });
+
+    modalInstance.result.then(function (address) {
+      $scope.address = address
+      console.log("result got : " + address)
+
+    }, function () {
+      $log.info('Modal dismissed at: ' + new Date());
+    });
+  }
+
+}])
+
+angular.module('ToDoManagerApp')
+.controller('MapCtrl', function ($scope, $modalInstance) {
+
+  $scope.address = ""
+  $scope.init = function(){ 
+    getAdresse(["map-canvas", "input-address", "type-selector"], function(position, address){
+      console.log(position)
+      console.log(address)
+      $scope.address = address
+    }, function(msg){
+      console.log(msg);
+    })
+  }
+
+  $scope.ok = function () {
+    $modalInstance.close($scope.address);
+  };
+
+  $scope.cancel = function () {
+    $modalInstance.dismiss('cancel');
+  };
+})
