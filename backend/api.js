@@ -6,6 +6,8 @@ var bcrypt = require('bcrypt-nodejs');
 var jwt = require('jwt-simple');
 
 var algos = require('./models/algos.js')
+var auth = require('./models/auth.js')
+var share = require('./models/share.js')
 
 var app = module.exports = express();
 
@@ -76,7 +78,6 @@ app.post('/register', function(req, res, next) {
     });
 })
 
-
 app.post('/login', function(req, res, next) {
 
 	//validation
@@ -118,7 +119,6 @@ app.post('/login', function(req, res, next) {
 	});
 });
 
-
 var todos = [
 	'JWT Decode',
 	'Login',
@@ -126,38 +126,67 @@ var todos = [
 	'Email verification'
 ];
 
-
-
 app.get('/todos', function(req, res, next) {
-	if (!req.headers.authorization) {
-		return res.status(401).send({
-			message: 'You are not authorized !'
-		});
-	}
-
-	var token = req.headers.authorization.split(' ')[1];
-	var payload = jwt.decode(token, "AGKYW");
-
-	console.log('token after get :', token);
-	console.log('payload.iss after get :', payload.iss);
-	console.log('payload.sub after get :', payload.sub);
-
-
-	if(!payload.sub){
-	    res.status(401).send({
-	        message: 'Authentication failed'
-	    });
-	}
-
-	if (!req.headers.authorization) {
-		return res.status(401).send({
-			message: 'You are not authorized'
-		});
-	}
+	auth.checkAuthorization(req, res, jwt)
 
 	res.json(todos);
 })
 
+/**
+* Génere le lien url pour le TODO partagé avec un étranger, l'ajoute à la BD et le renvoie au client
+* Le lien est généré à partir de l'id et d'une clé : todo pour un todo et todolist pour une liste (ici todo)
+*/
+app.get('/share/todo/:id', function(req, res, next) {
+    
+    console.log("/share/todo/:id = "+req.params.id);
+
+    auth.checkAuthorization(req, res, jwt)
+
+	share.createHash(req.params.id+"todo", function(err, data){
+
+		var content = {
+			id_reference: req.params.id,
+			url: data
+		}
+
+		connection.query('INSERT INTO SHARE_OUTSIDER SET ?', content, function(err, rows) {
+			if (err) {
+				console.log(err);
+				res.status(401).json({error: "Une erreur est survenue pendant la création de l'url!", content: err});
+			}
+			
+			res.status(200).json(content);
+		});
+	})
+})
+
+/**
+* Génere le lien url pour le TODO partagé avec un étranger, l'ajoute à la BD et le renvoie au client
+* Le lien est généré à partir de l'id et d'une clé : todo pour un todo et todolist pour une liste (ici todolist)
+*/
+app.get('/share/todolist/:id', function(req, res, next) {
+    
+    console.log("/share/todolist/:id = "+req.params.id);
+
+    auth.checkAuthorization(req, res, jwt)
+
+	share.createHash(req.params.id+"todolist", function(err, data){
+
+		var content = {
+			id_reference: req.params.id,
+			url: data
+		}
+
+		connection.query('INSERT INTO SHARE_OUTSIDER SET ?', content, function(err, rows) {
+			if (err) {
+				console.log(err);
+				res.status(401).json({error: "Une erreur est survenue pendant la création de l'url!", content: err});
+			}
+			
+			res.status(200).json(content);
+		});
+	})
+})
 
 var server = app.listen(3000, function() {
 	console.log('api listening on port', server.address().port);
