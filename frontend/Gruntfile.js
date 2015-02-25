@@ -262,14 +262,7 @@ module.exports = function (grunt) {
           '<%= yeoman.dist %>',
           '<%= yeoman.dist %>/images',
           '<%= yeoman.dist %>/styles'
-        ],
-   	patterns: {
-          css: [
-            [/(\/bower_components\/bootstrap\/dist\/fonts)/g, 'god help me', function(match) {
-              return match.replace('/bower_components/bootstrap/dist/fonts', '../fonts');
-            }]
-          ]
-        }
+        ]
       }
     },
 
@@ -402,10 +395,10 @@ module.exports = function (grunt) {
     }
     grunt.task.run([
       'clean:server',
-      //'wiredep',
+      'wiredep',
       'concurrent:server',
       'autoprefixer:server',
-      'express:livereload',
+      'express',
       'watch'
     ]);
   });
@@ -417,7 +410,7 @@ module.exports = function (grunt) {
 
     grunt.task.run([
       'clean:server',
-      //'wiredep',
+      'wiredep',
       'concurrent:server',
       'autoprefixer:server',
       'connect:livereload',
