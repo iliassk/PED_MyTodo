@@ -8,23 +8,14 @@
  * Controller of the ToDoManagerApp
  */
 
-angular.module('ToDoManagerApp').controller('TodoListCtrl', function($scope, $rootScope, $http, alert) {
+angular.module('ToDoManagerApp').controller('TodoListCtrl', function($scope, alert, todolistservice) {
     
     
 	$scope.submit = function() {
         
 
-		http://jsfiddle.net/24A9b/7783/
-
-		var url = 'http://localhost:3000/todolist';
-		var todolist = {
-			name: $scope.name,
-			description: $scope.description,
-			color : $scope.color
-		};
-	    
-		$http.post(url, todolist)
-			.success(function() {
+		todolistservice.todolist($scope.name, $scope.description, $scope.color)
+		.success(function() {
 				alert('success', 'OK!', 'add todolist success');
 			})
 			.error(function() {
