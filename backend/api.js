@@ -12,8 +12,8 @@ var app = module.exports = express();
 /*MySql connection*/
 var connection = mysql.createPool({
 	host: "localhost",
-	user: "todomanager",
-	password: "todomanager",
+	user: "root",
+	password: "",
 	database: "todoManager_db"
 });
 
@@ -76,7 +76,7 @@ app.post('/register', function(req, res, next) {
     });
 })
 
-app.post('/todolist', function(req, res) {
+app.post('/todolist', function(req, res, next) {
 	//var objBD = BD();
 
 	//validation
@@ -111,7 +111,7 @@ app.post('/todolist', function(req, res) {
 		res.sendStatus(200);
 	});
 
-})
+});
 
 
 
