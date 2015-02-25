@@ -128,7 +128,7 @@ app.get('/listtodolist', function(req, res) {
 	});
 
 });
-
+/*
 app.delete('/listtodolist/:id', function(req, res) {
 	console.log(req.params.id);
     connection.query('DELETE FROM TODOLIST WHERE id_list = ?',req.params.id ,function(err, rows) {
@@ -140,7 +140,7 @@ app.delete('/listtodolist/:id', function(req, res) {
 	});
 
   });
-
+*/
 app.post('/login', function(req, res, next) {
 
 	//validation

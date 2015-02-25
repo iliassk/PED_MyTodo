@@ -18,11 +18,11 @@ angular.module('ToDoManagerApp').service('listtodolistservice', function ($http,
 				});
 		};
 
-	/*this.deletetodolist = function(obj) {
+	this.deletetodolist = function(obj) {
 		return $http.delete(API_URL + 'listtodolist/'+obj)
 		.success(function(){ 
  			 console.log('delete success'); 
 				});
-		};*/
+		};
 
 });
