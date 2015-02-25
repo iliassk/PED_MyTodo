@@ -36,20 +36,7 @@ function getAdresse(idTab, successFindingAdresseCallback, errorFindingAdresseCal
     autocomplete.bindTo('bounds', map);
 
 
-    if (navigator.geolocation) {
-        var options={enableHighAccuracy: true, maximumAge: 15000, timeout: 10000};
-        
-        navigator.geolocation.getCurrentPosition(function(position){
-	        	console.log("[Success geolocating]")
-
-	        	map.setCenter(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
-	        },function(error) {
-	        	console.warn("[Error geolocating]")
-				onPositionError(GEOLOCALISATON_FAILURE)
-        	},options);
-    }
-    else
-    	onPositionError(GEOLOCALISATON_UNSUPPORTED)
+    geolocateMe(map)
 
 	google.maps.event.addListener(map, 'click', function(event) {
 		showMarker(event.latLng)
@@ -91,7 +78,7 @@ function getAdresse(idTab, successFindingAdresseCallback, errorFindingAdresseCal
   	setupClickListener('changetype-geocode', ['geocode']);
 
   	var centerControlDiv = document.createElement('div');
-  	var centerControl = localisationControl(centerControlDiv, map);
+  	localisationControl(centerControlDiv, map);
 
   	centerControlDiv.index = 1;
   	map.controls[google.maps.ControlPosition.TOP_LEFT].push(centerControlDiv);
@@ -113,7 +100,24 @@ function getAdresse(idTab, successFindingAdresseCallback, errorFindingAdresseCal
         marker.setPosition(position);
 	}
 
-	function localisationControl(controlDiv) {
+	function geolocateMe(map){
+		if (navigator.geolocation) {
+        var options={enableHighAccuracy: true, maximumAge: 15000, timeout: 10000};
+        
+        navigator.geolocation.getCurrentPosition(function(position){
+	        	console.log("[Success geolocating]")
+
+	        	map.setCenter(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
+	        },function(error) {
+	        	console.warn("[Error geolocating]")
+				onPositionError(GEOLOCALISATON_FAILURE)
+        	},options);
+	    }
+	    else
+	    	onPositionError(GEOLOCALISATON_UNSUPPORTED)
+	}
+
+	function localisationControl(controlDiv, map) {
 
 		  // Set CSS for the control border
 		  var controlUI = document.createElement('div');
@@ -138,9 +142,9 @@ function getAdresse(idTab, successFindingAdresseCallback, errorFindingAdresseCal
 		  controlText.innerHTML = 'Ma position';
 		  controlUI.appendChild(controlText);
 
-  	google.maps.event.addDomListener(controlUI, 'click', function() {
-    	console.log("Localise moi !!!!")
-  	});
+	  	google.maps.event.addDomListener(controlUI, 'click', function() {
+	    	geolocateMe(map)
+	  	});
 
 	}
 }
