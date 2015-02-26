@@ -1,28 +1,31 @@
-angular.module('ToDoManagerApp').controller('ListTodoListCtrl', function($scope, $window, alert, listtodolistservice) {
+'use strict';
+
+angular.module('ToDoManagerApp').controller('ListTodoListCtrl', function($scope, $window, alert, TDMService) {
     
+	$scope.todoList;
 
-		listtodolistservice.listtodolist()
-		.success(function(data) {
-				alert('success', 'OK!', 'update success');
-				$scope.TODOLIST = data;
-			})
-			.error(function() {
-				alert('warning', 'Oops!', 'update failed');
-			});
+	TDMService.listtodolist()
+	.success(function(data) {
+		alert('success', 'OK!', 'update success');
+		$scope.todoList = data;
+	})
+	.error(function() {
+		alert('warning', 'Oops!', 'update failed');
+	});
 
-		$scope.deleteTodoList = function(obj){
-			$scope.test=obj;
+	$scope.deleteTodoList = function(obj){
+		$scope.test=obj;
 
-     		listtodolistservice.deletetodolist(obj)
-     		.success(function(data) {
-				alert('success', 'OK!', 'delete success');
-				$scope.TODOLIST = data;
-			})
-			.error(function() {
-				alert('warning', 'Oops!', 'delete failed');
-			});
+ 		TDMService.deletetodolist(obj)
+ 		.success(function(data) {
+			alert('success', 'OK!', 'delete success');
+			$scope.todoList = data;
+		})
+		.error(function() {
+			alert('warning', 'Oops!', 'delete failed');
+		});
 
-     		 $window.location.reload();
-	};	
+ 		$window.location.reload();
+	};
 
 });

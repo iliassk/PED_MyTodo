@@ -19,10 +19,10 @@ angular.module('ToDoManagerApp').config(function($urlRouterProvider, $stateProvi
 			templateUrl : '/views/todolist.html',
 			controller : 'TodoListCtrl'
 		})
-		.state('listtodolist', {
-			url: '/listtodolist',
-			templateUrl: '/views/listTodolist.html',
-			controller: 'ListTodoListCtrl'
+		.state('viewToDoList/:id', {
+			url: '/todolist/:id',
+			templateUrl: '/views/ViewToDoList.html',
+			controller: 'ViewToDoList'
 		})
 		.state('login', {
 			url: '/login',
