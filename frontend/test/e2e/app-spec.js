@@ -1,6 +1,6 @@
 'use strict';
 
-describe('ToDoManager e2e simple tests', function() {
+describe('ToDoManager e2e example tests', function() {
 
 	beforeEach(function() {
 		browser.get('index.html');
