@@ -157,7 +157,7 @@ app.post('/add/todo', function(req, res, next) {
 	connection.query("INSERT INTO TODO SET ?", data.mytodo, function(err, rows) {
 				if (err) {
 						console.log(err);
-						return next("Mysql error on insert, check your query : " + );
+						return next("Mysql error on insert, check your query  ");
 				}
  				
  				algos.createSendToken(data, req, res)
@@ -171,10 +171,38 @@ var todos = [
 	'Email verification'
 ];
 
+
 app.get('add/todo', function(req, res, next) {
 	auth.checkAuthorization(req, res, jwt)
 
 	//res.json(todos);
+})
+
+app.get('/todo/:id', function(req, res, next) {
+    
+    console.log("/todo/:id = "+req.params.id);
+   	auth.checkAuthorization(req, res, jwt);
+
+   	connection.query('SELECT * FROM TODO WHERE id_todo = ?', req.params.id, function(err, rows) {
+		if (err) {
+			console.log(err);
+			console.log("MARCHE PAS 1");
+			return next("Mysql error on connection, check your query");
+		}
+
+		if(rows.length !== 1){
+			console.log("MARCHE PAS 2");
+			return res.status(401).send({message: 'Error todo not unique !'});
+		}
+
+		if(rows.length == 1){
+			console.log("MARCHE");
+            console.dir(rows)
+            return res.send(rows);
+        }
+
+	});
+
 })
 
 app.get('/todos', function(req, res, next) {
