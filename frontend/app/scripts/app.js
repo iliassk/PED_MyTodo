@@ -8,4 +8,4 @@
  *
  * Main module of the application.
  */
-angular.module('ToDoManagerApp', ['ui.router', 'ngAnimate','ui.bootstrap']);
+angular.module('ToDoManagerApp', ['ui.router', 'ngAnimate','ui.bootstrap','angularFileUpload']);

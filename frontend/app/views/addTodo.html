@@ -25,13 +25,16 @@
     </div>
 </script>
 
-<div class="form-group col-lg-4">
+<div class="well">{{mytodo}}</div>
 
-    <form class="form-signin" role="form" ng-submit="login()">
+
+<div class="form-group col-lg-4">
+    <form class="form-signin" role="form" ng-submit="submit()">
         <h2 class="form-signin-heading">Add a Todo</h2>
-        <input type="text" class="form-control" placeholder="Title" ng-model="title" required autofocus>
-        <input type="text" class="form-control" placeholder="Description" ng-model="description" >
-        <select class="form-control" id="sel1">
+        <h3><i class="glyphicon glyphicon-info-sign"></i> General information</h3>
+        <input type="text" class="form-control" placeholder="Title" ng-model="mytodo.title" required autofocus>
+        <input type="text" class="form-control" placeholder="Description" ng-model="mytodo.description" >
+        <select class="form-control" id="sel1" ng-model="mytodo.priority">
             <option value="" disabled selected>Priority</option>
             <option>1</option>
             <option>2</option>
@@ -39,26 +42,30 @@
             <option>4</option>
             <option>5</option>
         </select>
-        <input type="text" class="form-control" placeholder="Context" ng-model="context">
+        <input type="text" class="form-control" placeholder="Context" ng-model="mytodo.context">
         <div class='input-group'>
-            <input type="text" class="form-control" placeholder="Date" datepicker-popup="{{format}}" ng-model="dt" is-open="opened" min-date="minDate" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
+            <input type="text" class="form-control" placeholder="Date" datepicker-popup="{{format}}" ng-model="mytodo.date" is-open="opened" min-date="minDate" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
             <span class="input-group-btn">
                 <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
             </span>
         </div>
-        <timepicker ng-model="mytime" ng-change="changed()" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></timepicker>
-        
-    <input id="input-file" type="file" multiple="false">
-    <input type="text" class="form-control" placeholder="Url" ng-model="url">
-    <button type="button" class="btn btn-default" ng-click="showLocation('lg')" ><i class="glyphicon glyphicon-map-marker"></i>Add a location</button>
-    <input type="text" class="form-control" placeholder="Address" ng-model="address">
+        <small>Selected date is: <em>{{mytodo.date | date:'fullDate' }}</em></small>
 
-    <button type="submit" id="connection_button" class="btn btn-lg btn-primary btn-block">Add</button>
+        <timepicker ng-model="mytodo.date" ng-change="changed()" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></timepicker>
+        <div class="list-group">
+            <div class="list-group-item"></div>
+        </div>
+        <h3><i class="glyphicon glyphicon-paperclip"></i> Attachment</h3><small>Maximal file size is 2 MB!</small> <div class='input-group'><input id="input-file" type="file" multiple="false"></div>
+        <h3><i class="glyphicon glyphicon-link"></i> Link</h3><small>Add an optional link!</small>
+        <input type="text" class="form-control" placeholder="Url" ng-model="mytodo.url">
+        <h3><i class="glyphicon glyphicon-globe"></i>Location</h3><small>Add an adress!</small>
+        <div class='input-group'>
+            <input type="text" class="form-control" placeholder="Address" ng-model="mytodo.localization">
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="showLocation('lg')"><i class="glyphicon glyphicon-map-marker"></i>Map</button>
+                </span>
+        </div>
+        <button type="submit" id="add_todo_button" class="btn btn-lg btn-primary btn-block">Add</button>
     </form>
-
-    
-    
-
 </div>
-
 

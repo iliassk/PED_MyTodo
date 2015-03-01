@@ -14,6 +14,7 @@ var app = module.exports = express();
 /*MySql connection*/
 var connection = mysql.createPool({
 	host: "localhost",
+	port: "8889",
 	user: "todomanager",
 	password: "todomanager",
 	database: "todoManager_db"
@@ -69,7 +70,7 @@ app.post('/register', function(req, res, next) {
 			connection.query('INSERT INTO USERS SET ?', data, function(err, rows) {
 				if (err) {
 						console.log(err);
-						return next("Mysql error, check your query");
+						return next("Mysql error on register, check your query");
 				}
  				
  				algos.createSendToken(data, req, res)
@@ -99,7 +100,7 @@ app.post('/login', function(req, res, next) {
 	connection.query('SELECT * FROM USERS WHERE email = ?', data.email, function(err, rows) {
 		if (err) {
 			console.log(err);
-			return next("Mysql error, check your query");
+			return next("Mysql error on connection, check your query");
 		}
 
 		if(rows.length !== 1)
@@ -119,12 +120,62 @@ app.post('/login', function(req, res, next) {
 	});
 });
 
+app.post('/add/todo', function(req, res, next) {
+
+	//validation
+	req.assert('email', 'Email is required').notEmpty();
+	req.assert('mytodo', 'mytodo is required').notEmpty();
+
+	var errors = req.validationErrors();
+	if (errors) {
+		res.status(422).json(errors);
+		return;
+	}
+
+	//get email from the request
+	var data = {
+		email: req.body.email,
+		mytodo: req.body.mytodo
+	};
+
+	connection.query('SELECT * FROM USERS WHERE email = ?', data.email, function(err, rows) {
+		var id_owner = null
+		if (err) {
+			console.log(err);
+			return next("Mysql error on connection, check your query");
+		}
+
+		if(rows.length !== 1)
+			return res.status(401).send({message: 'Wrong email/password !'});
+
+		if(rows.length == 1)
+			id_owner = rows[0].id_user;
+		data.mytodo.id_owner = id_owner
+
+	});
+
+	connection.query("INSERT INTO TODO SET ?", data.mytodo, function(err, rows) {
+				if (err) {
+						console.log(err);
+						return next("Mysql error on insert, check your query : " + );
+				}
+ 				
+ 				algos.createSendToken(data, req, res)
+			});
+});
+
 var todos = [
 	'JWT Decode',
 	'Login',
 	'PasseportJS',
 	'Email verification'
 ];
+
+app.get('add/todo', function(req, res, next) {
+	auth.checkAuthorization(req, res, jwt)
+
+	//res.json(todos);
+})
 
 app.get('/todos', function(req, res, next) {
 	auth.checkAuthorization(req, res, jwt)

@@ -6,8 +6,8 @@ var jwt = require('jwt-simple');
 /*MySql connection*/
 var connection = mysql.createPool({
 	host: "localhost",
-	user: "root",
-	password: "",
+	user: "todomanager",
+	password: "todomanager",
 	database: "todoManager_db"
 });
 
