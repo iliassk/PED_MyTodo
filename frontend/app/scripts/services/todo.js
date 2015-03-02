@@ -14,14 +14,14 @@ angular.module('ToDoManagerApp').service('todo', function ($http, API_URL, $stat
 		$state.go('main');
 	}*/
 
-	this.add = function(email, mytodo) {
+	this.add = function(_mytodo) {
+		console.log(_mytodo)
 		return $http.post(API_URL + 'add/todo', {
-			email : email,
-			mytodo : mytodo
+			mytodo : _mytodo
 		});//.success(authSuccessful);
 	};
 
-	/*this.modify = function(oldtodo, newtodo) {
+	/*this.edit = function(oldtodo, newtodo) {
 		return $http.post(API_URL + 'register', {
 			username : username,
 			email : email,

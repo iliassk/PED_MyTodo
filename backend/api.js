@@ -73,7 +73,7 @@ app.post('/register', function(req, res, next) {
 						return next("Mysql error on register, check your query");
 				}
  				
- 				algos.createSendToken(data, req, res)
+ 				algos.createSendToken(data, connection, req, res)
 			});
 		});
     });
@@ -100,7 +100,8 @@ app.post('/login', function(req, res, next) {
 	connection.query('SELECT * FROM USERS WHERE email = ?', data.email, function(err, rows) {
 		if (err) {
 			console.log(err);
-			return next("Mysql error on connection, check your query");
+			console.log("Toto")
+			res.status(422).send({message: 'MYSQL error, check your query!'});
 		}
 
 		if(rows.length !== 1)
@@ -113,7 +114,7 @@ app.post('/login', function(req, res, next) {
 			if(!isMatch)
 				return res.status(401).send({message: 'Wrong email/password !'});
 
-			algos.createSendToken(data, req, res)
+		algos.createSendToken(data, connection, req, res)
 
 		});
 
@@ -121,47 +122,27 @@ app.post('/login', function(req, res, next) {
 });
 
 app.post('/add/todo', function(req, res, next) {
-
+	console.log("Debut")
 	//validation
-	req.assert('email', 'Email is required').notEmpty();
 	req.assert('mytodo', 'mytodo is required').notEmpty();
+	
+	var _id = auth.checkAuthorization(req, res, jwt);
 
 	var errors = req.validationErrors();
 	if (errors) {
 		res.status(422).json(errors);
 		return;
 	}
+	
+	req.body.mytodo.id_owner = _id;
 
-	//get email from the request
-	var data = {
-		email: req.body.email,
-		mytodo: req.body.mytodo
-	};
-
-	connection.query('SELECT * FROM USERS WHERE email = ?', data.email, function(err, rows) {
-		var id_owner = null
-		if (err) {
-			console.log(err);
-			return next("Mysql error on connection, check your query");
-		}
-
-		if(rows.length !== 1)
-			return res.status(401).send({message: 'Wrong email/password !'});
-
-		if(rows.length == 1)
-			id_owner = rows[0].id_user;
-		data.mytodo.id_owner = id_owner
-
-	});
-
-	connection.query("INSERT INTO TODO SET ?", data.mytodo, function(err, rows) {
+	connection.query("INSERT INTO TODO SET ?", req.body.mytodo, function(err, rows) {
 				if (err) {
 						console.log(err);
 						return next("Mysql error on insert, check your query  ");
 				}
- 				
- 				algos.createSendToken(data, req, res)
 			});
+
 });
 
 var todos = [

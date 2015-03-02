@@ -8,13 +8,11 @@ angular.module('ToDoManagerApp')
 
   ////////////////Submit form /////////////////
   $scope.mytodo = {title: '', description: '', priority: '', context: '', date: '', completed: false, id_owner: '', url: '', attachment_path:'', localization: '', id_list:'', id_category:''};
-  //$scope.mytodo = {title: $scope.title, description: $scope.description, priority: $scope.priority, context: $scope.context, date: $scope.date, time: $scope.time, completed: false, idowner: "", url: $scope.url, attachmentpath:"", localization: $scope.address, idlist:"", idcategory:""};
 
   //temporaire : le temps de pouvoir récupérer l'id ou l'email du propriétaire :
-  $scope.email = 'humphf@gmail.com';
   $scope.submit = function() {
 
-    todo.add($scope.email, $scope.mytodo) 
+    todo.add($scope.mytodo) 
       .success(function(res) {
         alert('success', 'Todo created!', 'Your todo has been created !');
       })

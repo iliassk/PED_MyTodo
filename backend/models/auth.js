@@ -13,4 +13,6 @@ exports.checkAuthorization = function(req, res, jwt){
 	        message: 'Authentication failed'
 	    });
 	}
+
+	return payload.sub;
 }
