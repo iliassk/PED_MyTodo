@@ -239,6 +239,7 @@ module.exports = function(grunt) {
           '<%= yeoman.dist %>',
           '<%= yeoman.dist %>/images',
           '<%= yeoman.dist %>/styles'
+<<<<<<< HEAD
         ],
         patterns: {
           css: [
@@ -247,6 +248,9 @@ module.exports = function(grunt) {
             }]
           ]
         }
+=======
+        ]
+>>>>>>> ajoutModifTodo
       }
     },
 
@@ -403,6 +407,22 @@ module.exports = function(grunt) {
     }
   });
 
+<<<<<<< HEAD
+=======
+  grunt.registerTask('toto', 'Compile then start a connect web server', function (target) {
+    if (target === 'dist') {
+      return grunt.task.run(['build', 'express:dist:keepalive']);
+    }
+    grunt.task.run([
+      'clean:server',
+      'wiredep',
+      'concurrent:server',
+      'autoprefixer:server',
+      'express',
+      'watch'
+    ]);
+  });
+>>>>>>> ajoutModifTodo
 
   grunt.registerTask('serve', 'Compile then start a connect web server', function(target) {
     if (target === 'dist') {

@@ -6,14 +6,22 @@ var bcrypt = require('bcrypt-nodejs');
 var jwt = require('jwt-simple');
 
 var algos = require('./models/algos.js')
+var auth = require('./models/auth.js')
+var share = require('./models/share.js')
 
 var app = module.exports = express();
 
 /*MySql connection*/
 var connection = mysql.createPool({
 	host: "localhost",
+<<<<<<< HEAD
 	user: "root",
 	password: "",
+=======
+	port: "8889",
+	user: "todomanager",
+	password: "todomanager",
+>>>>>>> ajoutModifTodo
 	database: "todoManager_db"
 });
 
@@ -67,15 +75,16 @@ app.post('/register', function(req, res, next) {
 			connection.query('INSERT INTO USERS SET ?', data, function(err, rows) {
 				if (err) {
 						console.log(err);
-						return next("Mysql error, check your query");
+						return next("Mysql error on register, check your query");
 				}
  				
- 				algos.createSendToken(data, req, res)
+ 				algos.createSendToken(data, connection, req, res)
 			});
 		});
     });
 })
 
+<<<<<<< HEAD
 app.post('/todolist', function(req, res, next) {
 	//var objBD = BD();
 
@@ -184,6 +193,8 @@ app.put('/todo/:id', function(req, res) {
 	});
 });
 
+=======
+>>>>>>> ajoutModifTodo
 app.post('/login', function(req, res, next) {
 
 	//validation
@@ -205,7 +216,8 @@ app.post('/login', function(req, res, next) {
 	connection.query('SELECT * FROM USERS WHERE email = ?', data.email, function(err, rows) {
 		if (err) {
 			console.log(err);
-			return next("Mysql error, check your query");
+			console.log("Toto")
+			res.status(422).send({message: 'MYSQL error, check your query!'});
 		}
 
 		if(rows.length !== 1)
@@ -218,13 +230,36 @@ app.post('/login', function(req, res, next) {
 			if(!isMatch)
 				return res.status(401).send({message: 'Wrong email/password !'});
 
-			algos.createSendToken(data, req, res)
+		algos.createSendToken(data, connection, req, res)
 
 		});
 
 	});
 });
 
+app.post('/add/todo', function(req, res, next) {
+	console.log("Debut")
+	//validation
+	req.assert('mytodo', 'mytodo is required').notEmpty();
+	
+	var _id = auth.checkAuthorization(req, res, jwt);
+
+	var errors = req.validationErrors();
+	if (errors) {
+		res.status(422).json(errors);
+		return;
+	}
+	
+	req.body.mytodo.id_owner = _id;
+
+	connection.query("INSERT INTO TODO SET ?", req.body.mytodo, function(err, rows) {
+				if (err) {
+						console.log(err);
+						return next("Mysql error on insert, check your query  ");
+				}
+			});
+
+});
 
 var todos = [
 	'JWT Decode',
@@ -234,37 +269,100 @@ var todos = [
 ];
 
 
+app.get('add/todo', function(req, res, next) {
+	auth.checkAuthorization(req, res, jwt)
+
+	//res.json(todos);
+})
+
+app.get('/todo/:id', function(req, res, next) {
+    
+    console.log("/todo/:id = "+req.params.id);
+   	auth.checkAuthorization(req, res, jwt);
+
+   	connection.query('SELECT * FROM TODO WHERE id_todo = ?', req.params.id, function(err, rows) {
+		if (err) {
+			console.log(err);
+			console.log("MARCHE PAS 1");
+			return next("Mysql error on connection, check your query");
+		}
+
+		if(rows.length !== 1){
+			console.log("MARCHE PAS 2");
+			return res.status(401).send({message: 'Error todo not unique !'});
+		}
+
+		if(rows.length == 1){
+			console.log("MARCHE");
+            console.dir(rows)
+            return res.send(rows);
+        }
+
+	});
+
+})
 
 app.get('/todos', function(req, res, next) {
-	if (!req.headers.authorization) {
-		return res.status(401).send({
-			message: 'You are not authorized !'
-		});
-	}
-
-	var token = req.headers.authorization.split(' ')[1];
-	var payload = jwt.decode(token, "AGKYW");
-
-	console.log('token after get :', token);
-	console.log('payload.iss after get :', payload.iss);
-	console.log('payload.sub after get :', payload.sub);
-
-
-	if(!payload.sub){
-	    res.status(401).send({
-	        message: 'Authentication failed'
-	    });
-	}
-
-	if (!req.headers.authorization) {
-		return res.status(401).send({
-			message: 'You are not authorized'
-		});
-	}
+	auth.checkAuthorization(req, res, jwt)
 
 	res.json(todos);
 })
 
+/**
+* Génere le lien url pour le TODO partagé avec un étranger, l'ajoute à la BD et le renvoie au client
+* Le lien est généré à partir de l'id et d'une clé : todo pour un todo et todolist pour une liste (ici todo)
+*/
+app.get('/share/todo/:id', function(req, res, next) {
+    
+    console.log("/share/todo/:id = "+req.params.id);
+
+    auth.checkAuthorization(req, res, jwt)
+
+	share.createHash(req.params.id+"todo", function(err, data){
+
+		var content = {
+			id_reference: req.params.id,
+			url: data
+		}
+
+		connection.query('INSERT INTO SHARE_OUTSIDER SET ?', content, function(err, rows) {
+			if (err) {
+				console.log(err);
+				res.status(401).json({error: "Une erreur est survenue pendant la création de l'url!", content: err});
+			}
+			
+			res.status(200).json(content);
+		});
+	})
+})
+
+/**
+* Génere le lien url pour le TODO partagé avec un étranger, l'ajoute à la BD et le renvoie au client
+* Le lien est généré à partir de l'id et d'une clé : todo pour un todo et todolist pour une liste (ici todolist)
+*/
+app.get('/share/todolist/:id', function(req, res, next) {
+    
+    console.log("/share/todolist/:id = "+req.params.id);
+
+    auth.checkAuthorization(req, res, jwt)
+
+	share.createHash(req.params.id+"todolist", function(err, data){
+
+		var content = {
+			id_reference: req.params.id,
+			url: data
+		}
+
+		connection.query('INSERT INTO SHARE_OUTSIDER SET ?', content, function(err, rows) {
+			if (err) {
+				console.log(err);
+				res.status(401).json({error: "Une erreur est survenue pendant la création de l'url!", content: err});
+			}
+			
+			res.status(200).json(content);
+		});
+	})
+})
 
 var server = app.listen(3000, function() {
 	console.log('api listening on port', server.address().port);

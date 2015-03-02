@@ -13,8 +13,9 @@ angular.module('ToDoManagerApp')
         return {
             request: function(config) {
                 var token = authToken.getToken();
-                if (token)
+                if (token){
                     config.headers.Authorization = 'Bearer ' + token;
+                }
 
                 return config;
             },

@@ -8,9 +8,8 @@
 -- Version de PHP: 5.5.9-1ubuntu4.6
 
 DROP DATABASE IF EXISTS todoManager_db;
-CREATE USER 'todomanager'@'localhost' IDENTIFIED BY 'todomanager';
-GRANT ALL PRIVILEGES ON *.* TO 'todomanager'@'localhost' WITH GRANT OPTION;
 CREATE DATABASE todoManager_db;
+grant all on `todoManager_db`.* to 'todomanager'@'localhost' identified by 'todomanager';
 
 USE todoManager_db;
 
@@ -39,6 +38,20 @@ CREATE TABLE IF NOT EXISTS `CATEGORY` (
   PRIMARY KEY (`id_category`),
   UNIQUE KEY `category` (`category`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `SHARE_OUTSIDER`
+--
+
+CREATE TABLE IF NOT EXISTS `SHARE_OUTSIDER` (
+  `id_reference` int(11) NOT NULL,
+  `url` varchar(61) NOT NULL,
+  PRIMARY KEY (`url`),
+  UNIQUE KEY `url` (`url`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
 
 -- --------------------------------------------------------
 

@@ -3,25 +3,24 @@ var mysql = require('mysql');
 
 var jwt = require('jwt-simple');
 
-
 /*MySql connection*/
-var connection = mysql.createPool({
+/*var connection = mysql.createPool({
 	host: "localhost",
-	user: "root",
-	password: "",
+	user: "todomanager",
+	password: "todomanager",
 	database: "todoManager_db"
-});
+});*/
 
 exports.comparePasswords = function(password, passwordDb, callback){
     bcrypt.compare(password, passwordDb, callback);
 }
 
-exports.createSendToken = function(data, req, res) {
-
+exports.createSendToken = function(data, connection, req, res) {
 	connection.query('SELECT * FROM USERS WHERE email = ?', data.email, function(err, rows) {
 		if (err) {
 			console.log(err);
-			return next("Mysql error, check your query");
+			console.log("titi")
+			return res.status(422).send({message: 'MYSQL error, check your query!'});
 		}
 
 		var payload = {
