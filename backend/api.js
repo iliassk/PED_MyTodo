@@ -113,7 +113,33 @@ app.post('/todolist', function(req, res, next) {
 
 });
 
+app.get('/listtodolist', function(req, res) {
+	// retourne le non et le nombre de votre
 
+	connection.query('SELECT * FROM TODOLIST',function(err, rows) {
+		if (err) {
+			console.log(err);
+			return next("Mysql error, check your query");
+		}else{
+			console.info(rows);
+			res.json(rows);
+		}
+		
+	});
+
+});
+
+app.delete('/listtodolist/:id', function(req, res) {
+	console.log(req.params.id);
+    connection.query('DELETE FROM TODOLIST WHERE id_list = ?',req.params.id ,function(err, rows) {
+		if (err) {
+			console.log(err);
+			return next("Mysql error, check your query");
+		}
+		
+	});
+
+  });
 
 app.post('/login', function(req, res, next) {
 
