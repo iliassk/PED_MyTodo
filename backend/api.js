@@ -113,6 +113,24 @@ app.post('/todolist', function(req, res, next) {
 
 });
 
+app.get('/listtodolist/:id', function(req, res) {
+	var data = {
+		id: req.params.id
+	};
+
+	connection.query('SELECT * FROM TODO WHERE id_list = ?', data.id, function(err, rows) {
+		if (err) {
+			console.log(err);
+			return next("Mysql error, check your query");
+		}else{
+			//console.info(rows);
+			res.json(rows);
+		}
+		
+	});
+
+});
+
 app.get('/listtodolist', function(req, res) {
 	// retourne le non et le nombre de votre
 
@@ -121,7 +139,7 @@ app.get('/listtodolist', function(req, res) {
 			console.log(err);
 			return next("Mysql error, check your query");
 		}else{
-			console.info(rows);
+			//console.info(rows);
 			res.json(rows);
 		}
 		
@@ -136,10 +154,35 @@ app.delete('/listtodolist/:id', function(req, res) {
 			console.log(err);
 			return next("Mysql error, check your query");
 		}
-		
+		return res.status(200).json(rows)
 	});
 
-  });
+});
+
+app.delete('/todo/:id', function(req, res) {
+	console.log(req.params.id);
+    connection.query('DELETE FROM TODO WHERE id_todo = ?', req.params.id, function(err, rows) {
+		if (err) {
+			console.log(err);
+			return next("Mysql error, check your query");
+		}
+		return res.status(200).json(rows)
+	});
+
+});
+
+app.put('/todo/:id', function(req, res) {
+	console.log(req.params.id);
+	console.info(req.body);
+
+	connection.query('UPDATE TODO SET ? WHERE id_todo = ?', [req.body, req.params.id], function(err, rows) {
+		if (err) {
+			console.log(err);
+			return next("Mysql error, check your query");
+		}
+		return res.status(200).json(rows)
+	});
+});
 
 app.post('/login', function(req, res, next) {
 

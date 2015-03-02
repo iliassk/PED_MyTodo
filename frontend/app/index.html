@@ -8,7 +8,7 @@
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
-    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="bower_components/animate.css/animate.css" />
     <!-- endbower -->
     <!-- endbuild -->
@@ -64,12 +64,6 @@
           <li ui-sref-active="active">
             <a ui-sref="todos">To-dos</a>
           </li>
-          <li ui-sref-active="active">
-          <a ui-sref="todolist">todolist</a>
-          </li>
-          <li ui-sref-active="active">
-          <a ui-sref="listtodolist">listtodolist</a>
-          </li>
           <li ng-hide="isAuthenticated()" ui-sref-active="active">
             <a ui-sref="login">Login</a>
           </li>
@@ -112,7 +106,7 @@
     <!-- build:js(.) scripts/vendor.js -->
     <!-- bower:js -->
     <script src="bower_components/jquery/dist/jquery.js"></script>
-    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
     <script src="bower_components/angular-animate/angular-animate.js"></script>
@@ -123,17 +117,16 @@
         <script src="scripts/app.js"></script>
         <script src="scripts/app.config.js"></script>
 
-        
         <script src="scripts/directives/validateEquals.js"></script>
         <script src="scripts/controllers/register.js"></script>
         <script src="scripts/services/alert.js"></script>
-        <script src="scripts/services/todolistService.js"></script>
-        <script src="scripts/services/listtodolistService.js"></script>
         <script src="scripts/services/authToken.js"></script>
+        <script src="scripts/services/authInterceptor.js"></script>
+        <script src="scripts/services/ToDoManagerService.js"></script>
         <script src="scripts/controllers/header.js"></script>
         <script src="scripts/controllers/logout.js"></script>
         <script src="scripts/controllers/todos.js"></script>
-        <script src="scripts/services/authInterceptor.js"></script>
+        <script src="scripts/controllers/viewToDoList.js"></script>
         <script src="scripts/controllers/todolist.js"></script>
         <script src="scripts/controllers/login.js"></script>
         <script src="scripts/controllers/listtodolist.js"></script>
