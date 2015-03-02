@@ -247,6 +247,7 @@ module.exports = function(grunt) {
             }]
           ]
         }
+
       }
     },
 
@@ -403,6 +404,19 @@ module.exports = function(grunt) {
     }
   });
 
+  grunt.registerTask('toto', 'Compile then start a connect web server', function (target) {
+    if (target === 'dist') {
+      return grunt.task.run(['build', 'express:dist:keepalive']);
+    }
+    grunt.task.run([
+      'clean:server',
+      'wiredep',
+      'concurrent:server',
+      'autoprefixer:server',
+      'express',
+      'watch'
+    ]);
+  });
 
   grunt.registerTask('serve', 'Compile then start a connect web server', function(target) {
     if (target === 'dist') {

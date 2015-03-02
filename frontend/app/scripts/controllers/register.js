@@ -12,7 +12,7 @@ angular.module('ToDoManagerApp').controller('RegisterCtrl', function($scope, ale
 
 		auth.register($scope.username, $scope.email, $scope.password)	
 			.success(function(res) {
-				alert('success', 'Account Created!', 'Welcome, ' + res.user.username + ' !');
+				alert('success', 'Account Created!', 'Welcome, ' + res.username + ' !');
 			})
 			.error(function(err) {
 				alert('warning', 'Something went wrong :(', err.message);

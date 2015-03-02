@@ -34,6 +34,16 @@ angular.module('ToDoManagerApp').config(function($urlRouterProvider, $stateProvi
 			templateUrl: '/views/todos.html',
 			controller: 'TodosCtrl'
 		})
+		.state('add/todo', {
+			url: '/add/todo',
+			templateUrl: '/views/addTodo.html',
+			controller: 'AddTodoCtrl'
+		})
+		.state('todo/', {
+			url: '/todo/:id',
+			templateUrl: '/views/todo.html',
+			controller: 'TodoCtrl'
+		})
 		.state('logout', {
 			url: '/logout',
 			controller: 'LogoutCtrl'
