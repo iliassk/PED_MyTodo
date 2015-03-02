@@ -3,14 +3,6 @@ var mysql = require('mysql');
 
 var jwt = require('jwt-simple');
 
-/*MySql connection*/
-/*var connection = mysql.createPool({
-	host: "localhost",
-	user: "todomanager",
-	password: "todomanager",
-	database: "todoManager_db"
-});*/
-
 exports.comparePasswords = function(password, passwordDb, callback){
     bcrypt.compare(password, passwordDb, callback);
 }

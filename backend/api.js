@@ -14,14 +14,9 @@ var app = module.exports = express();
 /*MySql connection*/
 var connection = mysql.createPool({
 	host: "localhost",
-<<<<<<< HEAD
-	user: "root",
-	password: "",
-=======
 	port: "8889",
 	user: "todomanager",
 	password: "todomanager",
->>>>>>> ajoutModifTodo
 	database: "todoManager_db"
 });
 
@@ -84,7 +79,6 @@ app.post('/register', function(req, res, next) {
     });
 })
 
-<<<<<<< HEAD
 app.post('/todolist', function(req, res, next) {
 	//var objBD = BD();
 
@@ -140,7 +134,7 @@ app.get('/listtodolist/:id', function(req, res) {
 
 });
 
-app.get('/listtodolist', function(req, res) {
+app.get('/listtodolist', function(req, res, next) {
 	// retourne le non et le nombre de votre
 
 	connection.query('SELECT * FROM TODOLIST',function(err, rows) {
@@ -149,7 +143,7 @@ app.get('/listtodolist', function(req, res) {
 			return next("Mysql error, check your query");
 		}else{
 			//console.info(rows);
-			res.json(rows);
+			res.status(200).json(rows);
 		}
 		
 	});
@@ -193,8 +187,7 @@ app.put('/todo/:id', function(req, res) {
 	});
 });
 
-=======
->>>>>>> ajoutModifTodo
+
 app.post('/login', function(req, res, next) {
 
 	//validation
@@ -257,6 +250,8 @@ app.post('/add/todo', function(req, res, next) {
 						console.log(err);
 						return next("Mysql error on insert, check your query  ");
 				}
+				else
+					return res.status(200);
 			});
 
 });
