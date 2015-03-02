@@ -2,8 +2,9 @@
 
 angular.module('ToDoManagerApp').controller('ListTodoListCtrl', function($scope, $window, alert, TDMService) {
     
-	$scope.todoList;
+	
 
+	
 	TDMService.listtodolist()
 	.success(function(data) {
 		alert('success', 'OK!', 'update success');
@@ -12,6 +13,17 @@ angular.module('ToDoManagerApp').controller('ListTodoListCtrl', function($scope,
 	.error(function() {
 		alert('warning', 'Oops!', 'update failed');
 	});
+
+	TDMService.listGroupe()
+	.success(function(data) {
+		alert('success', 'OK!', 'update success');
+		$scope.groupe = data;
+	})
+	.error(function() {
+		alert('warning', 'Oops!', 'update failed');
+	});
+
+
 
 	$scope.deleteTodoList = function(obj){
 		$scope.test=obj;

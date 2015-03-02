@@ -8,6 +8,7 @@ var jwt = require('jwt-simple');
 var auth = require('./models/auth.js')
 var utils = require('./models/utils.js')
 var todo = require('./models/todo.js')
+var contact = require('./models/contact.js')
 
 var app = module.exports = express();
 
@@ -49,8 +50,12 @@ app.get('/listtodolist/:id', function(req, res) {
 })
 
 app.get('/listtodolist', function(req, res, next) {
-	console.log("toto")
 	todo.listtodolist_get(req, res, next, connection, auth)
+});
+
+app.get('/listgroupe', function(req, res, next) {
+	console.log("toto")
+	contact.listgroupe_get(req, res, next, connection, auth)
 	console.log("toto fin")
 });
 

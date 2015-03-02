@@ -3,7 +3,7 @@
         <h3>Your ToDo Lists</h3>
         <ul class="sidebar-nav">
             <li class="sidebar-brand"></li>
-            <div class="row"  ng-switch on="todoList.length" ng-cloak>
+           
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <input  type="text" class="form-control input-sm" ng-model="query" placeholder="Search ..." >
@@ -22,16 +22,17 @@
                 <table>
                     <tbody>
                         <tr>
-                            <td>listTodo</td>
-                            <td>Groupe</td>
+                            <td width="33%"><a onclick ="toggle('listTodo')" ng-click="todoList()">ListTodo</a></td>
+                            <td width="33%" ><a onclick ="toggle('groupe')">Groupe</a></td>
                         </tr>
                     </tbody>
                 </table>
                     
                 </div>
-                
+                <div id="listTodo" style="visibility: visible" name="listTodo">
+                 <div class="row"  ng-switch on="todoList.length" ng-cloak>
                 <ul ng-switch-when="0">
-                    <a ui-sref="todolist" class="btn btn-info">You have no list, create one</a>
+                    <a ui-sref="todolist" class="btn btn-info">You have no Todo list, create one</a>
                 </ul>
 
                 <div ng-switch-default ng-cloak >
@@ -39,7 +40,32 @@
                         <a ng-href="#/todolist/{{list.id_list}}"><span>{{list.name}}</span></a>
                     </li>
                 </div>
-            </div>      
+                </div>  
+                </div>
+                <div id="groupe" style="visibility: hidden">
+
+                    <div class="row"  ng-switch on="groupe.length" ng-cloak>
+                <ul ng-switch-when="0">
+                    <a onclick="" class="btn btn-info">You have no group list, create one</a>
+                </ul>
+
+                <div ng-switch-default ng-cloak >
+
+                    <li ng-repeat="listgroup in groupe | filter:query ">
+                        <a ng-href="#/todolist/{{list.id_list}}"><span>{{listgroup.name}}</span></a>
+                    </li>
+                    <li><div id="addgroup" style="visibility: hidden">
+                    <a onclick="groupe('hide')">Annuler</a>
+
+                     </div> </li>
+                     <li>
+                        <a onclick="groupe('show')"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> ajouter un groupe</a>
+                    </li>
+
+                </div>     
+                </div>
+
+                  
         </ul>
     </div>
 </div>

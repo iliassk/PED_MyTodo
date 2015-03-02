@@ -60,4 +60,16 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 	this.updateTodo = function(todo) {
 		return $http.put(API_URL + 'todo/'+ todo.id_todo, todo);
 	};
+
+	//GET all groupe
+	this.listGroupe = function() {
+		return $http.get(API_URL + 'listgroupe')
+		.success(function(data, status, headers, config){ 
+ 			console.log("sucess"); 
+		});
+	};
+
+
+
+
 });
