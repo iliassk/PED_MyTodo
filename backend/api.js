@@ -12,8 +12,8 @@ var app = module.exports = express();
 /*MySql connection*/
 var connection = mysql.createPool({
 	host: "localhost",
-	user: "todomanager",
-	password: "todomanager",
+	user: "root",
+	password: "",
 	database: "todoManager_db"
 });
 
@@ -76,6 +76,113 @@ app.post('/register', function(req, res, next) {
     });
 })
 
+app.post('/todolist', function(req, res, next) {
+	//var objBD = BD();
+
+	//validation
+
+
+	//req.assert('name', 'Name is required').notEmpty();
+	//req.assert('description', 'description is required').notEmpty();
+	//req.assert('color', 'color is required').notEmpty();
+
+	var errors = req.validationErrors();
+	if (errors) {
+		
+		res.status(422).json(errors);
+		return;
+	}
+
+	//get data from the request
+	var data = {
+		name: req.body.name,
+		description: req.body.description,
+		color: req.body.color
+	};
+	console.info(req.body);
+
+	
+	//does the job : inserting data into mysql
+	connection.query('INSERT INTO TODOLIST SET ?', data, function(err, rows) {
+		if (err) {
+			console.log(err);
+			return next("Mysql error, check your query");
+		}
+		res.sendStatus(200);
+	});
+
+});
+
+app.get('/listtodolist/:id', function(req, res) {
+	var data = {
+		id: req.params.id
+	};
+
+	connection.query('SELECT * FROM TODO WHERE id_list = ?', data.id, function(err, rows) {
+		if (err) {
+			console.log(err);
+			return next("Mysql error, check your query");
+		}else{
+			//console.info(rows);
+			res.json(rows);
+		}
+		
+	});
+
+});
+
+app.get('/listtodolist', function(req, res) {
+	// retourne le non et le nombre de votre
+
+	connection.query('SELECT * FROM TODOLIST',function(err, rows) {
+		if (err) {
+			console.log(err);
+			return next("Mysql error, check your query");
+		}else{
+			//console.info(rows);
+			res.json(rows);
+		}
+		
+	});
+
+});
+
+app.delete('/listtodolist/:id', function(req, res) {
+	console.log(req.params.id);
+    connection.query('DELETE FROM TODOLIST WHERE id_list = ?',req.params.id ,function(err, rows) {
+		if (err) {
+			console.log(err);
+			return next("Mysql error, check your query");
+		}
+		return res.status(200).json(rows)
+	});
+
+});
+
+app.delete('/todo/:id', function(req, res) {
+	console.log(req.params.id);
+    connection.query('DELETE FROM TODO WHERE id_todo = ?', req.params.id, function(err, rows) {
+		if (err) {
+			console.log(err);
+			return next("Mysql error, check your query");
+		}
+		return res.status(200).json(rows)
+	});
+
+});
+
+app.put('/todo/:id', function(req, res) {
+	console.log(req.params.id);
+	console.info(req.body);
+
+	connection.query('UPDATE TODO SET ? WHERE id_todo = ?', [req.body, req.params.id], function(err, rows) {
+		if (err) {
+			console.log(err);
+			return next("Mysql error, check your query");
+		}
+		return res.status(200).json(rows)
+	});
+});
 
 app.post('/login', function(req, res, next) {
 

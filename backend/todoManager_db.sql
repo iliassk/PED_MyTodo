@@ -123,7 +123,7 @@ CREATE TABLE IF NOT EXISTS `TODO` (
   `priority` varchar(255) NOT NULL,
   `context` varchar(255) NOT NULL,
   `data` date NOT NULL,
-  `status` varchar(255) NOT NULL,
+  `completed` int NOT NULL DEFAULT 0,
   `id_owner` int(11) NOT NULL,
   `url` varchar(255) NOT NULL,
   `attachment_path` varchar(255) NOT NULL,

@@ -1,0 +1,6 @@
+<ul ng-repeat="todo in todos">
+    <div class="checkbox">
+        
+          <label><input type="checkbox" ng-model="todo.completed" ng-click="onTodoModified(todo)"> <a ng-href=""><span>{{todo.title}}</span></a> </label> <a class="pull-right" ng-click="deleteTodo(todo.id_todo)">Supprimer</a>
+    </div>
+</ul>

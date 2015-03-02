@@ -1,7 +1,5 @@
-// Generated on 2015-02-21 using generator-angular 0.11.1
+// Generated on 2015-02-16 using generator-angular 0.11.1
 'use strict';
-
-var path = require('path');
 
 // # Globbing
 // for performance reasons we're only matching one level down:
@@ -9,7 +7,7 @@ var path = require('path');
 // use this if you want to recursively match all subfolders:
 // 'test/spec/**/*.js'
 
-module.exports = function (grunt) {
+module.exports = function(grunt) {
 
   // Load grunt tasks automatically
   require('load-grunt-tasks')(grunt);
@@ -20,8 +18,7 @@ module.exports = function (grunt) {
   // Configurable paths for the application
   var appConfig = {
     app: require('./bower.json').appPath || 'app',
-    dist: 'dist',
-    server: './../backend'
+    dist: 'dist'
   };
 
   // Define the configuration for all the tasks
@@ -32,18 +29,15 @@ module.exports = function (grunt) {
 
     // Watches files for changes and runs tasks based on the changed files
     watch: {
-      options: {
-        livereload: true
-      },
       bower: {
         files: ['bower.json'],
         tasks: ['wiredep']
       },
       js: {
-        files: ['<%= yeoman.app %>/scripts/{,*/}*.js', '<%= yeoman.server %>/{,*/}*.js'],
+        files: ['<%= yeoman.app %>/scripts/{,*/}*.js'],
         tasks: ['newer:jshint:all'],
         options: {
-          livereload: '<%= express.options.livereload %>'
+          livereload: '<%= connect.options.livereload %>'
         }
       },
       jsTest: {
@@ -59,30 +53,13 @@ module.exports = function (grunt) {
       },
       livereload: {
         options: {
-          livereload: '<%= express.options.livereload %>'
+          livereload: '<%= connect.options.livereload %>'
         },
         files: [
           '<%= yeoman.app %>/{,*/}*.html',
           '.tmp/styles/{,*/}*.css',
           '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
         ]
-      }
-    },
-
-    express: {
-      options: {
-        port: 9000,
-        hostname: '*',
-        livereload: 35729
-      },
-      livereload: {
-        options: {
-          open: true,
-          server: path.resolve('./../backend/api.js'),
-          livereload: true,
-          serverreload: true,
-          bases: [path.resolve('./.tmp'), path.resolve(__dirname, appConfig.app)]
-        }
       }
     },
 
@@ -97,7 +74,7 @@ module.exports = function (grunt) {
       livereload: {
         options: {
           open: true,
-          middleware: function (connect) {
+          middleware: function(connect) {
             return [
               connect.static('.tmp'),
               connect().use(
@@ -116,7 +93,7 @@ module.exports = function (grunt) {
       test: {
         options: {
           port: 9001,
-          middleware: function (connect) {
+          middleware: function(connect) {
             return [
               connect.static('.tmp'),
               connect.static('test'),
@@ -202,23 +179,23 @@ module.exports = function (grunt) {
     wiredep: {
       app: {
         src: ['<%= yeoman.app %>/index.html'],
-        ignorePath:  /\.\.\//
+        ignorePath: /\.\.\//
       },
       test: {
         devDependencies: true,
         src: '<%= karma.unit.configFile %>',
-        ignorePath:  /\.\.\//,
-        fileTypes:{
+        ignorePath: /\.\.\//,
+        fileTypes: {
           js: {
             block: /(([\s\t]*)\/{2}\s*?bower:\s*?(\S*))(\n|\r|.)*?(\/{2}\s*endbower)/gi,
-              detect: {
-                js: /'(.*\.js)'/gi
-              },
-              replace: {
-                js: '\'{{filePath}}\','
-              }
+            detect: {
+              js: /'(.*\.js)'/gi
+            },
+            replace: {
+              js: '\'{{filePath}}\','
             }
           }
+        }
       }
     },
 
@@ -263,7 +240,7 @@ module.exports = function (grunt) {
           '<%= yeoman.dist %>/images',
           '<%= yeoman.dist %>/styles'
         ],
-   	patterns: {
+        patterns: {
           css: [
             [/(\/bower_components\/bootstrap\/dist\/fonts)/g, 'god help me', function(match) {
               return match.replace('/bower_components/bootstrap/dist/fonts', '../fonts');
@@ -272,6 +249,32 @@ module.exports = function (grunt) {
         }
       }
     },
+
+    // The following *-min tasks will produce minified files in the dist folder
+    // By default, your `index.html`'s <!-- Usemin block --> will take care of
+    // minification. These next options are pre-configured if you do not wish
+    // to use the Usemin blocks.
+    // cssmin: {
+    //   dist: {
+    //     files: {
+    //       '<%= yeoman.dist %>/styles/main.css': [
+    //         '.tmp/styles/{,*/}*.css'
+    //       ]
+    //     }
+    //   }
+    // },
+    // uglify: {
+    //   dist: {
+    //     files: {
+    //       '<%= yeoman.dist %>/scripts/scripts.js': [
+    //         '<%= yeoman.dist %>/scripts/scripts.js'
+    //       ]
+    //     }
+    //   }
+    // },
+    // concat: {
+    //   dist: {}
+    // },
 
     imagemin: {
       dist: {
@@ -387,37 +390,28 @@ module.exports = function (grunt) {
     // Test settings
     karma: {
       unit: {
-        configFile: 'test/karma.conf.js',
+        //configFile: 'test/karma.conf.js',
         singleRun: true
       }
+    },
+    protractor: {
+      options: {
+        keepAlive: true,
+        configFile: "protractor.conf.js"
+      },
+      run: {}
     }
   });
-  
-  grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-express');
 
-  grunt.registerTask('toto', 'Compile then start a connect web server', function (target) {
-    if (target === 'dist') {
-      return grunt.task.run(['build', 'express:dist:keepalive']);
-    }
-    grunt.task.run([
-      'clean:server',
-      //'wiredep',
-      'concurrent:server',
-      'autoprefixer:server',
-      'express:livereload',
-      'watch'
-    ]);
-  });
 
-  grunt.registerTask('serve', 'Compile then start a connect web server', function (target) {
+  grunt.registerTask('serve', 'Compile then start a connect web server', function(target) {
     if (target === 'dist') {
       return grunt.task.run(['build', 'connect:dist:keepalive']);
     }
 
     grunt.task.run([
       'clean:server',
-      //'wiredep',
+      'wiredep',
       'concurrent:server',
       'autoprefixer:server',
       'connect:livereload',
@@ -425,7 +419,7 @@ module.exports = function (grunt) {
     ]);
   });
 
-  grunt.registerTask('server', 'DEPRECATED TASK. Use the "serve" task instead', function (target) {
+  grunt.registerTask('server', 'DEPRECATED TASK. Use the "serve" task instead', function(target) {
     grunt.log.warn('The `server` task has been deprecated. Use `grunt serve` to start a server.');
     grunt.task.run(['serve:' + target]);
   });
@@ -436,7 +430,8 @@ module.exports = function (grunt) {
     'concurrent:test',
     'autoprefixer',
     'connect:test',
-    'karma'
+    //'karma',
+    'protractor:run'
   ]);
 
   grunt.registerTask('build', [

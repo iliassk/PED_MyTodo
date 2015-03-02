@@ -1,0 +1,33 @@
+<div ng-controller="ListTodoListCtrl">
+    <div id="sidebar-wrapper">
+        <h3>Your ToDo Lists</h3>
+        <ul class="sidebar-nav">
+            <li class="sidebar-brand"></li>
+            <div class="row"  ng-switch on="todoList.length" ng-cloak>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <input  type="text" class="form-control input-sm" ng-model="query" placeholder="Search ..." >
+                        <div class="btn-group pull-right" role="group" aria-label="...">
+                            <a ui-sref="todolist" class="btn btn-sm btn-primary">
+                                <span class="glyphicon glyphicon-plus"></span>  <span class="glyphicon glyphicon-th-list"></span>
+                            </a>
+                            <a href="#" class="btn btn-sm btn-primary">
+                                <span class="glyphicon glyphicon-plus"></span> abc <span class="glyphicon glyphicon-check"></span>
+                            </a>
+                        </div>    
+                    </div>
+                </div>
+                
+                <ul ng-switch-when="0">
+                    <a ui-sref="todolist" class="btn btn-info">You have no list, create one</a>
+                </ul>
+
+                <div ng-switch-default ng-cloak >
+                    <li ng-repeat="list in todoList | filter:query ">
+                        <a ng-href="#/todolist/{{list.id_list}}"><span>{{list.name}}</span></a>
+                    </li>
+                </div>
+            </div>      
+        </ul>
+    </div>
+</div>
