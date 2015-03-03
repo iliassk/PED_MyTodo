@@ -14,7 +14,7 @@ var app = module.exports = express();
 /*MySql connection*/
 var connection = mysql.createPool({
 	host: "localhost",
-	port: "8889",
+	//port: "8889",
 	user: "todomanager",
 	password: "todomanager",
 	database: "todoManager_db"
