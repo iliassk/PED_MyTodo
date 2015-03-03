@@ -1,0 +1,82 @@
+<div id="groupe" style="visibility: hidden">
+
+                    <div class="row"  ng-switch on="groupe.length" ng-cloak>
+                <ul ng-switch-when="0">
+                    <a onclick="" class="btn btn-info">You have no group list, create one</a>
+                </ul>
+
+                <div ng-switch-default ng-cloak >
+
+                <accordion>
+                    <accordion-group>
+                    <accordion-heading ng-click="isopen=!isopen">
+                    All contact
+                    <span class="badge">{{contact.length}}</span>
+                    
+                    </accordion-heading>
+
+                      <a><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> ajouter un contact </a>
+                      <ul>
+                      
+                    
+                      <div ng-repeat="listcontact in contact">
+                      <table>
+                      <tbody>
+                        <tr>
+                        <td width="100%">{{listcontact.username}}</td>  
+                        <td width="100%"><span class="glyphicon glyphicon-option-vertical" aria-hidden="true"/></td>
+                        </tr>
+                        </tbody>
+                        </table>
+                      </div>
+
+                      </ul>
+                    </accordion-group>
+                    <accordion-group ng-repeat="listgroup in groupe | filter:query ">
+                    <accordion-heading ng-click="isopen=!isopen" >
+                    {{listgroup.name}}
+                    
+                    <span class="badge" >{{total(listgroup, contact)}}</span>
+
+                    
+                    </accordion-heading>
+                    <ul>
+                      <div ng-repeat="listcontact in contact" >
+                      <div ng-if="listgroup.id_group == listcontact.id_group">
+                       <table>
+                      <tbody>
+                        <tr>
+                        <td width="100%">{{listcontact.username}} </td>   
+                        <td width="100%"><span class="glyphicon glyphicon-option-vertical" aria-hidden="true"/></td>
+                        </tr>
+                        </tbody>
+                        </table>
+                      </div>
+                      </div>
+                      </ul>
+                      
+                    </accordion-group>
+                    </accordion>
+<!--
+                     <li>
+                        <a ng-href="#"><span>All Contact</span></a>
+                    </li>
+                    <li ng-repeat="listgroup in groupe | filter:query ">
+                        <a ng-href="#"><span>{{listgroup.name}}</span></a>
+                    </li>
+
+-->
+                    <div id="addgroup" style="visibility: hidden; height:0px" >
+                    <form role="form" >
+                    <input type="text" class="form-control" ng-model="namegroup" placeholder="neme group"/>
+                    <button type="submit" class="btn btn-primary" ng-click="submitgroup(namegroup)">ajouter</button>
+                    <a onclick="groupe('hide')">Annuler {{test}}</a>
+                    </form>
+                     </div> 
+                     <li>
+                        <a onclick="groupe('show')"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> ajouter un groupe</a>
+                    </li>
+
+                </div>     
+                </div>
+                </div>

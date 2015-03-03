@@ -10,47 +10,42 @@
 angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL, authToken, $state) {
 
 	/**
-	* Manage the todo list
-	* Add, Get, Delete
+	* Manage todolist 
+	* ADD, GET, Delete, UPDATE
 	*/
+
 	//ADD a todoList
 	this.todolist = function(name, description, color) {
 		return $http.post(API_URL + 'todolist', {
 			name : name,
 			description : description,
 			color : color
-		}).success(function(r,s){ 
- 			console.log('success'); 
-		});
+		})
 	};
+
 	//GET all todolist
 	this.listtodolist = function() {
 		return $http.get(API_URL + 'listtodolist')
-		.success(function(data, status, headers, config){ 
- 			console.log("sucess"); 
-		});
+		
 	};
+
 	//DELETE a todolist
-	//deleteTodoList(list.id_list)
 	this.deletetodolist = function(obj) {
 		return $http.delete(API_URL + 'listtodolist/'+ obj)
-		.success(function(){ 
- 			console.log('delete success'); 
-		});
+		
 	};
 
 	//GET todos in a todolist
 	this.fetchToDoListToDos = function(_id) {
 		return $http.get(API_URL + 'listtodolist/'+ _id)
-		.success(function(){
- 			console.log('get success'); 
-		});
+		
 	};
 
 	/**
 	* Manage todo 
-	* Delete, Update
+	* Delete, Update, GET, POST
 	*/
+
 	//DELETE todo
 	this.deleteToDo = function(_id) {
 		return $http.delete(API_URL + 'todo/'+ _id);
@@ -64,20 +59,21 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 	//GET all groupe
 	this.listGroupe = function() {
 		return $http.get(API_URL + 'listgroupe')
-		.success(function(data, status, headers, config){ 
- 			console.log("sucess"); 
-		});
+
 	};
 
 	//ADD a group
 	this.addgroup = function(namegroup) {
 		return $http.post(API_URL + 'addgroup', {
 			name : namegroup
-		}).success(function(r,s){ 
- 			console.log('success'); 
-		});
+		})
 	};
 
+	//GET all contact
+	this.listcontact = function() {
+		return $http.get(API_URL + 'listcontact')
+
+	};
 
 
 

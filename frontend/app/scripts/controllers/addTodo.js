@@ -2,7 +2,6 @@
 
 angular.module('ToDoManagerApp')
 
-
 .controller('AddTodoCtrl', ['$scope', '$location', '$log', '$modal', 'todo','alert', function($scope, $location, $log, $modal, todo, alert) {
 
 

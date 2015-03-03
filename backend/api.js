@@ -58,10 +58,20 @@ app.get('/listgroupe', function(req, res, next) {
 });
 
 app.post('/addgroup', function(req, res, next) {
-	console.log("toto debut")
+	
 	contact.addgroup_post(req, res, next, connection, auth)
+	
+});
+
+app.get('/userslist', function(req, res, next) {
+	contact.userslist_get(req, res, next, connection, auth)
+});
+
+app.get('/listcontact', function(req, res, next) {
+	console.log("toto debut")
+	contact.listcontact_get(req, res, next, connection, auth)
 	console.log("toto fin")
-})
+});
 
 app.delete('/listtodolist/:id', function(req, res) {
 	todo.listtodolist_id_delete(req, res, next, connection, auth)

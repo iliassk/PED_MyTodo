@@ -68,6 +68,9 @@
           <li ui-sref-active="active">
             <a ui-sref="todos">To-dos</a>
           </li>
+           <li ui-sref-active="active">
+            <a ui-sref="listcontact">listcontact</a>
+          </li>
         </ul>
         <ul class="nav navbar-nav pull-right">
           <li ng-hide="isAuthenticated()" ui-sref-active="active">
@@ -76,6 +79,7 @@
           <li ng-show="isAuthenticated()" ui-sref-active="active">
             <a class="pull-right" ui-sref="logout">Logout</a>
           </li>
+          
         </ul>
       </div>
     </div>
@@ -138,12 +142,14 @@
         <script src="scripts/services/authToken.js"></script>
         <script src="scripts/services/authInterceptor.js"></script>
         <script src="scripts/services/ToDoManagerService.js"></script>
+        <script src="scripts/services/contactManagerService.js"></script>
         <script src="scripts/services/auth.js"></script>
         <script src="scripts/services/todo.js"></script>
         <script src="scripts/services/authInterceptor.js"></script>
 
         <!-- Controllers -->
         <script src="scripts/controllers/header.js"></script>
+         <script src="scripts/controllers/contact.js"></script>
         <script src="scripts/controllers/logout.js"></script>
         <script src="scripts/controllers/todos.js"></script>
         <script src="scripts/controllers/viewToDoList.js"></script>

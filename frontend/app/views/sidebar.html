@@ -19,11 +19,12 @@
                 </div>
 
                 <div id="left_menu_tabs">
+
                 <table>
                     <tbody>
                         <tr>
-                            <td width="33%"><a onclick ="toggle('listTodo')" ng-click="todoList()">ListTodo</a></td>
-                            <td width="33%" ><a onclick ="toggle('groupe')">Groupe</a></td>
+                            <td width="33%"> <li ui-sref-active="active"><a onclick ="toggle('listTodo')" ng-click="todoList()"><B>ListTodo</B></a></li></td>
+                            <td width="33%" ><li ui-sref-active="active"><a onclick ="toggle('groupe')"><B>Cantact</B></a></li></td>
                         </tr>
                     </tbody>
                 </table>
@@ -42,32 +43,7 @@
                 </div>
                 </div>  
                 </div>
-                <div id="groupe" style="visibility: hidden">
-
-                    <div class="row"  ng-switch on="groupe.length" ng-cloak>
-                <ul ng-switch-when="0">
-                    <a onclick="" class="btn btn-info">You have no group list, create one</a>
-                </ul>
-
-                <div ng-switch-default ng-cloak >
-
-                    <li ng-repeat="listgroup in groupe | filter:query ">
-                        <a ng-href="#/todolist/{{list.id_list}}"><span>{{listgroup.name}}</span></a>
-                    </li>
-                    <div id="addgroup" style="visibility: hidden; height:0px" >
-                    <form role="form" >
-                    <input type="text" class="form-control" ng-model="namegroup" placeholder="neme group"/>
-                    <button type="submit" class="btn btn-primary" ng-click="submitgroup(namegroup)">ajouter</button>
-                    <a onclick="groupe('hide')">Annuler {{test}}</a>
-                    </form>
-                     </div> 
-                     <li>
-                        <a onclick="groupe('show')"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> ajouter un groupe</a>
-                    </li>
-
-                </div>     
-                </div>
-                </div>
+                <div ng-include="'views/groupe.html'"></div>
                   
         </ul>
     </div>
