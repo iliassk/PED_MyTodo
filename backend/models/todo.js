@@ -35,14 +35,12 @@ exports.listtodolist_id_get = function(req, res, next, connection, auth){
 
 exports.listtodolist_get = function(req, res, next, connection, auth){
    // retourne le non et le nombre de votre
-   	console.log("toto 2");
 	connection.query('SELECT * FROM TODOLIST',function(err, rows) {
 		if (err) {
 			console.log(err);
 			return next("Mysql error, check your query");
 		}else{
 			//console.info(rows);
-			console.log("toto");
 			res.status(200).json(rows);
 		}
 	});

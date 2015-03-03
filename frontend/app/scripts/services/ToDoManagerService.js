@@ -69,6 +69,15 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 		});
 	};
 
+	//ADD a group
+	this.addgroup = function(namegroup) {
+		return $http.post(API_URL + 'addgroup', {
+			name : namegroup
+		}).success(function(r,s){ 
+ 			console.log('success'); 
+		});
+	};
+
 
 
 

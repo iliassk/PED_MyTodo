@@ -26,7 +26,7 @@ angular.module('ToDoManagerApp').controller('ListTodoListCtrl', function($scope,
 
 
 	$scope.deleteTodoList = function(obj){
-		$scope.test=obj;
+		
 
  		TDMService.deletetodolist(obj)
  		.success(function(data) {
@@ -39,5 +39,18 @@ angular.module('ToDoManagerApp').controller('ListTodoListCtrl', function($scope,
 
  		$window.location.reload();
 	};
+
+	$scope.submitgroup = function(name){
+
+		TDMService.addgroup(name)
+		.success(function() {
+			alert('success', 'OK!', 'add group success');
+		})
+		.error(function() {
+			alert('warning', 'Oops!', 'add group failed');
+		});
+
+	
+};
 
 });

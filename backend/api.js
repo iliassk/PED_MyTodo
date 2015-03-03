@@ -54,10 +54,14 @@ app.get('/listtodolist', function(req, res, next) {
 });
 
 app.get('/listgroupe', function(req, res, next) {
-	console.log("toto")
 	contact.listgroupe_get(req, res, next, connection, auth)
-	console.log("toto fin")
 });
+
+app.post('/addgroup', function(req, res, next) {
+	console.log("toto debut")
+	contact.addgroup_post(req, res, next, connection, auth)
+	console.log("toto fin")
+})
 
 app.delete('/listtodolist/:id', function(req, res) {
 	todo.listtodolist_id_delete(req, res, next, connection, auth)
