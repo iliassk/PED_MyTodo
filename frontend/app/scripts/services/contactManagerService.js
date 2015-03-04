@@ -19,10 +19,19 @@ angular.module('ToDoManagerApp').service('CMService', function ($http, API_URL, 
 		return $http.get(API_URL + 'userslist')
 		
 	};
-	this.addContact = function(id) {
+
+	//add contact to group
+	this.addContact = function(id, item) {
 		return $http.post(API_URL + 'addcontact', {
-			id : id
+			id : id,
+			item : item
 		})
+	};
+
+	//GET all groupe
+	this.listGroupe = function() {
+		return $http.get(API_URL + 'listgroupe')
+
 	};
 
 	

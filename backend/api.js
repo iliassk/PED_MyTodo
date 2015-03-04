@@ -58,14 +58,16 @@ app.get('/listgroupe', function(req, res, next) {
 });
 
 app.post('/addgroup', function(req, res, next) {
-	
 	contact.addgroup_post(req, res, next, connection, auth)
-	
 });
 
 app.get('/userslist', function(req, res, next) {
-	console.log("toto debut")
 	contact.userslist_get(req, res, next, connection, auth)
+});
+
+app.post('/addcontact', function(req, res, next) {
+	console.log("toto debut")
+	contact.addcontact_post(req, res, next, connection, auth)
 	console.log("toto fin")
 });
 

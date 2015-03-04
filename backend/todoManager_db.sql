@@ -3,15 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Client: localhost
--- Généré le: Mer 18 Février 2015 à 09:19
+-- Généré le: Mer 04 Mars 2015 à 18:02
 -- Version du serveur: 5.5.41-0ubuntu0.14.04.1
 -- Version de PHP: 5.5.9-1ubuntu4.6
-
-DROP DATABASE IF EXISTS todoManager_db;
-CREATE DATABASE todoManager_db;
-grant all on `todoManager_db`.* to 'todomanager'@'localhost' identified by 'todomanager';
-
-USE todoManager_db;
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -42,32 +36,29 @@ CREATE TABLE IF NOT EXISTS `CATEGORY` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `SHARE_OUTSIDER`
---
-
-CREATE TABLE IF NOT EXISTS `SHARE_OUTSIDER` (
-  `id_reference` int(11) NOT NULL,
-  `url` varchar(61) NOT NULL,
-  PRIMARY KEY (`url`),
-  UNIQUE KEY `url` (`url`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
-
--- --------------------------------------------------------
-
---
 -- Structure de la table `CONTACTS`
 --
 
 CREATE TABLE IF NOT EXISTS `CONTACTS` (
   `id_user` int(11) NOT NULL,
-  `id_contact` int(11) NOT NULL,
+  `id_contact` int(11) NOT NULL AUTO_INCREMENT,
   `id_group` int(11) NOT NULL,
   PRIMARY KEY (`id_user`,`id_contact`,`id_group`),
   KEY `id_user` (`id_user`),
   KEY `id_contact` (`id_contact`),
-  KEY `CONTACTS_ibfk_3` (`id_group`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  KEY `CONTACTS_ibfk_3` (`id_group`),
+  KEY `id_contact_2` (`id_contact`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+
+--
+-- Contenu de la table `CONTACTS`
+--
+
+INSERT INTO `CONTACTS` (`id_user`, `id_contact`, `id_group`) VALUES
+(1, 2, 2),
+(2, 1, 6),
+(3, 1, 6),
+(4, 3, 6);
 
 -- --------------------------------------------------------
 
@@ -80,7 +71,18 @@ CREATE TABLE IF NOT EXISTS `GROUPS` (
   `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id_group`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+
+--
+-- Contenu de la table `GROUPS`
+--
+
+INSERT INTO `GROUPS` (`id_group`, `name`) VALUES
+(4, 'amis'),
+(6, 'école'),
+(2, 'famille'),
+(7, 'test'),
+(5, 'travail');
 
 -- --------------------------------------------------------
 
@@ -136,7 +138,7 @@ CREATE TABLE IF NOT EXISTS `TODO` (
   `priority` varchar(255) NOT NULL,
   `context` varchar(255) NOT NULL,
   `data` date NOT NULL,
-  `completed` int NOT NULL DEFAULT 0,
+  `status` varchar(255) NOT NULL,
   `id_owner` int(11) NOT NULL,
   `url` varchar(255) NOT NULL,
   `attachment_path` varchar(255) NOT NULL,
@@ -159,7 +161,14 @@ CREATE TABLE IF NOT EXISTS `TODOLIST` (
   `color` varchar(255) NOT NULL,
   PRIMARY KEY (`id_list`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+
+--
+-- Contenu de la table `TODOLIST`
+--
+
+INSERT INTO `TODOLIST` (`id_list`, `name`, `description`, `color`) VALUES
+(7, 'travail', 'pour travail', '#c21c1c');
 
 -- --------------------------------------------------------
 
@@ -176,7 +185,19 @@ CREATE TABLE IF NOT EXISTS `USERS` (
   PRIMARY KEY (`id_user`),
   UNIQUE KEY `email` (`email`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=46 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+
+--
+-- Contenu de la table `USERS`
+--
+
+INSERT INTO `USERS` (`id_user`, `email`, `password`, `username`, `avatar_path`) VALUES
+(1, 'a@a.com', '$2a$10$qVfM4P2oMzzJ2RDluxZ19egoPuoV/SijGSMhg1dMbe6fcp.yEqS6i', 'david', NULL),
+(2, 'b@b.b', 'b', 'xavier', NULL),
+(3, 'c@c.c', 'c', 'vincent', NULL),
+(4, 'r@r.r', 'r', 'ilias', NULL),
+(5, 'jack@jack.com', 'jack', 'jack', NULL),
+(6, 'paul@paul.paul', 'paul', 'paul', NULL);
 
 --
 -- Contraintes pour les tables exportées
@@ -187,7 +208,6 @@ CREATE TABLE IF NOT EXISTS `USERS` (
 --
 ALTER TABLE `CONTACTS`
   ADD CONSTRAINT `CONTACTS_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `USERS` (`id_user`),
-  ADD CONSTRAINT `CONTACTS_ibfk_2` FOREIGN KEY (`id_contact`) REFERENCES `USERS` (`id_user`),
   ADD CONSTRAINT `CONTACTS_ibfk_3` FOREIGN KEY (`id_group`) REFERENCES `GROUPS` (`id_group`);
 
 --
