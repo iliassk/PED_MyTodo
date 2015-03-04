@@ -1,3 +1,8 @@
+
+<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
 <div id="groupe" style="visibility: hidden">
 
                     <div class="row"  ng-switch on="groupe.length" ng-cloak id="groupe">
@@ -6,7 +11,7 @@
                 </ul>
 
                 <div id="groupe" ng-switch-default ng-cloak >
-
+                  
                 <accordion close-others="oneAtATime" >
                     <accordion-group id="groupee">
                     <accordion-heading ng-click="isopen=!isopen" >
@@ -24,7 +29,9 @@
                       <tbody>
                         <tr>
                         <td width="100%">{{listcontact.username}}</td>  
-                        <td width="100%"><span class="glyphicon glyphicon-option-vertical" aria-hidden="true"/></td>
+                        <td width="100%"><a data-my-directive data-popover-title="Settings" data-popover-template="settings.html" data-popover-placement="left">
+                        <i class="glyphicon glyphicon-option-vertical" aria-hidden="true"></i>
+                        </a></td>
                         </tr>
                         </tbody>
                         </table>
@@ -47,7 +54,11 @@
                       <tbody>
                         <tr>
                         <td width="100%">{{listcontact.username}} </td>   
-                        <td width="100%"><span class="glyphicon glyphicon-option-vertical" aria-hidden="true"/></td>
+                       
+                        <td width="100%">
+                        <a data-my-directive data-popover-title="Settings" data-popover-template="settings.html" data-popover-placement="left">
+                        <i class="glyphicon glyphicon-option-vertical" aria-hidden="true"></i>
+                        </a></td>
                         </tr>
                         </tbody>
                         </table>
@@ -57,15 +68,6 @@
                       
                     </accordion-group>
                     </accordion>
-<!--
-                     <li>
-                        <a ng-href="#"><span>All Contact</span></a>
-                    </li>
-                    <li ng-repeat="listgroup in groupe | filter:query ">
-                        <a ng-href="#"><span>{{listgroup.name}}</span></a>
-                    </li>
-
--->
                     <div id="addgroup" style="visibility: hidden; height:0px" >
                     <form role="form" >
                     <input type="text" class="form-control" ng-model="namegroup" placeholder="neme group"/>
@@ -80,3 +82,11 @@
                 </div>     
                 </div>
                 </div>
+
+<!-- Latest compiled and minified JavaScript -->
+
+
+<script>$(function () 
+      { $("[data-toggle='popover']").popover();
+      });
+   </script>
