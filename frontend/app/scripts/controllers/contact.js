@@ -14,12 +14,20 @@ angular.module('ToDoManagerApp').controller('contactCtrl', function ($scope, CMS
   CMService.userslist()
 	.success(function(data) {
 		alert('success', 'OK!', 'update success');
-		$scope.contacts = data;
+		$scope.users = data;
 	})
 	.error(function() {
 		alert('warning', 'Oops!', 'update failed');
 	});
 
+	$scope.addContact=function(id){
+		CMService.addContact(id).success(function() {
+			alert('success', 'OK!', 'add contact success');
+		})
+		.error(function() {
+			alert('warning', 'Oops!', 'add contact failed');
+		});
+	}
  
 
 })

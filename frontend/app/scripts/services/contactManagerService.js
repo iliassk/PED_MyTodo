@@ -14,10 +14,15 @@ angular.module('ToDoManagerApp').service('CMService', function ($http, API_URL, 
 	* ADD, GET, Delete, UPDATE
 	*/
 
-	//GET all users
+	//GET users not in contact
 	this.userslist = function() {
 		return $http.get(API_URL + 'userslist')
 		
+	};
+	this.addContact = function(id) {
+		return $http.post(API_URL + 'addcontact', {
+			id : id
+		})
 	};
 
 	

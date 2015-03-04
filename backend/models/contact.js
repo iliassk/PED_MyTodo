@@ -1,7 +1,7 @@
 exports.userslist_get = function(req, res, next, connection, auth){
    // retourne le non et le nombre de votre
    	
-	connection.query('SELECT * FROM USERS',function(err, rows) {
+	connection.query('SELECT u.id_user, u.email, u.username, u.avatar_path FROM USERS u WHERE u.id_user NOT IN ( SELECT id_user FROM CONTACTS)',function(err, rows) {
 		if (err) {
 			console.log(err);
 			return next("Mysql error, check your query");

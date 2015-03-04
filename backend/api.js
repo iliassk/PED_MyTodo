@@ -64,13 +64,13 @@ app.post('/addgroup', function(req, res, next) {
 });
 
 app.get('/userslist', function(req, res, next) {
+	console.log("toto debut")
 	contact.userslist_get(req, res, next, connection, auth)
+	console.log("toto fin")
 });
 
-app.get('/listcontact', function(req, res, next) {
-	console.log("toto debut")
+app.get('/listcontact', function(req, res, next) {	
 	contact.listcontact_get(req, res, next, connection, auth)
-	console.log("toto fin")
 });
 
 app.delete('/listtodolist/:id', function(req, res) {
