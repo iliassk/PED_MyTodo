@@ -15,7 +15,7 @@ angular.module('ToDoManagerApp').controller('LoginCtrl', function ($scope, alert
 				alert('success', 'Welcome!', 'Thanks for coming back, ' + res.user.email + ' !');
 			})
 			.error(function(err) {
-				alert('warning', 'Something went wrong :(', err.message);
+				alert('warning', 'Something went wrong :(', 'Incorrect email or/and password !');
 			});
 	};		
 });
