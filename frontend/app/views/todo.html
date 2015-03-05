@@ -29,10 +29,10 @@
 
 
 <div class="form-group col-lg-4">
-    <form class="form-signin" role="form" ng-submit="submit()">
+    <form class="form-signin" role="form" ng-model="mytodo" ng-submit="submit()">
         <h2 class="form-signin-heading">Edit a Todo</h2>
         <h3><i class="glyphicon glyphicon-info-sign"></i> General information</h3>
-        <input type="text" class="form-control" placeholder="Title" ng-model="mytodo.title" required autofocus>
+        <input type="text" class="form-control" placeholder="Title" ng-model="mytodo.title" ng-value="mytodo.title" required autofocus>
         <input type="text" class="form-control" placeholder="Description" ng-model="mytodo.description" >
         <select class="form-control" id="sel1" ng-model="mytodo.priority">
             <option value="" disabled selected>Priority</option>
@@ -74,7 +74,7 @@
                     <button type="button" class="btn btn-default" ng-click="showLocation('lg')"><i class="glyphicon glyphicon-map-marker"></i>Map</button>
                 </span>
         </div>
-        <button type="submit" id="add_todo_button" class="btn btn-lg btn-primary btn-block">Add</button>
+        <button type="submit" id="add_todo_button" class="btn btn-lg btn-info btn-block">Update</button>
     </form>
 </div>
 

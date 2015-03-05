@@ -12,7 +12,7 @@ angular.module('ToDoManagerApp')
   //temporaire : le temps de pouvoir récupérer l'id ou l'email du propriétaire :
   $scope.submit = function() {
 
-    todo.add($scope.mytodo) 
+    TDMService.addTodo($scope.mytodo) 
       .success(function(res) {
         alert('success', 'Todo created!', 'Your todo has been created !');
       })

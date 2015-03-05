@@ -76,18 +76,41 @@ exports.register_post = function(req, res, next, connection, jwt, bcrypt){
 			if (err) return next(err);
 
 			data.password = hash;
-
+			//#7c7c7c
 			//insertion 
 			connection.query('INSERT INTO USERS SET ?', data, function(err, rows) {
 				if (err) {
 						console.log(err);
 						return next("Mysql error on register, check your query");
 				}
- 				
- 				createSendToken(data, connection, req, res, jwt)
+
+				createSendToken(data, connection, req, res, jwt)
+				connection.query('SELECT id_user FROM USERS WHERE email = ?', data.email, function(err, rows) {
+					if (err) {
+						console.log(err);
+						res.status(422).send({message: 'MYSQL error, check your query!'});
+					}
+
+					if(rows.length !== 1)
+						return res.status(401).send({message: 'Wrong email/password !'});
+
+					var todolist = {
+						name : "My List",
+						description: "This is your first list of Todo.",
+						color : "#7c7c7c",
+						id_owner : rows[0].id_user
+					}
+					connection.query('INSERT INTO TODOLIST SET ?', todolist, function(err, rows) {
+						if (err) {
+								console.log(err);
+								return next("Mysql error on creating first user list, check your query");
+						}
+					});
+
+				});
 			});
-		});
-    });
+    	});
+	});
 }
 
 exports.login_post = function(req, res, next, connection, jwt, bcrypt){

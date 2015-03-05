@@ -8,17 +8,28 @@ var jwt = require('jwt-simple');
 var auth = require('./models/auth.js')
 var utils = require('./models/utils.js')
 var todo = require('./models/todo.js')
-
 var app = module.exports = express();
+var os = require('os')
 
 /*MySql connection*/
-var connection = mysql.createPool({
-	host: "localhost",
-	port: "8889",
-	user: "todomanager",
-	password: "todomanager",
-	database: "todoManager_db"
-});
+var connection;
+if(os.type() == 'Darwin'){
+	connection = mysql.createPool({
+		host: "localhost",
+		port: 8889,
+		user: "todomanager",
+		password: "todomanager",
+		database: "todoManager_db"
+	});
+}
+else{
+	connection = mysql.createPool({
+		host: "localhost",
+		user: "todomanager",
+		password: "todomanager",
+		database: "todoManager_db"
+	});
+}
 
 
 app.use(bodyParser.json());
@@ -45,35 +56,33 @@ app.post('/todolist', function(req, res, next) {
 	todo.todolist_post(req, res, next, connection, auth)
 })
 
-app.get('/listtodolist/:id', function(req, res) {
+app.get('/listtodolist/:id', function(req, res, next) {
 	todo.listtodolist_id_get(req, res, next, connection, auth)
 })
 
 app.get('/listtodolist', function(req, res, next) {
-	console.log("toto")
-	todo.listtodolist_get(req, res, next, connection, auth)
-	console.log("toto fin")
+	todo.listtodolist_get(req, res, next, connection, auth, jwt)
 });
 
-app.delete('/listtodolist/:id', function(req, res) {
+app.delete('/listtodolist/:id', function(req, res, next) {
 	todo.listtodolist_id_delete(req, res, next, connection, auth)
 });
 
-app.delete('/todo/:id', function(req, res) {
+app.delete('/todo/:id', function(req, res, next) {
 	todo.todo_id_delete(req, res, next, connection, auth)
 });
 
-app.put('/todo/:id', function(req, res) {
+app.put('/todo/:id', function(req, res, next) {
 	todo.todo_id_put(req, res, next, connection, auth)
 });
 
 
 app.post('/add/todo', function(req, res, next) {
-	todo.todoadd_post(req, res, next, connection, auth)
+	todo.todoadd_post(req, res, next, connection, auth, jwt)
 });
 
 app.get('/todo/:id', function(req, res, next) {
-    todo.todo_id_get(req, res, next, connection, auth)
+    todo.todo_id_get(req, res, next, connection, auth, jwt)
 })
 
 /**
@@ -81,7 +90,7 @@ app.get('/todo/:id', function(req, res, next) {
 * Le lien est généré à partir de l'id et d'une clé : todo pour un todo et todolist pour une liste (ici todo)
 */
 app.get('/share/todo/:id', function(req, res, next) {
-    todo.sharetodo_id_get(req, res, next, connection, auth, utils)
+    todo.sharetodo_id_get(req, res, next, connection, auth, utils, jwt)
 })
 
 /**
@@ -89,7 +98,7 @@ app.get('/share/todo/:id', function(req, res, next) {
 * Le lien est généré à partir de l'id et d'une clé : todo pour un todo et todolist pour une liste (ici todolist)
 */
 app.get('/share/todolist/:id', function(req, res, next) {
-   	todo.sharetodolist_id_get(req, res, next, connection, auth, utils)
+   	todo.sharetodolist_id_get(req, res, next, connection, auth, utils, jwt)
 })
 
 var server = app.listen(3000, function() {

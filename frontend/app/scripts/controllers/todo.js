@@ -3,22 +3,43 @@
 angular.module('ToDoManagerApp')
 
 
-.controller('TodoCtrl', ['$scope', '$location', '$log', '$modal', 'todo','alert', function($scope, $location, $log, $modal, todo, alert) {
+.controller('TodoCtrl', ['$scope', '$location', '$log', '$modal', 'TDMService','alert','$stateParams', function($scope, $location, $log, $modal, TDMService, alert, $stateParams) {
 
+  $scope.todo_id = $stateParams.id;
+
+  $scope.mytodo = {}
+
+  $scope.fetchData = function(){
+    TDMService.getTodo($scope.todo_id)
+      .success(function(data) {
+        data.completed = (data.completed == 1 ? true: false)
+        $scope.mytodo = data[0];
+        console.log("Success fetchData");
+      })
+      .error(function() {
+        console.log("Faillure fetchData");
+      });
+  }
+
+  $scope.fetchData();
 
   ////////////////Submit form /////////////////
-  $scope.mytodo = {title: '', description: '', priority: '', context: '', date: '', completed: false, id_owner: '', url: '', attachment_path:'', localization: '', id_list:'', id_category:''};
-  console.log($scope.mytodo)
-  //$scope.mytodo = {title: $scope.title, description: $scope.description, priority: $scope.priority, context: $scope.context, date: $scope.date, time: $scope.time, completed: false, idowner: "", url: $scope.url, attachmentpath:"", localization: $scope.address, idlist:"", idcategory:""};
   $scope.submit = function() {
-    /* A FAIRE todo.add($scope.mytodo) 
+     TDMService.updateTodo($scope.mytodo) 
       .success(function(res) {
-        alert('success', 'Todo created!', 'Your todo has been created !');
+        alert('success', 'Todo edited!', 'Your todo has been edited !');
       })
       .error(function(err) {
         alert('warning', 'Something went wrong :(', err.message);
-      });*/
+      });
   };
+
+  ////////////////Completed boolean ///////////
+
+  $scope.onTodoModified = function(todo){
+
+    mytodo.completed = (mytodo.completed ? 1 : 0)
+  }
 
   ////////////////Attachment file /////////////////
   angular.element('#input-file').fileinput({showCaption: false,showUpload: false, maxFileSize:2000}); 
@@ -138,4 +159,5 @@ angular.module('ToDoManagerApp')
     $modalInstance.dismiss('cancel');
   };
 });
+
 

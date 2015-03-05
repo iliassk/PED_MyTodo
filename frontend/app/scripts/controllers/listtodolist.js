@@ -6,12 +6,15 @@ angular.module('ToDoManagerApp').controller('ListTodoListCtrl', function($scope,
 
 	TDMService.listtodolist()
 	.success(function(data) {
-		alert('success', 'OK!', 'update success');
+		console.log('success', 'OK!', 'update success');
 		$scope.todoList = data;
+		console.log($scope.todoList)
 	})
 	.error(function() {
 		alert('warning', 'Oops!', 'update failed');
 	});
+
+	console.log($scope.todoList)
 
 	$scope.deleteTodoList = function(obj){
 		$scope.test=obj;

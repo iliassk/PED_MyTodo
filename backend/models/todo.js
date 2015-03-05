@@ -33,16 +33,13 @@ exports.listtodolist_id_get = function(req, res, next, connection, auth){
 	});  
 }
 
-exports.listtodolist_get = function(req, res, next, connection, auth){
+exports.listtodolist_get = function(req, res, next, connection, auth, jwt){
    // retourne le non et le nombre de votre
-   	console.log("toto 2");
-	connection.query('SELECT * FROM TODOLIST',function(err, rows) {
+	connection.query('SELECT * FROM TODOLIST WHERE id_owner = ?', auth.checkAuthorization(req, res, jwt), function(err, rows) {
 		if (err) {
 			console.log(err);
 			return next("Mysql error, check your query");
 		}else{
-			//console.info(rows);
-			console.log("toto");
 			res.status(200).json(rows);
 		}
 	});
@@ -78,7 +75,7 @@ exports.todo_id_put = function(req, res, next, connection, auth){
 	});
 }
 
-exports.todoadd_post = function(req, res, next, connection, auth){
+exports.todoadd_post = function(req, res, next, connection, auth, jwt){
 	req.assert('mytodo', 'mytodo is required').notEmpty();
 	var _id = auth.checkAuthorization(req, res, jwt);
 	
@@ -100,7 +97,7 @@ exports.todoadd_post = function(req, res, next, connection, auth){
 	});
 }
 
-exports.todo_id_get = function(req, res, next, connection, auth){
+exports.todo_id_get = function(req, res, next, connection, auth, jwt){
    auth.checkAuthorization(req, res, jwt);
 
    	connection.query('SELECT * FROM TODO WHERE id_todo = ?', req.params.id, function(err, rows) {
@@ -109,19 +106,21 @@ exports.todo_id_get = function(req, res, next, connection, auth){
 			return next("Mysql error on connection, check your query");
 		}
 
-		if(rows.length !== 1){
-			return res.status(401).send({message: 'Error todo not unique !'});
+		if(rows.length == 0){
+			return res.status(401).send({message: 'Error todo does not exist !'});
+		}
+		if(rows.length > 1){
+			return res.status(401).send({message: 'Error todo with more than twice this id !'});
 		}
 
 		if(rows.length == 1){
-			console.log("MARCHE");
             return res.status(200).send(rows);
         }
 
 	});
 }
 
-exports.sharetodo_id_get = function(req, res, next, connection, auth, share){
+exports.sharetodo_id_get = function(req, res, next, connection, auth, share, jwt){
    	auth.checkAuthorization(req, res, jwt)
 
 	share.createHash(req.params.id+"todo", function(err, data){
@@ -142,7 +141,7 @@ exports.sharetodo_id_get = function(req, res, next, connection, auth, share){
 	})
 }
 
-exports.sharetodolist_id_get = function(req, res, next, connection, auth, share){
+exports.sharetodolist_id_get = function(req, res, next, connection, auth, share, jwt){
    	auth.checkAuthorization(req, res, jwt)
 
 	share.createHash(req.params.id+"todolist", function(err, data){

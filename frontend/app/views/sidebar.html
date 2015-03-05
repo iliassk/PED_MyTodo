@@ -27,6 +27,23 @@
                         <a ng-href="#/todolist/{{list.id_list}}"><span>{{list.name}}</span></a>
                     </li>
                 </div>
+                <accordion close-others="false">
+                    <accordion-group ng-repeat="list in todoList | filter:query ">
+                        <accordion-heading>
+                           {{list.name}}
+                        </accordion-heading>
+                        {{list}}
+                    </accordion-group>
+                    <accordion-group is-open="status.open">
+                        <accordion-heading>
+                            I can have markup, too! <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+                        </accordion-heading>
+                        This is just some content to illustrate fancy headings.
+                    </accordion-group>
+                 </accordion>
+
+
+
             </div>      
         </ul>
     </div>

@@ -51,6 +51,20 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 	* Manage todo 
 	* Delete, Update
 	*/
+	//ADD a todo
+	this.addTodo = function(_mytodo) {
+		console.log(_mytodo)
+		return $http.post(API_URL + 'add/todo', {
+			mytodo : _mytodo
+		});
+	};
+	//GET a todo
+	this.getTodo = function(_id) {
+		return $http.get(API_URL + 'todo/'+ _id)
+		.success(function(data, status, headers, config){ 
+ 			console.log("sucess"); 
+		});
+	};
 	//DELETE todo
 	this.deleteToDo = function(_id) {
 		return $http.delete(API_URL + 'todo/'+ _id);
