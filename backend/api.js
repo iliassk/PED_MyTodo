@@ -1,28 +1,33 @@
 var express = require('express');
 var bodyParser = require('body-parser');
-var mysql = require('mysql');
 var expressValidator = require('express-validator');
-var bcrypt = require('bcrypt-nodejs');
+var mysql = require('mysql');
 var jwt = require('jwt-simple');
+var passport = require('passport');
 
-var auth = require('./models/auth.js')
-var utils = require('./models/utils.js')
-var todo = require('./models/todo.js')
+var auth = require('./models/auth.js');
+var utils = require('./models/utils.js');
+var todo = require('./models/todo.js');
+var LocalStrategy = require('./services/localStrategy.js');
 
 var app = module.exports = express();
 
 /*MySql connection*/
 var connection = mysql.createPool({
 	host: "localhost",
-	port: "8889",
-	user: "todomanager",
-	password: "todomanager",
+	user: "root",
+	password: "",
 	database: "todoManager_db"
 });
 
 
 app.use(bodyParser.json());
 app.use(expressValidator());
+
+passport.serializeUser(function(user, done) {
+	done(null, user.id_user);
+})
+app.use(passport.initialize());
 
 // To enable CORS
 app.use(function(req, res, next) {
@@ -33,13 +38,43 @@ app.use(function(req, res, next) {
 	next();
 })
 
-app.post('/register', function(req, res, next) {
- 	auth.register_post(req, res, next, connection, jwt, bcrypt)
-})
+passport.use('local-register', LocalStrategy.register);
+passport.use('local-login', LocalStrategy.login);
 
-app.post('/login', function(req, res, next) {
-	auth.login_post(req, res, next, connection, jwt, bcrypt)
+app.post('/register', passport.authenticate('local-register'), function(req, res) {
+
+	//validation
+	req.checkBody('username', 'Username is required').notEmpty();
+	req.checkBody('email', 'Email is required').notEmpty();
+	req.checkBody('password', 'Password is required').notEmpty();
+
+	req.checkBody('email', 'A valid email is required').isEmail();
+	req.checkBody('password', 'Enter a password 1 - 20').len(1, 20);
+
+	var errors = req.validationErrors();
+	if (errors) {
+		res.status(422).json(errors);
+		return;
+	}
+
+	auth.createSendToken(req.user, req, res);
 });
+
+app.post('/login', passport.authenticate('local-login'), function(req, res) {
+
+	//validation
+	req.checkBody('email', 'Email is required').notEmpty();
+	req.checkBody('password', 'Password is required').notEmpty();
+
+	var errors = req.validationErrors();
+	if (errors) {
+		res.status(422).json(errors);
+		return;
+	}
+	
+	auth.createSendToken(req.user, req, res);
+});
+
 
 app.post('/todolist', function(req, res, next) {
 	todo.todolist_post(req, res, next, connection, auth)
