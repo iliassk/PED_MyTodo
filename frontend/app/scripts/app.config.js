@@ -7,10 +7,7 @@ angular.module('ToDoManagerApp').config(function($urlRouterProvider, $stateProvi
 	$stateProvider
 		.state('main', {
 			url: '/',
-			templateUrl: '/views/main.html',
-			params: {
-				updated: false
-			}
+			templateUrl: '/views/main.html'
 		})
 		.state('register', {
 			url: '/register',
