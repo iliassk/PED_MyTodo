@@ -1,26 +1,40 @@
 <div class="row" style="margin-top:20px">
     <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
-		<form ng-submit = "submit()" name="login" role="form" novalidate>
-			<fieldset>
-				<h2>Please Sign In</h2>
-				<hr class="colorgraph">
-				<div class="form-group">
-					<input type="email" name="email" ng-model ="email" id="email" class="form-control input-lg" placeholder="Email Address" tabindex="4" required>
-				</div>
-					<p class="help-block" ng-show="register.email.$dirty && register.email.$invalid">Please enter a proper email.</p>					
-				<div class="form-group">
-					<input type="password" name="password" ng-model ="password" id="password" class="form-control input-lg" placeholder="Password" tabindex="5" required>
-				</div>
-				<hr class="colorgraph">
-				<div class="row">
-					<div class="col-xs-6 col-sm-6 col-md-6">
+        <form ng-submit="submit()" name="login" role="form" novalidate>
+            <fieldset>
+                <h2>Please Sign In</h2>
+                <hr class="colorgraph">
+                <div class="form-group">
+                    <input type="email" name="email" ng-model="email" id="email" class="form-control input-lg" placeholder="Email Address" tabindex="4" required>
+                </div>
+                <p class="help-block" ng-show="register.email.$dirty && register.email.$invalid">Please enter a proper email.</p>
+                <div class="form-group">
+                    <input type="password" name="password" ng-model="password" id="password" class="form-control input-lg" placeholder="Password" tabindex="5" required>
+                </div>
+                <hr class="colorgraph">
+                <div class="row">
+                    <div class="col-xs-6 col-sm-6 col-md-6">
                         <input ng-disabled="login.$invalid" id="btnLogin" type="submit" class="btn btn-lg btn-success btn-block" value="Sign In">
-					</div>
-					<div class="col-xs-6 col-sm-6 col-md-6">
-						<a ui-sref="register" id="btnRegister" class="btn btn-lg btn-primary btn-block">Register</a>
-					</div>
-				</div>
-			</fieldset>
-		</form>
-	</div>
+                    </div>
+                    <div class="col-xs-6 col-sm-6 col-md-6">
+                        <a ui-sref="register" id="btnRegister" class="btn btn-lg btn-primary btn-block">Register</a>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+
+<!-- Social Footer, Colour Matching Icons -->
+<!-- Include Font Awesome Stylesheet in Header -->
+
+<!-- // -->
+<div class="container">
+    <hr>
+    <div class="text-center center-block">
+        <p class="txt-railway">- Connect ToDoManager to your favourite social network -</p>
+        <a><i ng-click="google()" id="social" type="button" class="fa fa-google-plus-square fa-3x social-gp"></i></a>
+        <a><i ng-click="facebook" id="social" type="button" class="fa fa-facebook-square fa-3x social-fb"></i></a>
+    </div>
+    <hr>
 </div>
