@@ -4,6 +4,7 @@ var expressValidator = require('express-validator');
 var mysql = require('mysql');
 var jwt = require('jwt-simple');
 var passport = require('passport');
+var request = require('request');
 
 var auth = require('./models/auth.js');
 var utils = require('./models/utils.js');
@@ -27,6 +28,9 @@ app.use(expressValidator());
 passport.serializeUser(function(user, done) {
 	done(null, user.id_user);
 })
+passport.deserializeUser(function(user, done) {
+	done(null, user.id_user);
+});
 app.use(passport.initialize());
 
 // To enable CORS
@@ -42,38 +46,17 @@ passport.use('local-register', LocalStrategy.register);
 passport.use('local-login', LocalStrategy.login);
 
 app.post('/register', passport.authenticate('local-register'), function(req, res) {
-
-	//validation
-	req.checkBody('username', 'Username is required').notEmpty();
-	req.checkBody('email', 'Email is required').notEmpty();
-	req.checkBody('password', 'Password is required').notEmpty();
-
-	req.checkBody('email', 'A valid email is required').isEmail();
-	req.checkBody('password', 'Enter a password 1 - 20').len(1, 20);
-
-	var errors = req.validationErrors();
-	if (errors) {
-		res.status(422).json(errors);
-		return;
-	}
-
-	auth.createSendToken(req.user, req, res);
+	auth.createSendToken(req.user, connection, req, res, jwt);
 });
 
 app.post('/login', passport.authenticate('local-login'), function(req, res) {
-
-	//validation
-	req.checkBody('email', 'Email is required').notEmpty();
-	req.checkBody('password', 'Password is required').notEmpty();
-
-	var errors = req.validationErrors();
-	if (errors) {
-		res.status(422).json(errors);
-		return;
-	}
-	
-	auth.createSendToken(req.user, req, res);
+	auth.createSendToken(req.user, connection, req, res, jwt);
 });
+
+app.post('/auth/google', function(req, res, next) {
+	auth.loginGoogle(req, res, next, connection, jwt, request);
+});
+
 
 
 app.post('/todolist', function(req, res, next) {
@@ -108,23 +91,23 @@ app.post('/add/todo', function(req, res, next) {
 });
 
 app.get('/todo/:id', function(req, res, next) {
-    todo.todo_id_get(req, res, next, connection, auth)
+	todo.todo_id_get(req, res, next, connection, auth)
 })
 
 /**
-* Génere le lien url pour le TODO partagé avec un étranger, l'ajoute à la BD et le renvoie au client
-* Le lien est généré à partir de l'id et d'une clé : todo pour un todo et todolist pour une liste (ici todo)
-*/
+ * Génere le lien url pour le TODO partagé avec un étranger, l'ajoute à la BD et le renvoie au client
+ * Le lien est généré à partir de l'id et d'une clé : todo pour un todo et todolist pour une liste (ici todo)
+ */
 app.get('/share/todo/:id', function(req, res, next) {
-    todo.sharetodo_id_get(req, res, next, connection, auth, utils)
+	todo.sharetodo_id_get(req, res, next, connection, auth, utils)
 })
 
 /**
-* Génere le lien url pour le TODO partagé avec un étranger, l'ajoute à la BD et le renvoie au client
-* Le lien est généré à partir de l'id et d'une clé : todo pour un todo et todolist pour une liste (ici todolist)
-*/
+ * Génere le lien url pour le TODO partagé avec un étranger, l'ajoute à la BD et le renvoie au client
+ * Le lien est généré à partir de l'id et d'une clé : todo pour un todo et todolist pour une liste (ici todolist)
+ */
 app.get('/share/todolist/:id', function(req, res, next) {
-   	todo.sharetodolist_id_get(req, res, next, connection, auth, utils)
+	todo.sharetodolist_id_get(req, res, next, connection, auth, utils)
 })
 
 var server = app.listen(3000, function() {
