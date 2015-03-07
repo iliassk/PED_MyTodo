@@ -5,6 +5,7 @@ var mysql = require('mysql');
 var jwt = require('jwt-simple');
 var passport = require('passport');
 var request = require('request');
+var cors = require('cors');
 
 var auth = require('./models/auth.js');
 var utils = require('./models/utils.js');
@@ -33,14 +34,17 @@ passport.deserializeUser(function(user, done) {
 });
 app.use(passport.initialize());
 
-// To enable CORS
-app.use(function(req, res, next) {
-	res.header('Access-Control-Allow-Origin', '*');
-	res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE');
-	res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-
-	next();
-})
+// To enable CORS (works with satellizer)
+var whitelist = ['http://localhost:9000'];
+app.use(cors({
+	origin: function(origin, callback) {
+		var originIsWhitelisted = whitelist.indexOf(origin) !== -1;
+		callback(null, originIsWhitelisted);
+	},
+	credentials: true,
+	methods: ['GET', 'PUT', 'POST', 'DELETE'],
+	allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin']
+}));
 
 passport.use('local-register', LocalStrategy.register);
 passport.use('local-login', LocalStrategy.login);
@@ -54,9 +58,12 @@ app.post('/login', passport.authenticate('local-login'), function(req, res) {
 });
 
 app.post('/auth/google', function(req, res, next) {
-	auth.loginGoogle(req, res, next, connection, jwt, request);
+	auth.authGoogle(req, res, next, connection, jwt, request);
 });
 
+app.post('/auth/facebook', function(req, res, next) {
+	auth.authFacebook(req, res, next, connection, jwt, request);
+});
 
 
 app.post('/todolist', function(req, res, next) {
