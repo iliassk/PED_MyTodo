@@ -7,7 +7,10 @@ angular.module('ToDoManagerApp').config(function($urlRouterProvider, $stateProvi
 	$stateProvider
 		.state('main', {
 			url: '/',
-			templateUrl: '/views/main.html'
+			templateUrl: '/views/main.html',
+			params: {
+				updated: false
+			}
 		})
 		.state('register', {
 			url: '/register',
@@ -15,9 +18,9 @@ angular.module('ToDoManagerApp').config(function($urlRouterProvider, $stateProvi
 			controller: 'RegisterCtrl'
 		})
 		.state('todolist', {
-			url : '/todolist',
-			templateUrl : '/views/todolist.html',
-			controller : 'TodoListCtrl'
+			url: '/todolist',
+			templateUrl: '/views/todolist.html',
+			controller: 'TodoListCtrl'
 		})
 		.state('viewToDoList/:id', {
 			url: '/todolist/:id',
@@ -52,4 +55,22 @@ angular.module('ToDoManagerApp').config(function($urlRouterProvider, $stateProvi
 	$httpProvider.interceptors.push('authInterceptor');
 })
 
-.constant('API_URL', 'http://localhost:3000/');
+.constant('API_URL', 'http://localhost:3000/')
+
+// Retrieve the authorization code from google
+.run(function($window) {
+	// Get the params passed back from google, without the question mark from the authorization code included in the params
+	var params = $window.location.search.substring(1);
+
+	// To check that params is valid and that we are in the popup window
+	if (params && $window.opener && $window.opener.location.origin === $window.location.origin) {
+		var pair = params.split('=');
+		// To make sure that there is no URI characters in there
+		var code = decodeURIComponent(pair[1]);
+
+		// Authorization code is sent from the popup window to the main window
+		$window.opener.postMessage(code, $window.location.origin);
+
+	}
+
+});
