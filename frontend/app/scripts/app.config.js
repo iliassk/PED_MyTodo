@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('ToDoManagerApp').config(function($urlRouterProvider, $stateProvider, $httpProvider) {
+angular.module('ToDoManagerApp').config(function($urlRouterProvider, $stateProvider, $httpProvider, $authProvider, API_URL) {
 
 	$urlRouterProvider.otherwise('/');
 
@@ -49,7 +49,25 @@ angular.module('ToDoManagerApp').config(function($urlRouterProvider, $stateProvi
 			controller: 'LogoutCtrl'
 		});
 
-	$httpProvider.interceptors.push('authInterceptor');
+	// Manage Satellizer authentication providers (Login, Register, Social Login : Google, Facebook ...) with API_URL (port 3000)
+	$authProvider.loginUrl = API_URL + 'login';
+	$authProvider.signupUrl = API_URL + 'register';
+
+	$authProvider.google({
+		clientId: '601634073893-bd2squ5fv4goei543i19t9nal38k1oph.apps.googleusercontent.com',
+		// We have to specify our API endpoint for the authorization code exchange, otherwise it will use the port 9000
+		url: API_URL + 'auth/google'
+	})
+
+	$authProvider.facebook({
+		clientId: '894162163981032',
+		// We have to specify our API endpoint for the authorization code exchange, otherwise it will use the port 9000
+		url: API_URL + 'auth/facebook'
+	})
+
+	// Middleware authInterceptor will inject the authorization token
+	//$authProvider.httpInterceptor = true;
+	//$httpProvider.interceptors.push('authInterceptor');
 })
 
 .constant('API_URL', 'http://localhost:3000/')
