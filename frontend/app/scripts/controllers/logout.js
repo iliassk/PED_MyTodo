@@ -7,8 +7,8 @@
  * # LogoutCtrl
  * Controller of the ToDoManagerApp
  */
-angular.module('ToDoManagerApp').controller('LogoutCtrl', function(authToken, $state, $window) {
-	authToken.removeToken();
+angular.module('ToDoManagerApp').controller('LogoutCtrl', function($auth, $state, $window) {
+	$auth.logout();
 	$window.location.reload();
 	$state.go('main');
 });
