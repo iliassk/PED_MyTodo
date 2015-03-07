@@ -2,13 +2,9 @@ var LocalStrategy = require('passport-local').Strategy;
 var mysql = require('mysql');
 var bcrypt = require('bcrypt-nodejs');
 
-var auth = require('../models/auth.js')
 
+var auth = require('../models/auth.js');
 
-var strategyOptionsLogin = {
-	usernameField: 'email',
-	passReqToCallback: true
-};
 
 /*MySql connection*/
 var connection = mysql.createPool({
@@ -18,7 +14,21 @@ var connection = mysql.createPool({
 	database: "todoManager_db"
 });
 
+var strategyOptionsLogin = {
+	usernameField: 'email',
+	passReqToCallback: true
+};
+
 exports.login = new LocalStrategy(strategyOptionsLogin, function(req, email, password, done) {
+
+	//validation
+	req.checkBody('email', 'Email is required').notEmpty();
+	req.checkBody('password', 'Password is required').notEmpty();
+
+	var errors = req.validationErrors();
+	if (errors) {
+		return done(errors);
+	}
 
 	var data = {
 		email: email
@@ -54,10 +64,25 @@ exports.login = new LocalStrategy(strategyOptionsLogin, function(req, email, pas
 
 var strategyOptionsRegister = {
 	usernameField: 'username',
-	passReqToCallback: true
+	passReqToCallback: true,
+	passResToCallback: true
 };
 
 exports.register = new LocalStrategy(strategyOptionsRegister, function(req, username, password, done) {
+
+	//validation
+	req.checkBody('username', 'Username is required').notEmpty();
+	req.checkBody('email', 'Email is required').notEmpty();
+	req.checkBody('password', 'Password is required').notEmpty();
+
+	req.checkBody('email', 'A valid email is required').isEmail();
+	req.checkBody('password', 'Enter a password 1 - 20').len(1, 20);
+
+	var errors = req.validationErrors();
+	if (errors) {
+		//return res.status(422).json(errors);
+		return done(errors);
+	}
 
 	//get data from the request
 	var data = {
