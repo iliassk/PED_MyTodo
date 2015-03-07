@@ -8,7 +8,7 @@
  * Controller of the ToDoManagerApp
  */
 
-angular.module('ToDoManagerApp').controller('ViewToDoList', function($scope, $stateParams, alert, TDMService) {
+angular.module('ToDoManagerApp').controller('ViewToDoList', function($scope, $stateParams, $window, alert, TDMService) {
     
 	$scope.list_id = $stateParams.id
 	$scope.todos
@@ -39,6 +39,37 @@ angular.module('ToDoManagerApp').controller('ViewToDoList', function($scope, $st
 			console.log("[deleteTodo] failure");
 		});
 
+	}
+
+	$scope.addToCalendar = function(todo){
+		console.log(todo);
+
+		
+		//google
+		/*
+		var date = "20140510/20150514";
+
+		var url = 
+		  "https://www.google.com/calendar/render?action=TEMPLATE" + 
+		  "&text=" + encodeURIComponent(todo.title) +
+		  "&dates=" + encodeURIComponent(date) +
+		  "&details=" + encodeURIComponent(todo.description) +
+		  "&location="+ encodeURIComponent(todo.localization)+
+		  "&pli=1"+
+		  "&uid=&sf=false&output=xml#g";
+		*/
+
+		//hotmail
+		var url = 
+			"https://bay03.calendar.live.com/calendar/calendar.aspx?rru=addevent" +
+			"&dtstart=20140510"+
+			"&dtend=20150514"+
+			"&summary=" + encodeURIComponent(todo.title) +
+			"&location="+ encodeURIComponent(todo.localization)+
+			"&description=" + encodeURIComponent(todo.description) +
+			"&uid="
+
+		$window.open(url, '_blank');
 	}
 
 	$scope.onTodoModified = function(todo){

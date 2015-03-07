@@ -45,7 +45,7 @@ app.post('/todolist', function(req, res, next) {
 	todo.todolist_post(req, res, next, connection, auth)
 })
 
-app.get('/listtodolist/:id', function(req, res) {
+app.get('/listtodolist/:id', function(req, res, next) {
 	todo.listtodolist_id_get(req, res, next, connection, auth)
 })
 

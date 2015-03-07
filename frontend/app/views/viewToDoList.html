@@ -2,5 +2,6 @@
     <div class="checkbox">
         
           <label><input type="checkbox" ng-model="todo.completed" ng-click="onTodoModified(todo)"> <a ng-href=""><span>{{todo.title}}</span></a> </label> <a class="pull-right" ng-click="deleteTodo(todo.id_todo)">Supprimer</a>
+          <a class="pull-right" target="_blank" ng-click="addToCalendar(todo)">Add to calendar</a>
     </div>
 </ul>
