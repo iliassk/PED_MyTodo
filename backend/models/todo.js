@@ -1,10 +1,12 @@
 //Créer liste dans la base de donées
-exports.todolist_post = function(req, res, next, connection, auth){
+exports.todolist_post = function(req, res, next, connection, auth, jwt){
 	//get data from the request
+	var _id = auth.checkAuthorization(req, res, jwt);
 	var data = {
 		name: req.body.name,
 		description: req.body.description,
-		color: req.body.color
+		color: req.body.color,
+		id_owner: _id
 	};
 
 	connection.query('INSERT INTO TODOLIST SET ?', data, function(err, rows) {
@@ -13,6 +15,24 @@ exports.todolist_post = function(req, res, next, connection, auth){
 			return next("Mysql error, check your query");
 		}
 		res.sendStatus(200);
+	});
+}
+
+
+//Récupère les informations d'une liste dans la base de donées
+exports.todolist_get = function(req, res, next, connection, auth, jwt){
+	//get data from the request
+	var _id = auth.checkAuthorization(req, res, jwt);
+	var _idlist = req.params.id;
+
+	connection.query('SELECT * FROM TODOLIST WHERE id_list = ?', _idlist, function(err, rows) {
+		if (err) {
+			console.log(err);
+			return next("Mysql error, check your query");
+		}else{
+			//console.info(rows);
+			res.status(200).json(rows);
+		}
 	});
 }
 
@@ -160,4 +180,37 @@ exports.sharetodolist_id_get = function(req, res, next, connection, auth, share,
 			res.status(200).json(content);
 		});
 	})
+}
+
+exports.listtodolistwithtodos_get = function(req, res, next, connection, auth, jwt){
+
+	var result = new Array();
+	var _id = auth.checkAuthorization(req, res, jwt);
+
+	connection.query('SELECT * FROM TODOLIST WHERE id_owner = ?', _id , function(err, lists) {
+		if (err) {
+			console.log(err);
+			return next("Mysql error, check your query");
+		}else{
+			result = lists;
+			lists.forEach(function (elem, index, array) {
+    			console.log("[" + index + "] = " + elem.name);
+  				connection.query('SELECT * FROM TODO WHERE id_list = ?', elem.id_list, function(err, rows) {
+					if (err) {
+						console.log(err);
+						return next("Mysql error on connection, check your query");
+					}
+
+				result[index].todos = rows;
+				console.log(rows)
+
+				//pour gérer l'asynchrone on ne sait pas quand les requetes sont finies
+				if(index == result.length-1)
+					res.status(200).json(result);
+				});
+
+			})
+		}
+	});
+
 }

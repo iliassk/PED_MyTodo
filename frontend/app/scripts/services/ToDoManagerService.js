@@ -27,9 +27,18 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 	this.listtodolist = function() {
 		return $http.get(API_URL + 'listtodolist')
 		.success(function(data, status, headers, config){ 
- 			console.log("sucess"); 
+ 			console.log("success"); 
 		});
 	};
+
+	//GET one todolist with its id
+	this.gettodolist = function(_id) {
+		return $http.get(API_URL + 'todolist/' + _id)
+		.success(function(data, status, headers, config){ 
+ 			console.log("success"); 
+		});
+	};
+
 	//DELETE a todolist
 	//deleteTodoList(list.id_list)
 	this.deletetodolist = function(obj) {
@@ -42,6 +51,14 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 	//GET todos in a todolist
 	this.fetchToDoListToDos = function(_id) {
 		return $http.get(API_URL + 'listtodolist/'+ _id)
+		.success(function(){
+ 			console.log('get success'); 
+		});
+	};
+
+	//GET todolist and all its todos
+	this.fetchToDoAndListToDos = function() {
+		return $http.get(API_URL + 'listtodolistwithtodos')
 		.success(function(){
  			console.log('get success'); 
 		});

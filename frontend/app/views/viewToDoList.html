@@ -1,6 +1,29 @@
-<ul ng-repeat="todo in todos">
-    <div class="checkbox">
-        
-          <label><input type="checkbox" ng-model="todo.completed" ng-click="onTodoModified(todo)"> <a ng-href=""><span>{{todo.title}}</span></a> </label> <a class="pull-right" ng-click="deleteTodo(todo.id_todo)">Supprimer</a>
-    </div>
-</ul>
+<style type="text/css">
+ a:hover {
+  cursor:pointer;
+ }
+</style>
+<div class="jumbotron">
+  <h1 ng-style="{color: '{{list.color}}'}">{{list.name}}</h1>
+  <p ng-style="{color: '{{list.color}}'}">{{list.description}}</p>
+</div>
+ <a ng-click="hideCompleted()"class="btn btn-sm btn-primary" data-toggle="button">Hide <span style="color:Chartreuse " class="glyphicon glyphicon-ok"></span>
+                            </a>
+<div class="container-fluid">
+	<div ng-repeat="todo in todos" ng-hide="hidecompleted && (todo.completed == true)" >
+			<div class="col-xs-6 col-md-4">
+	    		<div class="thumbnail" >
+	    			<p ng-class="{ 'pull-left':true, 'text-info': todo.priority == 1, 'text-primary': todo.priority == 4, 'text-success': todo.priority == 2, 'text-warning': todo.priority == 3, 'text-danger': todo.priority == 5 }">{{todo.priority}}</p>
+	    			<a><i ng-click="onTodoModified(todo)" class="glyphicon glyphicon-ok ng-show pull-right" style="color:Chartreuse " ng-show="todo.completed"></i></a>
+	    			<a><i ng-click="onTodoModified(todo)" style="color:Gainsboro" class="glyphicon glyphicon-ok ng-hide pull-right" ng-hide="todo.completed"></i></a>
+	        		<h3 class='text-center'>{{todo.title}}</h3>
+	        		<p>Description : {{todo.description}}</p>
+	        		<p>Context : {{todo.context}}</p>
+	        		<p>End date is {{todo.date | date:'medium'}}</p>
+	        		<div class="text-center">
+	        			<a class="btn btn-info" ui-sref="todo/({ id: {{todo.id_todo}} })">More informations...</a>
+	        		</div>
+	      		</div>
+			</div>
+	</div>
+</div>

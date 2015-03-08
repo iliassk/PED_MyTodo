@@ -8,6 +8,7 @@ angular.module('ToDoManagerApp')
   $scope.todo_id = $stateParams.id;
 
   $scope.mytodo = {}
+  $scope.mytodolist;
 
   $scope.fetchData = function(){
     TDMService.getTodo($scope.todo_id)
@@ -19,6 +20,17 @@ angular.module('ToDoManagerApp')
       .error(function() {
         console.log("Faillure fetchData");
       });
+
+
+    TDMService.listtodolist()
+    .success(function(data) {
+      console.log('success', 'OK!', 'update success');
+      $scope.mytodolist = data;
+      console.log($scope.mytodolist)
+    })
+    .error(function() {
+      alert('warning', 'Oops!', 'update failed');
+    });
   }
 
   $scope.fetchData();
@@ -133,7 +145,31 @@ $scope.today = function() {
     });
   };
 
+  ////////////////Delete todo /////////////////
+
+
+ $scope.delete = function () {
+
+    var modalInstance = $modal.open({
+      templateUrl: 'modalDelete.html',
+      controller: 'deleteTodoCtrl',
+      size: 'sm',
+      resolve: {
+        id: function () {
+          return $scope.mytodo.id_todo;
+        }
+      }
+    });
+
+    modalInstance.result.then(function () {
+    }, function () {
+      $log.info('Modal dismissed at: ' + new Date());
+    });
+  };
+
 }]);
+
+  
 
   ////////////////Controller map modal /////////////////
 
@@ -160,4 +196,24 @@ angular.module('ToDoManagerApp')
   };
 });
 
+angular.module('ToDoManagerApp')
+.controller('deleteTodoCtrl', function ($scope, $modalInstance, id, $state, TDMService) {
+
+  $scope.id = id;
+
+  $scope.deleteTodo = function () {
+    TDMService.deleteToDo(id).success(function(res) {
+        console.log('success', 'Todo deleted!', 'Your todo has been deleted !');
+        $state.go('main');
+      })
+      .error(function(err) {
+        alert('warning', 'Something went wrong :(', err.message);
+      });
+    $modalInstance.close();
+  };
+
+  $scope.cancel = function () {
+    $modalInstance.dismiss('cancel');
+  };
+});
 
