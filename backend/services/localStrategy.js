@@ -1,3 +1,5 @@
+'use strict';
+
 var LocalStrategy = require('passport-local').Strategy;
 var mysql = require('mysql');
 var bcrypt = require('bcrypt-nodejs');
@@ -8,10 +10,10 @@ var auth = require('../models/auth.js');
 
 /*MySql connection*/
 var connection = mysql.createPool({
-	host: "localhost",
-	user: "root",
-	password: "",
-	database: "todoManager_db"
+	host: 'localhost',
+	user: 'root',
+	password: '',
+	database: 'todoManager_db'
 });
 
 var strategyOptionsLogin = {

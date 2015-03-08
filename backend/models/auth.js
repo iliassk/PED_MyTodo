@@ -1,3 +1,5 @@
+'use strict';
+
 /*var jwt = require('jwt-simple');*/
 var moment = require('moment');
 var bcrypt = require('bcrypt-nodejs');
@@ -15,7 +17,7 @@ exports.checkAuthorization = function(req, res, jwt) {
 	}
 
 	var token = req.headers.authorization.split(' ')[1];
-	var payload = jwt.decode(token, "AGKYW");
+	var payload = jwt.decode(token, 'AGKYW');
 
 	if (!payload.sub) {
 		res.status(401).send({
@@ -24,7 +26,7 @@ exports.checkAuthorization = function(req, res, jwt) {
 	}
 
 	return payload.sub;
-}
+};
 
 exports.createSendToken = function(data, connection, req, res, jwt) {
 
@@ -40,9 +42,9 @@ exports.createSendToken = function(data, connection, req, res, jwt) {
 			iss: req.hostname,
 			sub: rows[0].id_user,
 			exp: moment().add(2, 'days').unix()
-		}
+		};
 
-		var token = jwt.encode(payload, "AGKYW");
+		var token = jwt.encode(payload, 'AGKYW');
 
 
 		var data_sent = data;
@@ -53,11 +55,11 @@ exports.createSendToken = function(data, connection, req, res, jwt) {
 			token: token
 		});
 	});
-}
+};
 
 exports.comparePasswords = function(password, passwordDb, callback) {
 	bcrypt.compare(password, passwordDb, callback);
-}
+};
 
 
 exports.authGoogle = function(req, res, next, connection, jwt, request) {
@@ -70,7 +72,7 @@ exports.authGoogle = function(req, res, next, connection, jwt, request) {
 		client_secret: config.GOOGLE_SECRET,
 		redirect_uri: req.body.redirectUri,
 		grant_type: 'authorization_code'
-	}
+	};
 
 	// post call from node to google
 	request.post(url, {
@@ -80,7 +82,7 @@ exports.authGoogle = function(req, res, next, connection, jwt, request) {
 		var accessToken = token.access_token;
 		var headers = {
 			Authorization: 'Bearer ' + accessToken
-		}
+		};
 
 		// Get the Google+ profile informations
 		request.get({
@@ -117,17 +119,17 @@ exports.authGoogle = function(req, res, next, connection, jwt, request) {
 						connection.query('INSERT INTO USERS SET ?', data, function(err, rows) {
 							if (err) {
 								console.log(err);
-								return next("Mysql error on register, check your query");
+								return next('Mysql error on register, check your query');
 							}
 
-							auth.createSendToken(data, connection, req, res, jwt)
+							auth.createSendToken(data, connection, req, res, jwt);
 						});
 					});
 				});
 			});
-		})
+		});
 	});
-}
+};
 
 exports.authFacebook = function(req, res, next, connection, jwt, request) {
 	var accessTokenUrl = 'https://graph.facebook.com/oauth/access_token';
@@ -182,14 +184,98 @@ exports.authFacebook = function(req, res, next, connection, jwt, request) {
 						connection.query('INSERT INTO USERS SET ?', data, function(err, rows) {
 							if (err) {
 								console.log(err);
-								return next("Mysql error on register, check your query");
+								return next('Mysql error on register, check your query');
 							}
 
-							auth.createSendToken(data, connection, req, res, jwt)
+							auth.createSendToken(data, connection, req, res, jwt);
 						});
 					});
 				});
 			});
 		});
 	});
-}
+};
+
+exports.authTwitter = function(req, res, next, connection, jwt, request) {
+	var requestTokenUrl = 'https://api.twitter.com/oauth/request_token';
+	var accessTokenUrl = 'https://api.twitter.com/oauth/access_token';
+	var authenticateUrl = 'https://api.twitter.com/oauth/authenticate';
+
+  	if (!req.query.oauth_token || !req.query.oauth_verifier) {
+    	var requestTokenOauth = {
+      		consumer_key: config.TWITTER_KEY,
+      		consumer_secret: config.TWITTER_SECRET,
+      		callback: config.TWITTER_CALLBACK
+    	};
+	    // Step 1. Obtain request token for the authorization popup.
+    	request.post({ 
+    		url: requestTokenUrl,
+    		oauth: requestTokenOauth
+    	}, function(err, response, body) {
+
+	      	var oauthToken = qs.parse(body);
+	     	var params = qs.stringify({ 
+	     		oauth_token: oauthToken.oauth_token
+	     	});
+
+	      	// Step 2. Redirect to the authorization screen.
+	      	res.redirect(authenticateUrl + '?' + params);
+		});
+	} 
+	else {
+	   
+	    var accessTokenOauth = {
+ 		consumer_key: config.TWITTER_KEY,
+      	consumer_secret: config.TWITTER_SECRET,
+      	token: req.query.oauth_token,
+      	verifier: req.query.oauth_verifier
+    	};
+
+	    // Step 3. Exchange oauth token and oauth verifier for access token.
+	    request.post({
+	    	url: accessTokenUrl,
+	    	oauth: accessTokenOauth
+	    }, function(err, response, profile) {
+     		profile = qs.parse(profile);
+
+			connection.query('SELECT * FROM USERS WHERE twitterId = ?', profile.user_id, function(err, rows) {
+
+				if (err)
+					return next(err);
+
+				if (rows.length == 1) {
+					return auth.createSendToken(rows[0], connection, req, res, jwt);
+				}
+
+				var data = {
+					username: profile.screen_name,
+					email: profile.screen_name + '@twitternomail.com', // There is no way to obtain the email from the Twitter API.
+					password: profile.user_id, // To add an extra security
+					twitterId: profile.user_id
+				};
+				
+				//Hash passwords
+				bcrypt.genSalt(10, function(err, salt) {
+					if (err) return next(err);
+
+					bcrypt.hash(data.password, salt, null, function(err, hash) {
+						// Store hash in your password DB.
+						if (err) return next(err);
+
+						data.password = hash;
+
+						//insertion 
+						connection.query('INSERT INTO USERS SET ?', data, function(err, rows) {
+							if (err) {
+								console.log(err);
+								return next('Mysql error on register, check your query');
+							}
+
+							auth.createSendToken(data, connection, req, res, jwt);
+						});
+					});
+				});
+			});
+		});
+	}
+};
