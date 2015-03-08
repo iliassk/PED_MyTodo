@@ -31,7 +31,7 @@
                         <a ng-click="status.open = !status.open" class="pull-right" ui-sref="viewToDoList({ id: {{list.id_list}} })"> <i class="glyphicon glyphicon-info-sign"></i> </a>
                         </accordion-heading>
                         <li ng-repeat="todo in list.todos | filter:query | orderBy:['-date', 'name'] " ng-hide="hidecompleted && (todo.completed == true) ">
-                            <a style="display: inline; color: white;" ui-sref="todo/({ id: {{todo.id_todo}} })" popover-trigger="mouseenter" popover-placement="up" popover-title="{{todo.title}}" popover="{{todo.description}}">{{todo.title}}</a>
+                            <a style="display: inline; color: white;" ui-sref="todo/({ id: {{todo.id_todo}} })" popover-trigger="mouseenter" popover-placement="up" popover-title="{{todo.description}}" popover="{{todo.date | date:'short'}}">{{todo.title}}</a>
                             <a class="pull-right"><i style="display: inline; color:Chartreuse;"  ng-click="onTodoModified(todo)" class="glyphicon glyphicon-ok ng-show pull-right" ng-show="todo.completed"></i></a>
                             <a class="pull-right"><i style="display: inline; color:Gainsboro"  ng-click="onTodoModified(todo)" class="glyphicon glyphicon-ok ng-hide " ng-hide="todo.completed"></i></a>
                         </li>

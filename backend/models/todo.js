@@ -194,7 +194,6 @@ exports.listtodolistwithtodos_get = function(req, res, next, connection, auth, j
 		}else{
 			result = lists;
 			lists.forEach(function (elem, index, array) {
-    			console.log("[" + index + "] = " + elem.name);
   				connection.query('SELECT * FROM TODO WHERE id_list = ?', elem.id_list, function(err, rows) {
 					if (err) {
 						console.log(err);
@@ -202,7 +201,6 @@ exports.listtodolistwithtodos_get = function(req, res, next, connection, auth, j
 					}
 
 				result[index].todos = rows;
-				console.log(rows)
 
 				//pour gérer l'asynchrone on ne sait pas quand les requetes sont finies
 				if(index == result.length-1)
