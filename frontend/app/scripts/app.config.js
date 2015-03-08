@@ -65,27 +65,14 @@ angular.module('ToDoManagerApp').config(function($urlRouterProvider, $stateProvi
 		url: API_URL + 'auth/facebook'
 	})
 
+	$authProvider.twitter({
+		// We have to specify our API endpoint for the authorization code exchange, otherwise it will use the port 9000
+		url: API_URL + 'auth/twitter'
+	})
+
 	// Middleware authInterceptor will inject the authorization token
-	//$authProvider.httpInterceptor = true;
+	$authProvider.httpInterceptor = true;
 	//$httpProvider.interceptors.push('authInterceptor');
 })
 
 .constant('API_URL', 'http://localhost:3000/')
-
-// Retrieve the authorization code from google
-.run(function($window) {
-	// Get the params passed back from google, without the question mark from the authorization code included in the params
-	var params = $window.location.search.substring(1);
-
-	// To check that params is valid and that we are in the popup window
-	if (params && $window.opener && $window.opener.location.origin === $window.location.origin) {
-		var pair = params.split('=');
-		// To make sure that there is no URI characters in there
-		var code = decodeURIComponent(pair[1]);
-
-		// Authorization code is sent from the popup window to the main window
-		$window.opener.postMessage(code, $window.location.origin);
-
-	}
-
-});

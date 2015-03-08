@@ -15,7 +15,7 @@ angular.module('ToDoManagerApp').controller('RegisterCtrl', function($scope, ale
 			email: $scope.email,
 			password: $scope.password
 		}).then(function(res) {
-			alert('success', 'Account Created!', 'Welcome, ' + res.data.user.username + ' !');
+			alert('success', 'Account Created!', 'Welcome, ' + res.data.user.username + ' ! Please activate your account in the next few days.');
 		})
 		.catch(function(err) {
 			alert('warning', 'Something went wrong :(', 'Email or/and password already in use !');
