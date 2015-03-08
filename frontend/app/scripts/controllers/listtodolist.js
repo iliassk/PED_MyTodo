@@ -6,7 +6,7 @@ angular.module('ToDoManagerApp').controller('ListTodoListCtrl', function($scope,
 
 	TDMService.listtodolist()
 	.success(function(data) {
-		alert('success', 'OK!', 'update success');
+		//alert('success', 'OK!', 'update success');
 		$scope.todoList = data;
 	})
 	.error(function() {

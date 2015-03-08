@@ -16,7 +16,7 @@ angular.module('ToDoManagerApp')
 			})
 
 			.error(function(err) {
-				alert('warning', 'Unable to get jobs', err.message);
+				alert('warning', 'Unable to get todos', err.message);
 			});
 
 	});

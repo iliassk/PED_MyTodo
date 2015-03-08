@@ -23,12 +23,15 @@
           <li ui-sref-active="active">
             <a ui-sref="todos">To-dos</a>
           </li>
-          <li ui-sref-active="active"><a ui-sref="todolist">todolist</a></li>
+          <li ui-sref-active="active">
+            <a ui-sref="todolist">todolist</a></li>
+        </ul>
+        <ul class="nav navbar-nav pull-right">
           <li ng-hide="isAuthenticated()" ui-sref-active="active">
-            <a ui-sref="login">Login</a>
+            <a class="pull-right" ui-sref="login">Login</a>
           </li>
           <li ng-show="isAuthenticated()" ui-sref-active="active">
-            <a id="logout" ui-sref="logout">Logout</a>
+            <a class="pull-right" id="logout" ui-sref="logout">Logout</a>
           </li>
         </ul>
       </div>
