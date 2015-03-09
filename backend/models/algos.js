@@ -11,7 +11,6 @@ exports.createSendToken = function(data, connection, req, res) {
 	connection.query('SELECT * FROM USERS WHERE email = ?', data.email, function(err, rows) {
 		if (err) {
 			console.log(err);
-			console.log("titi")
 			return res.status(422).send({message: 'MYSQL error, check your query!'});
 		}
 
