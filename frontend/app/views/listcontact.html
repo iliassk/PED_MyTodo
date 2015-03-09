@@ -1,0 +1,26 @@
+
+<table class="table table-striped" >
+  <tbody>
+    <tr ng-repeat="user in users" >
+       <td ><div class="photo_equipe">
+      <img id="photo" src="{{user.avatar_path}}">
+      </div></td>
+      <td >{{user.username}}</td>
+      <td >{{user.email}} </td>  
+      <td >
+      <form role="form">
+        <select class="form-control" required ng-model="selectedItem">
+            
+           <option ng-repeat="group in groups"  value="{{group.id_group}}">{{group.name}}</option>
+         </select>  
+        
+      </td>
+      <td ><button type="submit" class="btn btn-primary" ng-click="addContact(user.id_user, selectedItem)">
+       <span class="glyphicon glyphicon-plus" aria-hidden="true" ></span> ajouter
+        </button></td>  
+        
+      </form>
+    </tr>
+    </tbody>
+
+</table>

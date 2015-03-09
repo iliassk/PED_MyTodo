@@ -9,7 +9,7 @@ exports.todolist_post = function(req, res, next, connection, auth, jwt){
 		id_owner: _id
 	};
 
-	connection.query('INSERT INTO TODOLIST SET ?', data, function(err, rows) {
+	connection.query('INSERT INTO CONTACT ?', data, function(err, rows) {
 		if (err) {
 			console.log(err);
 			return next("Mysql error, check your query");

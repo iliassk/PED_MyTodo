@@ -2,7 +2,6 @@
 
 angular.module('ToDoManagerApp')
 
-
 .controller('AddTodoCtrl', ['$scope', '$location', '$log', '$modal', 'TDMService','alert', '$upload', '$http', 'API_URL', function($scope, $location, $log, $modal, TDMService, alert, $upload,$http, API_URL) {
 
 

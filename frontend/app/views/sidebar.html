@@ -3,7 +3,7 @@
         <h3>Your ToDo Lists</h3>
         <ul class="sidebar-nav">
             <li class="sidebar-brand"></li>
-            <div class="row"  ng-switch on="todoList.length" ng-cloak>
+           
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <input  type="text" class="form-control input-sm" ng-model="query" placeholder="Search ..." >
@@ -20,9 +20,23 @@
                         </div>    
                     </div>
                 </div>
-                
+
+                <div id="left_menu_tabs">
+
+                <table>
+                    <tbody>
+                        <tr>
+                            <td width="33%"> <li ui-sref-active="active"><a onclick ="toggle('listTodo')" ng-click="todoList()"><B>ListTodo</B></a></li></td>
+                            <td width="33%" ><li ui-sref-active="active"><a onclick ="toggle('groupe')"><B>Contacts</B></a></li></td>
+                        </tr>
+                    </tbody>
+                </table>
+                    
+                </div>
+                <div id="listTodo" style="visibility: visible" name="listTodo">
+                 <div class="row"  ng-switch on="todoList.length" ng-cloak>
                 <ul ng-switch-when="0">
-                    <a ui-sref="todolist" class="btn btn-info">You have no list, create one</a>
+                    <a ui-sref="todolist" class="btn btn-info">You have no Todo list, create one</a>
                 </ul>
 
                 <accordion close-others="false">
@@ -37,7 +51,19 @@
                         </li>
                     </accordion-group>
                  </accordion>
-            </div>      
+            
+                </div>  
+                </div>
+                <div ng-include="'views/groupe.html'"></div>
+                  
         </ul>
     </div>
 </div>
+
+<script type="text/ng-template" id="settings.html">
+        <a ui-sref="todolist">supprime</a></br>
+        <span ng-include="mainFormTmpl" onload="loaded()"></span>
+</script>
+
+  
+

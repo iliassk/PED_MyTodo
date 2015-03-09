@@ -1,0 +1,92 @@
+
+<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
+<div id="groupe" style="visibility: hidden">
+
+                    <div class="row"  ng-switch on="groupe.length" ng-cloak id="groupe">
+                <ul ng-switch-when="0">
+                    <a onclick="" class="btn btn-info">You have no group list, create one</a>
+                </ul>
+
+                <div id="groupe" ng-switch-default ng-cloak >
+                  
+                <accordion close-others="oneAtATime" >
+                    <accordion-group id="groupee">
+                    <accordion-heading ng-click="isopen=!isopen" >
+                    All contact
+                    <span class="badge">{{contact.length}}</span>
+                    
+                    </accordion-heading>
+
+                      <a ui-sref="listcontact"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> ajouter un contact </a>
+                      <ul>
+                      
+                    
+                      <div ng-repeat="listcontact in contact" > 
+                      <table>
+                      <tbody>
+                        <tr>
+                        <td width="100%">{{listcontact.username}}</td>  
+                        <td width="100%"><a data-my-directive data-popover-title="Settings" data-popover-template="settings.html" data-popover-placement="left">
+                        <i class="glyphicon glyphicon-option-vertical" aria-hidden="true"></i>
+                        </a></td>
+                        </tr>
+                        </tbody>
+                        </table>
+                      </div>
+
+                      </ul>
+                    </accordion-group id="groupee">
+                    <accordion-group ng-repeat="listgroup in groupe | filter:query ">
+                    <accordion-heading ng-click="isopen=!isopen" >
+                    {{listgroup.name}}
+                    
+                    <span class="badge" >{{total(listgroup, contact)}}</span>
+
+                    
+                    </accordion-heading>
+                    <ul>
+                      <div ng-repeat="listcontact in contact"  >
+                      <div ng-if="listgroup.id_group == listcontact.id_group">
+                       <table>
+                      <tbody>
+                        <tr>
+                        <td width="100%">{{listcontact.username}} </td>   
+                       
+                        <td width="100%">
+                        <a data-my-directive data-popover-title="Settings" data-popover-template="settings.html" data-popover-placement="left">
+                        <i class="glyphicon glyphicon-option-vertical" aria-hidden="true"></i>
+                        </a></td>
+                        </tr>
+                        </tbody>
+                        </table>
+                      </div>
+                      </div>
+                      </ul>
+                      
+                    </accordion-group>
+                    </accordion>
+                    <div id="addgroup" style="visibility: hidden; height:0px" >
+                    <form role="form" >
+                    <input type="text" class="form-control" ng-model="namegroup" placeholder="neme group"/>
+                    <button type="submit" class="btn btn-primary" ng-click="submitgroup(namegroup)">ajouter</button>
+                    <a onclick="groupe('hide')">Annuler {{test}}</a>
+                    </form>
+                     </div> 
+                     <li>
+                        <a onclick="groupe('show')"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> ajouter un groupe</a>
+                    </li>
+
+                </div>     
+                </div>
+                </div>
+
+<!-- Latest compiled and minified JavaScript -->
+
+
+<script>$(function () 
+      { $("[data-toggle='popover']").popover();
+      });
+   </script>

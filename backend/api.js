@@ -15,6 +15,7 @@ var todo = require('./models/todo.js');
 var LocalStrategy = require('./services/localStrategy.js');
 var emailVerification = require('./services/emailVerification.js');
 var multer  = require('multer');
+var contact = require('./models/contact.js')
 
 var app = module.exports = express();
 var os = require('os')
@@ -128,6 +129,28 @@ app.get('/listtodolist', function(req, res, next) {
 
 app.get('/listtodolistwithtodos', function(req, res, next) {
 	todo.listtodolistwithtodos_get(req, res, next, connection, auth, jwt)
+});
+
+app.get('/listgroupe', function(req, res, next) {
+	contact.listgroupe_get(req, res, next, connection, auth)
+});
+
+app.post('/addgroup', function(req, res, next) {
+	contact.addgroup_post(req, res, next, connection, auth)
+});
+
+app.get('/userslist', function(req, res, next) {
+	contact.userslist_get(req, res, next, connection, auth)
+});
+
+app.post('/addcontact', function(req, res, next) {
+	console.log("toto debut")
+	contact.addcontact_post(req, res, next, connection, auth)
+	console.log("toto fin")
+});
+
+app.get('/listcontact', function(req, res, next) {	
+	contact.listcontact_get(req, res, next, connection, auth)
 });
 
 app.delete('/listtodolist/:id', function(req, res, next) {
