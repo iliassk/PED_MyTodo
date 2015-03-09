@@ -117,11 +117,9 @@ app.get('/listtodolist/:id', function(req, res, next) {
 	todo.listtodolist_id_get(req, res, next, connection, auth);
 });
 
-
 app.get('/todolist/:id', function(req, res, next) {
 	todo.todolist_get(req, res, next, connection, auth, jwt)
-})
-
+});
 
 app.get('/listtodolist', function(req, res, next) {
 	todo.listtodolist_get(req, res, next, connection, auth, jwt)

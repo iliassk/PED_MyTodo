@@ -20,10 +20,32 @@
 	        		<p>Description : {{todo.description}}</p>
 	        		<p>Context : {{todo.context}}</p>
 	        		<p>End date is {{todo.date | date:'medium'}}</p>
+	        		
 	        		<div class="text-center">
-	        			<a class="btn btn-info" ui-sref="todo/({ id: {{todo.id_todo}} })">More informations...</a>
+	        			<a class="btn btn-info" ui-sref="todo/({ id: {{todo.id_todo}} })">More...</a>
+	        			<a class="pull-right" ng-click="deleteTodo(todo.id_todo)"><i class="glyphicon glyphicon-trash" ></i></a>
+	        		<a class="pull-left" popover-placement="bottom" popover-template="template.html" ><i class="glyphicon glyphicon-calendar" ></i></a>
 	        		</div>
+
+	        		
+	        		 <script id="template.html" type="text/ng-template">
+		  				<button ng-click="addToCalendar('google', todo)" type="button" class="btn btn-primary btn-lg btn-block">Google</button>
+						<button ng-click="addToCalendar('hotmail', todo)" type="button" class="btn btn-primary btn-lg btn-block">Hotmail</button>
+					</script>
 	      		</div>
 			</div>
 	</div>
 </div>
+<!--
+<ul ng-repeat="todo in todos">
+    <div class="checkbox">
+        <script id="template.html" type="text/ng-template">
+		  	<button ng-click="addToCalendar('google', todo)" type="button" class="btn btn-primary btn-lg btn-block">Google</button>
+			<button ng-click="addToCalendar('hotmail', todo)" type="button" class="btn btn-primary btn-lg btn-block">Hotmail</button>
+		</script>
+
+          <label><input type="checkbox" ng-model="todo.completed" ng-click="onTodoModified(todo)"> <a ng-href=""><span>{{todo.title}}</span></a> </label> <a class="pull-right" ng-click="deleteTodo(todo.id_todo)">Supprimer</a>
+          <a class="pull-right" popover-placement="bottom" popover-template="template.html" >Add to calendar</a>
+    </div>
+</ul>
+-->
