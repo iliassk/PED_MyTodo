@@ -10,21 +10,7 @@ angular.module('ToDoManagerApp')
   $scope.mytodo = {title: '', description: '', priority: '', context: '', date: '', completed: false, id_owner: '', url: '', attachment_path:'', localization: '', id_list:'', id_category:''};
   $scope.mytodolist;
   $scope.file;
-  $scope.img = 'uploads/petite1425567949927.jpg'
-  //$scope.img2 = $http.get(API_URL + $scope.img)
-  $http({method: 'GET', url: API_URL + 'uploads/petite1425567949927.jpg'}).
-  success(function(data, status, headers, config) {
-     var element = angular.element('#toto');
-     element.attr({
-         href: 'data:attachment/jpg,' + encodeURI(data),
-         target: '_blank',
-         download: 'uploads/petite1425567949927.jpg'
-     })[0].click();
-
-  }).
-  error(function(data, status, headers, config) {
-    // if there's an error you should see it here
-  });
+  
 
   TDMService.listtodolist()
   .success(function(data) {

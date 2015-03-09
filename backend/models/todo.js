@@ -101,8 +101,7 @@ exports.todoadd_post = function(req, res, next, connection, auth, jwt){
 	
 	var errors = req.validationErrors();
 	if (errors) {
-		res.status(422).json(errors);
-		return;
+		return res.status(422).json(errors);;
 	}
 	
 	req.body.mytodo.id_owner = _id;
@@ -113,7 +112,7 @@ exports.todoadd_post = function(req, res, next, connection, auth, jwt){
 				return next("Mysql error on insert, check your query  ");
 		}
 		else
-			return res.status(200);
+			return res.status(200).json(rows);
 	});
 }
 
@@ -186,7 +185,6 @@ exports.listtodolistwithtodos_get = function(req, res, next, connection, auth, j
 
 	var result = new Array();
 	var _id = auth.checkAuthorization(req, res, jwt);
-
 	connection.query('SELECT * FROM TODOLIST WHERE id_owner = ?', _id , function(err, lists) {
 		if (err) {
 			console.log(err);
@@ -207,8 +205,8 @@ exports.listtodolistwithtodos_get = function(req, res, next, connection, auth, j
 					res.status(200).json(result);
 				});
 
+
 			})
 		}
 	});
-
 }

@@ -6,11 +6,7 @@ angular.module('ToDoManagerApp').controller('ListTodoListCtrl', function($scope,
 	$scope.hidecompleted = false;
 	/*TDMService.listtodolist()
 	.success(function(data) {
-<<<<<<< HEAD
-		//alert('success', 'OK!', 'update success');
-=======
 		console.log('success', 'OK!', 'update success');
->>>>>>> ajoutModifVisuTodoCompleted
 		$scope.todoList = data;
 		console.log($scope.todoList)
 	})
