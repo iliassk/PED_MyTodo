@@ -25,9 +25,7 @@ angular.module('ToDoManagerApp')
   error(function(data, status, headers, config) {
     // if there's an error you should see it here
   });
-  console.log("$scope.img2")
-  console.log($scope.img2)
-  console.log("$scope.img2")
+
   TDMService.listtodolist()
   .success(function(data) {
     console.log('success', 'OK!', 'update success');
