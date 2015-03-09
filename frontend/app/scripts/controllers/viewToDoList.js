@@ -11,7 +11,12 @@
 angular.module('ToDoManagerApp').controller('ViewToDoList', function($scope, $stateParams, alert, TDMService) {
     
 	$scope.list_id = $stateParams.id
+	$scope.list
 	$scope.todos
+	$scope.hidecompleted = false;
+	$scope.hideCompleted = function(todo){
+		$scope.hidecompleted = !$scope.hidecompleted;
+	}
 
 	$scope.fetchData = function(){
 		TDMService.fetchToDoListToDos($scope.list_id)
@@ -24,6 +29,15 @@ angular.module('ToDoManagerApp').controller('ViewToDoList', function($scope, $st
 		})
 		.error(function() {
 			console.log("Faillure fetchData");
+		});
+
+		TDMService.gettodolist($scope.list_id)
+		.success(function(data) {
+			$scope.list = data[0];
+			console.log('Success get list');
+		})
+		.error(function() {
+			console.log('Failure get list');
 		});
 	}
 
@@ -43,7 +57,7 @@ angular.module('ToDoManagerApp').controller('ViewToDoList', function($scope, $st
 
 	$scope.onTodoModified = function(todo){
 		console.log(todo);
-
+		todo.completed = !todo.completed
 		todo.completed = (todo.completed ? 1 : 0)
 
 		TDMService.updateTodo(todo)

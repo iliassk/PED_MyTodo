@@ -25,14 +25,29 @@
     </div>
 </script>
 
-<div class="well">{{mytodo}}</div>
+    
+<script type="text/ng-template" id="modalDelete.html">
+        <div class="modal-header">
+            <h3 class="modal-title">Delete this todo?</h3>
+        </div>
+        <div class="modal-body">
+            Are your sure you want to delete this todo?
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="deleteTodo()">Yes</button>
+            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+        </div>
+</script>
 
+<!-- DEBUG
+<div class="well">{{mytodo}}</div>
+-->
 
 <div class="form-group col-lg-4">
-    <form class="form-signin" role="form" ng-submit="submit()">
+    <form class="form-signin" role="form" ng-model="mytodo" ng-submit="submit()">
         <h2 class="form-signin-heading">Edit a Todo</h2>
         <h3><i class="glyphicon glyphicon-info-sign"></i> General information</h3>
-        <input type="text" class="form-control" placeholder="Title" ng-model="mytodo.title" required autofocus>
+        <input type="text" class="form-control" placeholder="Title" ng-model="mytodo.title" ng-value="mytodo.title" required autofocus>
         <input type="text" class="form-control" placeholder="Description" ng-model="mytodo.description" >
         <select class="form-control" id="sel1" ng-model="mytodo.priority">
             <option value="" disabled selected>Priority</option>
@@ -43,6 +58,11 @@
             <option>5</option>
         </select>
         <input type="text" class="form-control" placeholder="Context" ng-model="mytodo.context">
+
+         <select class="form-control" id="sel2" ng-model="mytodo.id_list" required>
+            <option value="" disabled selected>Choose a list</option>
+            <option ng-repeat="list in mytodolist" value="{{list.id_list}}">{{list.name}}</option>
+        </select>
        
         <div class='input-group'>
             <input type="text" class="form-control" placeholder="Date" datepicker-popup="{{format}}" ng-model="mytodo.date" is-open="opened" min-date="minDate" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
@@ -74,7 +94,8 @@
                     <button type="button" class="btn btn-default" ng-click="showLocation('lg')"><i class="glyphicon glyphicon-map-marker"></i>Map</button>
                 </span>
         </div>
-        <button type="submit" id="add_todo_button" class="btn btn-lg btn-primary btn-block">Add</button>
+        <button type="submit" id="add_todo_button" class="btn btn-lg btn-info btn-block">Update</button>
+        <button type="submit" id="add_todo_button" class="btn btn-lg btn-warning btn-block" ng-click="delete()">Delete</button>
     </form>
 </div>
 

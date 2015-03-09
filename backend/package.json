@@ -11,12 +11,16 @@
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.12.0",
+<<<<<<< HEAD
     "cors": "^2.5.3",
+=======
+>>>>>>> ajoutModifVisuTodoCompleted
     "crypto": "0.0.3",
     "express": "^4.11.2",
     "express-myconnection": "^1.0.4",
     "express-validator": "^2.8.0",
     "forever": "^0.14.1",
+<<<<<<< HEAD
     "fs": "0.0.2",
     "jwt-simple": "^0.2.0",
     "moment": "^2.9.0",
@@ -28,6 +32,11 @@
     "querystring": "^0.2.0",
     "request": "^2.53.0",
     "underscore": "^1.8.2"
+=======
+    "jwt-simple": "^0.2.0",
+    "multer": "^0.1.8",
+    "mysql": "^2.5.4"
+>>>>>>> ajoutModifVisuTodoCompleted
   },
   "devDependencies": {
     "grunt-express-server": "^0.4.19",

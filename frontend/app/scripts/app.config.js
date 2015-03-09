@@ -19,7 +19,7 @@ angular.module('ToDoManagerApp').config(function($urlRouterProvider, $stateProvi
 			templateUrl: '/views/todolist.html',
 			controller: 'TodoListCtrl'
 		})
-		.state('viewToDoList/:id', {
+		.state('viewToDoList', {
 			url: '/todolist/:id',
 			templateUrl: '/views/ViewToDoList.html',
 			controller: 'ViewToDoList'
@@ -47,6 +47,9 @@ angular.module('ToDoManagerApp').config(function($urlRouterProvider, $stateProvi
 		.state('logout', {
 			url: '/logout',
 			controller: 'LogoutCtrl'
+		})
+		.state('uploads/',{
+			url: '/uploads/:id'
 		});
 
 	// Manage Satellizer authentication providers (Login, Register, Social Login : Google, Facebook ...) with API_URL (port 3000)
