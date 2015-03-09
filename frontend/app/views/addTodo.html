@@ -25,7 +25,7 @@
     </div>
 </script>
 
-<!--DEBUG
+<!-- DEBUG
 <div class="well">{{mytodo}}</div>
 -->
 
@@ -45,6 +45,12 @@
         </select>
 
         <input type="text" class="form-control" placeholder="Context" ng-model="mytodo.context">
+
+        <select class="form-control" id="sel2" ng-model="mytodo.id_list" required>
+            <option value="" disabled selected>Choose a list</option>
+            <option ng-repeat="list in mytodolist" value="{{list.id_list}}">{{list.name}}</option>
+        </select>
+
         <div class='input-group'>
             <input type="text" class="form-control" placeholder="Date" datepicker-popup="{{format}}" ng-model="mytodo.date" is-open="opened" min-date="minDate" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
             <span class="input-group-btn">
@@ -55,10 +61,15 @@
         <small>Selected date is: <em>{{mytodo.date | date:'fullDate' }}</em></small>
 
         <timepicker ng-model="mytodo.date" ng-change="changed()" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></timepicker>
+
+
+
+
         <div class="list-group">
             <div class="list-group-item"></div>
         </div>
-        <h3><i class="glyphicon glyphicon-paperclip"></i> Attachment</h3><small>Maximal file size is 2 MB!</small> <div class='input-group'><input id="input-file" type="file" multiple="false"></div>
+          <input type="text" ng-model="file">
+        <h3><i class="glyphicon glyphicon-paperclip"></i> Attachment</h3><small>Maximal file size is 2 MB!</small> <div class='input-group'><input id="input-file" ng-file-select="onFileSelect($files)" ng-model="mytodo.attachment_path" type="file" multiple="false"></div>
         <h3><i class="glyphicon glyphicon-link"></i> Link</h3><small>Add an optional link!</small>
         <input type="text" class="form-control" placeholder="Url" ng-model="mytodo.url">
         <h3><i class="glyphicon glyphicon-globe"></i>Location</h3><small>Add an adress!</small>

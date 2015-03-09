@@ -7,15 +7,32 @@
  * # LoginCtrl
  * Controller of the ToDoManagerApp
  */
-angular.module('ToDoManagerApp').controller('LoginCtrl', function ($scope, alert, auth) {
+angular.module('ToDoManagerApp').controller('LoginCtrl', function($scope, alert, $auth) {
+
 	$scope.submit = function() {
 
-		auth.login($scope.email, $scope.password)
-			.success(function(res) {
-				alert('success', 'Welcome!', 'Thanks for coming back, ' + res.user.email + ' !');
-			})
-			.error(function(err) {
-				alert('warning', 'Something went wrong :(', err.message);
-			});
-	};		
+		$auth.login({ 
+			email: $scope.email, 
+			password: $scope.password 
+		}).then(function(res) {
+			var message = 'Thanks for coming back, ' + res.data.user.email + ' !';
+			
+			if (!res.data.user.active)
+				message = 'Just a reminder, please activate your account soon !';
+
+			alert('success', 'Welcome!', message);
+		})
+		.catch(function(err) {
+			alert('warning', 'Something went wrong :(', 'Incorrect email or/and password !');
+		});
+	};
+
+	$scope.authenticate = function(provider) {
+		// Google/Facebook Auth function
+		$auth.authenticate(provider).then(function(res) {
+			alert('success', 'Welcome!', 'Thanks for coming back, ' + res.data.user.email + ' !');
+		}, function(err) {
+			alert('warning', 'Something went wrong :(', 'Unable to connect you with your ' + provider +' account !');
+		});
+	}
 });
