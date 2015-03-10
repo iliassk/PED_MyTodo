@@ -8,8 +8,8 @@ exports.todolist_post = function(req, res, next, connection, auth, jwt){
 		color: req.body.color,
 		id_owner: _id
 	};
-
-	connection.query('INSERT INTO CONTACT ?', data, function(err, rows) {
+	
+	connection.query('INSERT INTO TODOLIST SET ?', data, function(err, rows) {
 		if (err) {
 			console.log(err);
 			return next("Mysql error, check your query");
@@ -17,7 +17,6 @@ exports.todolist_post = function(req, res, next, connection, auth, jwt){
 		res.sendStatus(200);
 	});
 }
-
 
 //Récupère les informations d'une liste dans la base de donées
 exports.todolist_get = function(req, res, next, connection, auth, jwt){
