@@ -161,6 +161,10 @@ app.put('/todo/:id', function(req, res, next) {
 	todo.todo_id_put(req, res, next, connection, auth)
 });
 
+app.get('/todo', function(req, res, next) {
+	todo.todo_get(req, res, next, connection, auth, jwt)
+});
+
 
 app.post('/add/todo', function(req, res, next) {
 	todo.todoadd_post(req, res, next, connection, auth, jwt)

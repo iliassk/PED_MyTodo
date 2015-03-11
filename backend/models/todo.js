@@ -115,6 +115,19 @@ exports.todoadd_post = function(req, res, next, connection, auth, jwt){
 	});
 }
 
+exports.todo_get = function(req, res, next, connection, auth, jwt){
+	var _id = auth.checkAuthorization(req, res, jwt);
+	connection.query('SELECT * FROM TODO WHERE id_owner = ?', _id, function(err, rows) {
+		if (err) {
+			console.log(err);
+			return next("Mysql error on connection, check your query");
+		}else{
+			console.info(rows);
+			res.status(200).json(rows);
+		}
+	});
+}
+
 exports.todo_id_get = function(req, res, next, connection, auth, jwt){
    auth.checkAuthorization(req, res, jwt);
 

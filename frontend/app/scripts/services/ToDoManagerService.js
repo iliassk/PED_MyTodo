@@ -79,6 +79,14 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 		});
 	};
 
+	//GET all todo
+	this.getTodo = function() {
+		return $http.get(API_URL + 'todo/')
+		.success(function(data, status, headers, config){ 
+ 			console.log("sucess"); 
+		});
+	};
+
 	//DELETE todo
 	this.deleteToDo = function(_id) {
 		return $http.delete(API_URL + 'todo/'+ _id);
