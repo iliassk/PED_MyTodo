@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client: localhost
--- Généré le: Mer 11 Mars 2015 à 15:46
+-- Généré le: Mer 11 Mars 2015 à 17:18
 -- Version du serveur: 5.5.41-0ubuntu0.14.04.1
 -- Version de PHP: 5.5.9-1ubuntu4.6
 
@@ -47,7 +47,14 @@ CREATE TABLE IF NOT EXISTS `CONTACTS` (
   KEY `id_user` (`id_user`),
   KEY `id_contact` (`id_contact`),
   KEY `CONTACTS_ibfk_3` (`id_group`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+--
+-- Contenu de la table `CONTACTS`
+--
+
+INSERT INTO `CONTACTS` (`id_user`, `id_contact`, `id_group`) VALUES
+(15, 2, 4);
 
 -- --------------------------------------------------------
 
