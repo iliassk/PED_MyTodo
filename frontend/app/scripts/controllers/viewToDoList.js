@@ -14,19 +14,10 @@ angular.module('ToDoManagerApp').controller('ViewToDoList', function($scope, $st
 	$scope.list
 	$scope.todos
 	$scope.hidecompleted = false;
+	
 	$scope.hideCompleted = function(todo){
 		$scope.hidecompleted = !$scope.hidecompleted;
 	}
-
-	$scope.popup = {
-  		content: '<p>Popup content here</p>',
-  		options: {
-  			html: true,
-    		title: null,
-    		placement: 'bottom'
-  		}
-	}; 
-
 
 	$scope.fetchData = function(){
 		TDMService.fetchToDoListToDos($scope.list_id)

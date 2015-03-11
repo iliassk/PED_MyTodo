@@ -4,7 +4,7 @@
  * @ngdoc service
  * @name ToDoManagerApp.TDMService
  * @description
- * # 
+ * 
  * Service in the ToDoManagerApp.
  */
 angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL, $state) {
@@ -37,19 +37,16 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 		.success(function(data, status, headers, config){ 
  			console.log("success"); 
 		});
-
 	};
 
 	//DELETE a todolist
 	this.deletetodolist = function(obj) {
 		return $http.delete(API_URL + 'listtodolist/'+ obj)
-		
 	};
 
 	//GET todos in a todolist
 	this.fetchToDoListToDos = function(_id) {
 		return $http.get(API_URL + 'listtodolist/'+ _id)
-		
 	};
 
 	//GET todolist and all its todos

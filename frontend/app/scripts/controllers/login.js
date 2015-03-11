@@ -30,8 +30,10 @@ angular.module('ToDoManagerApp').controller('LoginCtrl', function($scope, alert,
 	$scope.authenticate = function(provider) {
 		// Google/Facebook Auth function
 		$auth.authenticate(provider).then(function(res) {
+            angular.element("#wrapper").removeClass("toggled");
 			alert('success', 'Welcome!', 'Thanks for coming back, ' + res.data.user.email + ' !');
 		}, function(err) {
+            angular.element("#wrapper").addClass("toggled");
 			alert('warning', 'Something went wrong :(', 'Unable to connect you with your ' + provider +' account !');
 		});
 	}
