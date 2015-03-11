@@ -128,11 +128,11 @@ app.get('/listtodolistwithtodos', function(req, res, next) {
 });
 
 app.get('/listgroupe', function(req, res, next) {
-	contact.listgroupe_get(req, res, next, connection, auth)
+	contact.listgroupe_get(req, res, next, connection, auth, jwt)
 });
 
 app.post('/addgroup', function(req, res, next) {
-	contact.addgroup_post(req, res, next, connection, auth)
+	contact.addgroup_post(req, res, next, connection, auth, jwt)
 });
 
 app.get('/userslist', function(req, res, next) {

@@ -22,6 +22,7 @@
     <link href="styles/simple-sidebar.css" rel="stylesheet">
     <link href="styles/left_menu.css" rel="stylesheet">
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&signed_in=true&libraries=places"></script>
+    <link rel="stylesheet" href="scheduler/dhtmlxscheduler.css">
 
 
     <!-- endbuild -->
@@ -66,6 +67,9 @@
           </li>
           <li ui-sref-active="active">
             <a ui-sref="todos">To-dos</a>
+          </li>
+           <li ng-show="isAuthenticated()" ui-sref-active="active">
+            <a ui-sref="calendar">Calendar</a>
           </li>
     
         </ul>
@@ -134,10 +138,14 @@
     <script src="scripts/app.js"></script>
     <script src="scripts/app.config.js"></script>
 
+    <!-- directive -->
     <script src="scripts/directives/validateEquals.js"></script>
+    <script src="scripts/directives/calendar.js"></script>
+
 
     <!-- javascript -->
     <script src="javascript/left_menu.js"></script>
+    <script src="scheduler/dhtmlxscheduler.js"></script>
 
     <!-- Services -->
     <script src="scripts/services/alert.js"></script>
@@ -156,6 +164,7 @@
     <script src="scripts/controllers/addTodo.js"></script>
     <script src="scripts/controllers/login.js"></script>
     <script src="scripts/controllers/register.js"></script>
+    <script src="scripts/controllers/calendar.js"></script>
 
 
     <!-- endbuild -->
