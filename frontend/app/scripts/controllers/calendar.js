@@ -9,7 +9,7 @@
  */
 
 
-angular.module('ToDoManagerApp').controller('CalendarCtrl', function($scope, alert,$http,API_URL, TDMService) {
+angular.module('ToDoManagerApp').controller('CalendarCtrl', function($scope, alert, TDMService) {
   
   var date = new Date();
     var d = date.getDate();
@@ -25,18 +25,23 @@ angular.module('ToDoManagerApp').controller('CalendarCtrl', function($scope, ale
             currentTimezone: 'America/Chicago' // an option!
     };
      
-   
+   $scope.test = "calendar";
     //This will call onLoad and you can assign the values the way you want to the calendar
     //here DataRetriever.jsp will give me array of JSON data generated from the database data
-   $http.get(API_URL +'todolist').success(function(data) {
-        for(var i = 0; i < data.length; i++)
-        {
-            $scope.events[i] = {id:data[i].id, title: data[i].task,start: new Date(data[i].start), end: new Date(data[i].end),allDay: false};
-        }
-    }); 
+    $scope.events = [
+		      {title: 'All Day Event',start: new Date(y, m, 1), editable: true},
+		      {title: 'Long Event',start: new Date(y, m, d - 5),end: new Date(y, m, d - 2)},
+		      {id: 999,title: 'Repeating Event',start: new Date(y, m, d - 3, 16, 3),allDay: true},
+		      {title: 'Birthday Party',start: new Date(y, m, d + 1, 19, 0),end: new Date(y, m, d + 1, 22, 30),allDay: false},
+		      {title: 'Click for Google',start: new Date(y, m, 28),end: new Date(y, m, 29),url: 'http://google.com/'}
+		    ];
+   /* 
+   TDMService.listGroupe()
+	.success(function(data) {
+		alert('kkkkkkkkkkkkkkkkkkkkk');
+		$scope.events = data;
+	});*/
 
-  
-     
     /*
     //to explicitly add events to the calendar
     //you can add the events in following ways
