@@ -10,7 +10,11 @@
 angular.module('ToDoManagerApp').controller('HeaderCtrl', function($scope, $auth) {
 	// Satellizer auth service instead of authToken
 	$scope.isAuthenticated = $auth.isAuthenticated;
+
+
+    console.log = {};
         $scope.loaded = function() { console.log("Loaded"); }
+    
 })
 .directive("myDirective", ["$templateCache", "$compile", function($templateCache, $compile) {
         return {

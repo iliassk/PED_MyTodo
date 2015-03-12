@@ -16,8 +16,22 @@ angular.module('ToDoManagerApp').controller('CalendarCtrl', function($scope, $co
 		    var m = date.getMonth();
 		    var y = date.getFullYear();
 		    $scope.events = [];
+		    $scope.test =[{title:'titre 1'},{title:'titre 2'}];
+		    
 
-		    /* config object */
+		    
+
+		     TDMService.getTodo().success(function(data) {
+				alert('success', 'OK!', 'update success '+ data[0].title);
+				
+				for(var i = 0; i < data.length; i++){
+				//todo[i] = {title: data[0].title ,start: new Date(y, m, 1), editable: true};
+				var jour = new Date(data[i].date)
+				$scope.events[i]={title: data[i].title, id:data[i].id_todo ,start: jour, backgroundColor: 'green'};
+				}
+			})
+
+		 /* config object */
 		    $scope.uiConfig = {
 		      calendar:{
 		        height: 550,
@@ -28,37 +42,18 @@ angular.module('ToDoManagerApp').controller('CalendarCtrl', function($scope, $co
 		          center: 'title',
 		          right: 'month,basicWeek,basicDay'
 		        },
-		        eventClick: $scope.alertOnEventClick,
-        		eventDrop: $scope.alertOnDrop,
-      		    eventResize: $scope.alertOnResize,
-     		    eventRender: $scope.eventRender
+        		
 		      }
 		    };
 
-		     TDMService.getTodo().success(function(data) {
-				alert('success', 'OK!', 'update success '+ data[0].title);
-				
-				for(var i = 0; i < data.length; i++){
-				//todo[i] = {title: data[0].title ,start: new Date(y, m, 1), editable: true};
-				var d = new Date(data[i].date)
-				$scope.events[i]={title: data[i].title ,start: d, editable: true};
-				}
-			})
-		   
-		  
-
-
+		  	$scope.submit = function(){
+		  			var t = [];
+		  			t = $scope.events;
+		  			var g = t[0].start.getFullYear()+"-"+parseInt(parseInt(t[0].start.getMonth())+1)+"-"+t[0].start.getDate();
+		  			$scope.test = g + "id est" +t[0].id ;
+		  		  
+		  	};																																																																																																																																																																																																																																																																																																																																																																																																																																						
 			
-
-		    /* Change View */
-		    $scope.renderCalender = function(calendar) {
-			    if(uiCalendarConfig.calendars[calendar]){
-			        uiCalendarConfig.calendars[calendar].fullCalendar('render');
-			    }
-		    };
-
-		  																																																																																																																																																																																																																																																																																																																																																																																																																																								
-	
 
 		     /* event sources array*/
  		    $scope.eventSources 	= [$scope.events, $scope.eventSource, $scope.eventsF];
