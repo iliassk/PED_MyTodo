@@ -3,37 +3,11 @@
 angular.module('ToDoManagerApp')
 
 
-.controller('TodoCtrl', ['$scope', '$location', '$log', '$modal', 'TDMService','alert','$stateParams', function($scope, $location, $log, $modal, TDMService, alert, $stateParams) {
+.controller('TodoCtrl', function($scope, $location, $log, $modal, TDMService, alert, $stateParams, $state) {
+  TDMService.refresh();
 
-  $scope.todo_id = $stateParams.id;
-
-  $scope.mytodo = {}
-  $scope.mytodolist;
-
-  $scope.fetchData = function(){
-    TDMService.getTodo($scope.todo_id)
-      .success(function(data) {
-        data.completed = (data.completed == 1 ? true: false)
-        $scope.mytodo = data[0];
-        console.log("Success fetchData");
-      })
-      .error(function() {
-        console.log("Faillure fetchData");
-      });
-
-
-    TDMService.listtodolist()
-    .success(function(data) {
-      console.log('success', 'OK!', 'update success');
-      $scope.mytodolist = data;
-      console.log($scope.mytodolist)
-    })
-    .error(function() {
-      alert('warning', 'Oops!', 'update failed');
-    });
-  }
-
-  $scope.fetchData();
+  $scope.mytodo = TDMService.getAToDo($stateParams.id);
+  $scope.data = TDMService.data;
 
   ////////////////Submit form /////////////////
   $scope.submit = function() {
@@ -167,7 +141,7 @@ $scope.today = function() {
     });
   };
 
-}]);
+});
 
   
 

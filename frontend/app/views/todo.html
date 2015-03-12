@@ -48,7 +48,7 @@
 
          <select class="form-control" id="sel2" ng-model="mytodo.id_list" required>
             <option value="" disabled selected>Choose a list</option>
-            <option ng-repeat="list in mytodolist" value="{{list.id_list}}">{{list.name}}</option>
+            <option ng-repeat="list in data.listsWithToDo" value="{{list.id_list}}">{{list.name}}</option>
         </select>
        
         <div class='input-group'>

@@ -7,7 +7,7 @@
  * # LoginCtrl
  * Controller of the ToDoManagerApp
  */
-angular.module('ToDoManagerApp').controller('LoginCtrl', function($scope, alert, $auth) {
+angular.module('ToDoManagerApp').controller('LoginCtrl', function($scope, alert, $auth, TDMService) {
 
 	$scope.submit = function() {
 
@@ -32,6 +32,7 @@ angular.module('ToDoManagerApp').controller('LoginCtrl', function($scope, alert,
 		$auth.authenticate(provider).then(function(res) {
             angular.element("#wrapper").removeClass("toggled");
 			alert('success', 'Welcome!', 'Thanks for coming back, ' + res.data.user.email + ' !');
+			TDMService.fetchAll();
 		}, function(err) {
             angular.element("#wrapper").addClass("toggled");
 			alert('warning', 'Something went wrong :(', 'Unable to connect you with your ' + provider +' account !');

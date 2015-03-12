@@ -9,6 +9,44 @@
  */
 angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL, $state) {
 
+	var ToDoManagerApp = this;
+
+	//Shared data used for synchronisation between controllers
+	ToDoManagerApp.data = {
+		listsWithToDo: '',
+		groupe: '',
+		contact: ''
+	}
+
+	this.refresh = function(){
+		if(ToDoManagerApp.data.listsWithToDo == ''){
+			ToDoManagerApp.fetchAll();
+		}
+	}
+
+	this.fetchAll = function() {
+		$http.get(API_URL + 'listtodolistwithtodos')
+		.success(function(_data){
+			ToDoManagerApp.data.listsWithToDo = _data;
+		})
+	};
+
+	this.getAList = function(_id) {
+		for(var i=0; i < ToDoManagerApp.data.listsWithToDo.length; i++){
+			if(ToDoManagerApp.data.listsWithToDo[i].id_list == _id)
+				return ToDoManagerApp.data.listsWithToDo[i]
+		}
+	};
+
+	this.getAToDo = function(_id) {
+		for(var i=0; i < ToDoManagerApp.data.listsWithToDo.length; i++){
+			for(var j=0; j < ToDoManagerApp.data.listsWithToDo[i].todos.length; j++){
+				if(ToDoManagerApp.data.listsWithToDo[i].todos[j].id_todo == _id)
+				return ToDoManagerApp.data.listsWithToDo[i].todos[j]
+			}
+		}
+	};
+
 	/**
 	* Manage todolist 
 	* ADD, GET, Delete, UPDATE
@@ -72,12 +110,19 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 	this.getTodo = function(_id) {
 		return $http.get(API_URL + 'todo/'+ _id)
 		.success(function(data, status, headers, config){ 
- 			console.log("sucess"); 
+ 			console.log("success"); 
 		});
 	};
 
 	//DELETE todo
 	this.deleteToDo = function(_id) {
+		for(var i=0; i < ToDoManagerApp.data.listsWithToDo.length; i++){
+			for(var j=0; j < ToDoManagerApp.data.listsWithToDo[i].todos.length; j++){
+				if(ToDoManagerApp.data.listsWithToDo[i].todos[j].id_todo == _id)
+					ToDoManagerApp.data.listsWithToDo[i].todos.splice(j, 1)
+			}
+		}
+
 		return $http.delete(API_URL + 'todo/'+ _id);
 	};
 
