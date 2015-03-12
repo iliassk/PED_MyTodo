@@ -94,6 +94,24 @@ exports.todo_id_put = function(req, res, next, connection, auth){
 	});
 }
 
+exports.todos_put = function(req, res, next, connection, auth){
+
+	var data = req.body.data;
+	var max = data.length;
+	
+	
+	for(var i = 0; i<max; i++){
+	connection.query('UPDATE TODO SET date = ? WHERE id_todo = ?', [data[i].nvtime, data[i].id], function(err, rows) {
+		if (err) {
+			console.log(err);
+			return next("Mysql error, check your query");
+		}
+		
+	});
+	}
+	
+}
+
 exports.todoadd_post = function(req, res, next, connection, auth, jwt){
 	req.assert('mytodo', 'mytodo is required').notEmpty();
 	var _id = auth.checkAuthorization(req, res, jwt);

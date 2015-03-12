@@ -97,6 +97,12 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 		return $http.put(API_URL + 'todo/'+ todo.id_todo, todo);
 	};
 
+	this.updateTodos = function(data) {
+		return $http.put(API_URL + 'todo/',{
+			data : data
+		})
+	};
+
 
 	/* Manage contacts 
 	* Delete, Update, GET, POST
