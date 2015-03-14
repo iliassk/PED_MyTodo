@@ -4,11 +4,8 @@ angular.module('ToDoManagerApp')
 
 
 .controller('TodoCtrl', function($scope, $location, $log, $modal, TDMService, alert, $stateParams, $state) {
-  TDMService.refresh();
-
-  $scope.mytodo = TDMService.getAToDo($stateParams.id);
-  $scope.data = TDMService.data;
-
+  
+  $scope.mytodo;
   ////////////////Submit form /////////////////
   $scope.submit = function() {
      TDMService.updateTodo($scope.mytodo) 
@@ -22,9 +19,8 @@ angular.module('ToDoManagerApp')
 
   ////////////////Completed boolean ///////////
 
-  $scope.onTodoModified = function(todo){
-
-    mytodo.completed = (mytodo.completed ? 1 : 0)
+  $scope.onTodoModified = function(){
+    $scope.mytodo.completed = ($scope.mytodo.completed ? 1 : 0)
   }
 
   ////////////////Attachment file /////////////////
@@ -32,7 +28,7 @@ angular.module('ToDoManagerApp')
 
   ////////////////Calendar /////////////////
 
-$scope.today = function() {
+  $scope.today = function() {
     var today = new Date();
     /*var dd = today.getDate();
     var mm = today.getMonth()+1; //January is 0!
@@ -44,7 +40,7 @@ $scope.today = function() {
     $scope.mytodo.date = today;
 
   };
-  $scope.today();
+  
 
   $scope.clear = function () {
     $scope.mytodo.date = null;
@@ -53,7 +49,6 @@ $scope.today = function() {
   $scope.toggleMin = function() {
     $scope.minDate = $scope.minDate ? null : new Date();
   };
-  $scope.toggleMin();
 
   $scope.open = function($event) {
     $event.preventDefault();
@@ -99,6 +94,17 @@ $scope.today = function() {
   $scope.clear = function() {
     $scope.mytodo.date = null;
   };  
+
+  TDMService.refresh(function(){
+    //debugger;
+    $scope.mytodo = TDMService.getAToDo($stateParams.id);
+    console.log("accessing shared data")
+    console.log($scope.mytodo)
+
+    $scope.data = TDMService.data;
+    $scope.today();
+    $scope.toggleMin();
+  })
 
   ////////////////Localization /////////////////
 

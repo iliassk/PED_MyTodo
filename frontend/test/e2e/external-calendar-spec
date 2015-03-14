@@ -1,0 +1,20 @@
+'use strict';
+
+describe('ToDoManager e2e add event to calendar tests', function() {
+
+    it('should open google calendar add event website', function() {
+
+        expect(element(by.id('btnLogin')).isEnabled()).toBe(false);
+        browser.findElement(protractor.By.id('email')).sendKeys('test@test.com');
+        browser.findElement(protractor.By.id('password')).sendKeys('test');
+        expect(element(by.id('btnLogin')).isEnabled()).toBe(true);
+
+        browser.findElement(protractor.By.id('btnLogin')).click();
+        browser.waitForAngular();
+
+        expect(element(by.id('logout')).isDisplayed()).toBeTruthy();
+        browser.findElement(protractor.By.id('logout')).click();
+
+        expect(browser.getCurrentUrl()).toBe(browser.baseUrl + '#/');
+    }, 10000);
+});

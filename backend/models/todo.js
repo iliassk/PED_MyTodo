@@ -180,6 +180,10 @@ exports.sharetodolist_id_get = function(req, res, next, connection, auth, share,
 	})
 }
 
+exports.getSharedData = function(req, res, next, connection, share){
+	//renvoie un todo ou une liste
+}
+
 exports.listtodolistwithtodos_get = function(req, res, next, connection, auth, jwt){
 
 	var result = new Array();

@@ -8,8 +8,7 @@
  * Controller of the ToDoManagerApp
  */
 
-angular.module('ToDoManagerApp').controller('TodoListCtrl', function($scope, alert, TDMService) {
-    
+angular.module('ToDoManagerApp').controller('TodoListCtrl', function($scope, alert, TDMService, $state) {
     
 	$scope.submit = function() {
         

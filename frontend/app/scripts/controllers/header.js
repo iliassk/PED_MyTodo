@@ -10,13 +10,13 @@
 angular.module('ToDoManagerApp').controller('HeaderCtrl', function($scope, $auth, TDMService) {
 	// Satellizer auth service instead of authToken
 	$scope.isAuthenticated = $auth.isAuthenticated;
-    $scope.data = TDMService.data;
-
-    //$scope.data.listsWithToDo;
+    TDMService.refresh(function(){
+        $scope.data = TDMService.data;
+    })
+    
 
     if($scope.isAuthenticated()){
         angular.element("#wrapper").removeClass("toggled");
-        TDMService.fetchAll();
     }else
         angular.element("#wrapper").addClass("toggled");
 
