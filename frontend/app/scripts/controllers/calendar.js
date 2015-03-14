@@ -11,39 +11,55 @@
 
 angular.module('ToDoManagerApp').controller('CalendarCtrl', function($scope, $window, uiCalendarConfig, alert, TDMService) {
   
- 			var date = new Date();
-		    var d = date.getDate();
-		    var m = date.getMonth();
-		    var y = date.getFullYear();
+ 			
 		    $scope.events = [];
-		    
-		    
-
-		    
+		    $scope.eventSources = $scope.events;
+		    var regExp = new RegExp("IEMobile", "i");
 
 		     TDMService.getTodo().success(function(data) {
-				alert('success', 'OK!', 'update calendar success ');
-				
+	
 				for(var i = 0; i < data.length; i++){
 				//todo[i] = {title: data[0].title ,start: new Date(y, m, 1), editable: true};
 				var jour = new Date(data[i].date)
 				$scope.events[i]={title: data[i].title, id:data[i].id_todo ,start: jour, backgroundColor: 'green', durationEditable:false};
 				}
-			})
+			});
 
 		 /* config object */
-		    $scope.uiConfig = {
+		 var isMobile = window.matchMedia("only screen and (max-width: 760px)");
+		 var checker = navigator.userAgent.match(/(iPhone|iPod|iPad|BlackBerry|Android)/);
+
+		 if(checker){ 
+ 			$scope.uiConfig = {
 		      calendar:{
 		        height: 550,
 		        width: 400,
 		        editable: true,
-		        header:{
-		          left: 'today prev,next',
-		          center: 'title',
-		          right: 'month,basicWeek,basicDay'
-		        },
+		                                      
+				header:{
+		         	left: 'today prev,next',
+		         	right: 'month,basicDay'
+		       	},    
 		      }
 		    };
+
+		 }else{
+		 	 $scope.uiConfig = {
+		      calendar:{
+		        height: 550,
+		        width: 400,
+		        editable: true,
+		                                      
+				header:{
+		         	left: 'today prev,next',
+		         	center: 'title',
+		         	right: 'month,basicWeek,basicDay'
+		       	},    
+		      }
+		    };
+
+		 }	
+		   
 
 		  	$scope.submit = function(){
 		  		var data =[];
@@ -61,7 +77,7 @@ angular.module('ToDoManagerApp').controller('CalendarCtrl', function($scope, $wi
 			
 
 		     /* event sources array*/
- 		    $scope.eventSources 	= [$scope.events, $scope.eventSource, $scope.eventsF];
+ 		    $scope.eventSources 	= [$scope.events, $scope.eventSource];
    			
    			
 			

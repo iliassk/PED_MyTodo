@@ -4,6 +4,8 @@ angular.module('ToDoManagerApp').controller('ListTodoListCtrl', function($scope,
     
 	$scope.todoList;
 	$scope.hidecompleted = false;
+	$scope.group;
+	$scope.contact;
 	
 	angular.element('[data-toggle="popover"]').popover()
 	angular.element('i').click(function(e) {
@@ -32,9 +34,8 @@ angular.module('ToDoManagerApp').controller('ListTodoListCtrl', function($scope,
 	$scope.fetchData = function(){
 		TDMService.fetchToDoAndListToDos()
 		.success(function(data){
-			console.log('success', 'OK!', 'update success');
 			$scope.todoList = data;
-			console.log($scope.todoList)
+			
 		})
 		.error(function() {
 			alert('warning', 'Oops!', 'update failed');

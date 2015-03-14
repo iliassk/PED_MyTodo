@@ -56,7 +56,6 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 	this.fetchToDoAndListToDos = function() {
 		return $http.get(API_URL + 'listtodolistwithtodos')
 		.success(function(){
- 			console.log('get success'); 
 		});
 	};
 
@@ -75,7 +74,7 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 	this.getTodo = function(_id) {
 		return $http.get(API_URL + 'todo/'+ _id)
 		.success(function(data, status, headers, config){ 
- 			console.log("sucess"); 
+ 			
 		});
 	};
 
@@ -83,7 +82,6 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 	this.getTodo = function() {
 		return $http.get(API_URL + 'todo/')
 		.success(function(data, status, headers, config){ 
- 			console.log("sucess"); 
 		});
 	};
 

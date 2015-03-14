@@ -33,6 +33,16 @@ angular.module('ToDoManagerApp').controller('HeaderCtrl', function($scope, $auth
                     content: $compile(tpl)(scope),
                     placement: attrs.popoverPlacement
                 });
+              /*  $el.click(function() {
+                    $('.popover').each(function(){
+                        var $this = $(this);
+                        if($this.parent().attr('id') != $element.parent().attr('id'))
+                        {
+                            $this.scope().$hide();
+                        }
+                    }
+                    );
+                });*/
             }
         }
     }]);

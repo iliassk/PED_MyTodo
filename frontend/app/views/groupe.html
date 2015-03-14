@@ -7,7 +7,9 @@
                 </ul>
 
                 <div id="groupe" ng-switch-default ng-cloak >
-                  
+                    <li>
+                   <a ui-sref="listcontact"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> ajouter un contact </a>
+                   </li>
                 <accordion close-others="oneAtATime" >
                     <accordion-group id="groupee">
                     <accordion-heading ng-click="isopen=!isopen" >
@@ -16,7 +18,6 @@
                     
                     </accordion-heading>
 
-                      <a ui-sref="listcontact"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> ajouter un contact </a>
                       <ul>
                       
                     
@@ -52,9 +53,11 @@
                         <td width="100%">{{listcontact.username}} </td>   
                        
                         <td width="100%">
-                        <a data-my-directive data-popover-title="Settings" data-popover-template="settings.html" data-popover-placement="left">
+                         <a data-my-directive bs-popover rm-popovers data-popover-title="Settings" data-popover-template="settings.html" data-popover-placement="left" >
                         <i class="glyphicon glyphicon-option-vertical" aria-hidden="true"></i>
-                        </a></td>
+                        </a>
+
+                        </td>
                         </tr>
                         </tbody>
                         </table>
@@ -90,8 +93,7 @@
 
 <!-- Latest compiled and minified JavaScript -->
 
-
-<script>$(function () 
-      { $("[data-toggle='popover']").popover();
-      });
-   </script>
+<script type="text/ng-template" id="settings.html">
+        <a ui-sref="todolist">supprime</a></br>
+        <span ng-include="mainFormTmpl" onload="loaded()"></span>
+</script>
