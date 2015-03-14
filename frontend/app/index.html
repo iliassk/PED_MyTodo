@@ -12,7 +12,6 @@
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="bower_components/animate.css/animate.css" />
     <link rel="stylesheet" href="bower_components/bootstrap-fileinput/css/fileinput.min.css" />
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
@@ -24,6 +23,36 @@
     <link href="styles/left_menu.css" rel="stylesheet">
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&signed_in=true&libraries=places"></script>
 
+    <script type="text/javascript">
+  
+       var isOnline = function () {
+            console.log("isOnline");
+        },
+        isOffline = function () {
+            console.log("isOffline");
+        };
+        
+    if (window.addEventListener) {
+        /*
+            Works well in Firefox and Opera with the 
+            Work Offline option in the File menu.
+            Pulling the ethernet cable doesn't seem to trigger it.
+            Later Google Chrome and Safari seem to trigger it well
+        */
+        window.addEventListener("online", isOnline, false);
+        window.addEventListener("offline", isOffline, false);
+    }
+    else {
+        /*
+            Works in IE with the Work Offline option in the 
+            File menu and pulling the ethernet cable
+        */
+        document.body.ononline = isOnline;
+        document.body.onoffline = isOffline;
+    }
+
+
+    </script>
 
     <!-- endbuild -->
 
@@ -64,8 +93,8 @@
                         </li>
                     </ul>
 
-                    <ul class="nav navbar-nav navbar-right">
-                        
+                    <ul class="nav navbar-nav navbar-right" ng-cloak>
+
                         <li ng-show="data.isWorking" style="margin-right:15px;margin-top:3px">
                             <i class="fa fa-spinner fa-pulse fa-3x"></i>
                         </li>
@@ -81,6 +110,16 @@
                         <li ng-show="isAuthenticated()" ui-sref-active="active">
                             <a ui-sref="logout" class="btn btn-link"> <span class="glyphicon glyphicon-user" aria-hidden="true"></span>  Logout</a>
                         </li>
+
+                         <!-- glyphicon glyphicon-cloud    -->
+                        
+                        <li ng-show="online" title="Application online" style="margin-left:5px;margin-top:3px; color:green">
+                            <i class="fa fa-sellsy fa-3x"></i>
+                        </li>
+                        <li ng-hide="online" title="Application offline" style="margin-left:5px;margin-top:3px; color:red">
+                            <i class="fa fa-hdd-o fa-3x"></i>
+                        </li>
+                        
                     </ul>
                 </div>
             </div>
@@ -146,7 +185,6 @@
     <script src="scripts/services/alert.js"></script>
     <script src="scripts/services/ToDoManagerService.js"></script>
     <script src="scripts/services/contactManagerService.js"></script>
-    <script src="scripts/services/ShareDataService.js"></script>
 
     <!-- Controllers -->
     <script src="scripts/controllers/header.js"></script>
@@ -159,6 +197,7 @@
     <script src="scripts/controllers/addTodo.js"></script>
     <script src="scripts/controllers/login.js"></script>
     <script src="scripts/controllers/register.js"></script>
+    <script src="scripts/controllers/shareTodo.js"></script>
 
     <!-- endbuild -->
 

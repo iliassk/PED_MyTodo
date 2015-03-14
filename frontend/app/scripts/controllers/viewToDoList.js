@@ -8,7 +8,7 @@
  * Controller of the ToDoManagerApp
  */
 
-angular.module('ToDoManagerApp').controller('ViewToDoList', function($scope, $stateParams, $window, alert, TDMService) {
+angular.module('ToDoManagerApp').controller('ViewToDoList', function($scope, $stateParams, $window, alert, TDMService, $state, APP_URL, $modal) {
     
     TDMService.refresh(function(){
     	console.log("accessing shared data")
@@ -23,11 +23,38 @@ angular.module('ToDoManagerApp').controller('ViewToDoList', function($scope, $st
 
 	$scope.shareTodo = function(todo){
 		console.log("Share todo")
+
+		TDMService.generateShareToDoLink(todo.id_todo)
+		.success(function(result){
+			$scope.openShareInfo(APP_URL + 'share/' + result.url + '/' + "todo")
+		}).error(function(){
+			alert("Impossible de générer un lien !");
+		})
+		
 	}
 
 	$scope.shareList = function(list){
 		console.log("Share list")
+		TDMService.generateShareListLink(list.id_list)
+		.success(function(result){
+			$scope.openShareInfo(APP_URL + 'share/' + result.url + '/' + "todolist")
+		}).error(function(){
+			alert("Impossible de générer un lien !");
+		})
+	}
 
+	$scope.openShareInfo = function(_url){
+		console.log("ouverture modal avec url : " + _url)
+		var modalInstance = $modal.open({
+	      templateUrl: 'share_data.html',
+	      controller: 'ShareModalCtrl',
+	     // size: 'sm',
+	      resolve: {
+	        url: function () {
+	          return _url;
+	        }
+	      }
+	    });
 	}
 
 	$scope.deleteTodo = function(todo_id){
@@ -85,33 +112,11 @@ angular.module('ToDoManagerApp').controller('ViewToDoList', function($scope, $st
 	}
 });
 
-angular.module('ToDoManagerApp').
-directive('popup', function() {
-  return {
-    restrict: 'A',
-    require: 'ngModel',
-    scope: {
-      ngModel: '=',
-      options: '=popup'
-    },
-    link: function(scope, element) {
-      scope.$watch('ngModel', function(val) {
-        element.attr('data-content', val);
-      });
+angular.module('ToDoManagerApp')
+.controller('ShareModalCtrl', function ($scope, $modalInstance, url) {
 
-      var options = scope.options || {} ; 
-
-      var title = options.title || null;
-      var placement = options.placement || 'right';
-      var html = options.html || false;
-      var delay = options.delay ? angular.toJson(options.delay) : null;
-      var trigger = options.trigger || 'hover';
-
-      element.attr('title', title);
-      element.attr('data-placement', placement);
-      element.attr('data-html', html);
-      element.attr('data-delay', delay);
-      element.popover({ trigger: trigger });
-    }
+  $scope.url = url;
+  $scope.close = function () {
+    $modalInstance.dismiss('cancel');
   };
 });

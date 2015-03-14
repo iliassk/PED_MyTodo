@@ -71,6 +71,12 @@ CREATE TABLE `SHARE_LIST` (
   `id_list` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+
+CREATE TABLE `SHARE_OUTSIDER` (
+  `id_reference` int(11) NOT NULL,
+  `url` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 -- --------------------------------------------------------
 
 --

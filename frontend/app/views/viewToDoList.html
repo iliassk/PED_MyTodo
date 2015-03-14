@@ -4,6 +4,23 @@
  }
 </style>
 
+<script type="text/ng-template" id="share_data.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Chare your todos</h3>
+    </div>
+    <div class="modal-body">
+        <div class="form-group">
+            <label class="control-label">Lien : </label>
+            <p class="form-control-static">{{url}}</p>
+            
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="close()">Fermer</button>
+    </div>
+</script>
+
+
 <div class="jumbotron">
   <h1 ng-style="{color: '{{list.color}}'}">{{list.name}}</h1>
   <p ng-style="{color: '{{list.color}}'}">{{list.description}}</p>

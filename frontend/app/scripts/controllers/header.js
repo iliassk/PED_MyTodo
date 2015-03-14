@@ -7,18 +7,21 @@
  * # HeaderCtrl
  * Controller of the ToDoManagerApp
  */
-angular.module('ToDoManagerApp').controller('HeaderCtrl', function($scope, $auth, TDMService) {
+angular.module('ToDoManagerApp').controller('HeaderCtrl', function($scope, $auth, TDMService, $rootScope) {
+    console.log("Header.js");
 	// Satellizer auth service instead of authToken
 	$scope.isAuthenticated = $auth.isAuthenticated;
-    TDMService.refresh(function(){
-        $scope.data = TDMService.data;
-    })
-    
+
+    if($scope.isAuthenticated())
+        TDMService.refresh(function(){
+            $scope.data = TDMService.data;
+        })
+    $scope.data = TDMService.data;
 
     if($scope.isAuthenticated()){
-        angular.element("#wrapper").removeClass("toggled");
+        $rootScope.closeMenu = false
     }else
-        angular.element("#wrapper").addClass("toggled");
+        $rootScope.closeMenu = true
 
     $scope.loaded = function() { console.log("Loaded"); }
 })

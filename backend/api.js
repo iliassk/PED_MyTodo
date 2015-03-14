@@ -188,6 +188,13 @@ app.get('/share/todolist/:id', function(req, res, next) {
 })
 
 /**
+ * Renvoi les données correspondant à la donnée partagée
+ */
+app.get('/share/data/:url/:type', function(req, res, next) {
+   	todo.getSharedData(req, res, next, connection, utils)
+})
+
+/**
 * Permet l'upload de fichier
 *
 */
