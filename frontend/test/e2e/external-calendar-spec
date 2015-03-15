@@ -18,3 +18,8 @@ describe('ToDoManager e2e add event to calendar tests', function() {
         expect(browser.getCurrentUrl()).toBe(browser.baseUrl + '#/');
     }, 10000);
 });
+
+//test calendar
+//test partage
+//test menu (fermé|ouvert ...)
+//ajout todo

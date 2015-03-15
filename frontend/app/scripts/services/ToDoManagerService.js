@@ -13,9 +13,10 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 
 	//Shared data used for synchronisation between controllers
 	ToDoManagerApp.data = {
-		listsWithToDo: '',
+		listsWithToDo: [],
 		groupe: '',
-		contact: ''
+		contact: '',
+		shareListsWithToDo: []
 	}
 
 	this.refresh = function(callback){
@@ -28,7 +29,7 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 	}
 
 	this.fetchAll = function(f) {
-		console.log("Starting fetching data ...")
+		$rootScope.isWorking = true
 		$http.get(API_URL + 'listtodolistwithtodos')
 		.success(function(_data){
 			console.log("Success fetching all data !!!")
@@ -36,6 +37,16 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 			$rootScope.isWorking = false;
 			if(f)f();
 		})
+
+		$http.get(API_URL + 'listsharedtodolistwithtodos')
+		.success(function(_data){
+			console.log("Success fetching all data !!!")
+			ToDoManagerApp.data.shareListsWithToDo = _data;
+			$rootScope.isWorking = false;
+			if(f)f();
+		})
+
+		
 	};
 
 	this.getAList = function(_id) {

@@ -2,7 +2,6 @@
 
 angular.module('ToDoManagerApp').controller('ListTodoListCtrl', function($scope, $window, alert, TDMService, $auth) {
     
-	$scope.todoList;
 	$scope.hidecompleted = false;
 	
 	angular.element('[data-toggle="popover"]').popover()
@@ -30,16 +29,6 @@ angular.module('ToDoManagerApp').controller('ListTodoListCtrl', function($scope,
 	}
 
 	$scope.fetchData = function(){
-		TDMService.fetchToDoAndListToDos()
-		.success(function(data){
-			console.log('success', 'OK!', 'update success');
-			$scope.todoList = data;
-			console.log($scope.todoList)
-		})
-		.error(function() {
-			alert('warning', 'Oops!', 'update failed');
-		});
-
 		TDMService.listGroupe()
 		.success(function(data) {
 			alert('success', 'OK!', 'update success');
@@ -102,9 +91,4 @@ angular.module('ToDoManagerApp').controller('ListTodoListCtrl', function($scope,
 
 	if($auth.isAuthenticated())
 		$scope.fetchData()
-
-	$scope.$watch('isLogged', function(logged) {
-		if(logged)
-       		$scope.fetchData()
-   });
 });

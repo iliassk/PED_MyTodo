@@ -127,6 +127,10 @@ app.get('/listtodolistwithtodos', function(req, res, next) {
 	todo.listtodolistwithtodos_get(req, res, next, connection, auth, jwt)
 });
 
+app.get('/listsharedtodolistwithtodos', function(req, res, next) {
+	todo.listsharedtodolistwithtodos_get(req, res, next, connection, auth, jwt)
+});
+
 app.get('/listgroupe', function(req, res, next) {
 	contact.listgroupe_get(req, res, next, connection, auth)
 });
