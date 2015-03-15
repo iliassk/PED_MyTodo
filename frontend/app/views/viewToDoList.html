@@ -48,7 +48,7 @@
         		
         		<div class="text-center">
         			<a class="btn btn-info" ui-sref="todo/({ id: {{todo.id_todo}} })">More...</a>
-        			<a class="pull-right" ng-click="deleteTodo(todo.id_todo)"><i class="glyphicon glyphicon-trash" ></i></a>
+        			<a class="pull-right" id="deleteToDoButtonList" ng-click="deleteTodo(todo.id_todo)"><i class="glyphicon glyphicon-trash" ></i></a>
         			
 					<span class="dropdown pull-left" dropdown>
 				      <a href class="dropdown-toggle" dropdown-toggle>
@@ -60,7 +60,7 @@
 				      </ul>
 				    </span>
 
-        			<a class="pull-right" ng-click="shareTodo(todo)"><i class="glyphicon glyphicon-share" ></i></a>
+        			<a class="pull-right" id="shareOutSiderToDo" ng-click="shareTodo(todo)"><i class="glyphicon glyphicon-share" ></i></a>
         		</div>
 
         		

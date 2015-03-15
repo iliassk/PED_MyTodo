@@ -15,14 +15,12 @@ angular.module('ToDoManagerApp', ['ui.router', 'ngAnimate','ui.bootstrap','angul
 
   	$rootScope.online = navigator.onLine;
   	$window.addEventListener("offline", function () {
-    	$rootScope.$apply(function() {
-      		$rootScope.online = false;
-    	});
+      $rootScope.online = false;
   	}, false);
   	$window.addEventListener("online", function () {
-    	$rootScope.$apply(function() {
+    	//$rootScope.$apply(function() {
       		$rootScope.online = true;
-    	});
+    	//});
   	}, false);
 
     $rootScope.closeMenu = true

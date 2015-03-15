@@ -74,7 +74,7 @@ CREATE TABLE `SHARE_LIST` (
 
 CREATE TABLE `SHARE_OUTSIDER` (
   `id_reference` int(11) NOT NULL,
-  `url` varchar(255) NOT NULL
+  `url` varchar(255) NOT NULL, UNIQUE(`id_reference`, `url`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
