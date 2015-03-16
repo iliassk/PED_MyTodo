@@ -1,0 +1,55 @@
+(function(){
+	'use strict';
+	var app = angular.module('ToDoManagerApp');
+
+	app.factory('remotePersistenceStrategy', ['$http', '$q', function($http, $q){
+		var svc = {
+
+			save: fuction (todo){
+				var deferred = $q.defer();
+
+				$http.post(API_URL + 'todos')
+					.success(deferred.resolve)
+					.error(deferred.reject);
+
+					return deferred.promise;
+			},
+
+			 getAll: function() {
+			 	var deferred = $q.defer();
+
+				$http.get(API_URL + 'todos')
+					.success(deferred.resolve)
+					.error(deferred.reject);
+
+					return deferred.promise;
+			 },
+
+			 getById: function(id){
+			 		var deferred = $q.defer();
+
+				$http.get(API_URL + 'id')
+					.success(deferred.resolve)
+					.error(deferred.reject);
+
+					return deferred.promise;
+			 },
+
+			 'delete': function(id){
+			 		var deferred = $q.defer();
+
+				$http.delete(API_URL + 'id')
+					.success(deferred.resolve)
+					.error(deferred.reject);
+
+					return deferred.promise;
+			},		
+		};
+		return svc;
+	}]);
+
+	app.factory('localPersistenceStrategy', ['$q', 'localDBService', 'nullTodo', 'dbModel' function($q, localDBService, nullTodo, dbModel){
+		return function name(){
+			
+		};
+	}])	

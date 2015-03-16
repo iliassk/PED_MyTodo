@@ -39,8 +39,8 @@ angular.module('ToDoManagerApp')
 
 			var lazyGetData =_.debounce(getData, 50);	
 
-			offline.on('confirmed-down', lazyGetData);
-			offline.on('confirmed-up', lazyGetData);
+		offline.on('confirmed-down', lazyGetData);
+		offline.on('confirmed-up', lazyGetData);
 
 			lazyGetData();
 

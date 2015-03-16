@@ -24,6 +24,7 @@ module.exports = function (grunt) {
     server: './../backend'
   };
 
+  grunt.loadNpmTasks('grunt-manifest');
   // Define the configuration for all the tasks
   grunt.initConfig({
 
@@ -66,6 +67,31 @@ module.exports = function (grunt) {
           '.tmp/styles/{,*/}*.css',
           '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
         ]
+      }
+       manifest: {
+        generate: {
+          options: {
+          basePath: '../',
+          cache: ['js/app.js', 'css/style.css'],
+          network: ['http://*', 'https://*'],
+          fallback: ['/ /offline.html'],
+          exclude: ['js/angular.min.js'],
+          preferOnline: true,
+          verbose: true,
+          timestamp: true,
+          hash: true,
+          master: ['index.html'],
+          process: function(path) {
+          return path.substring('build/'.length);
+          }
+        },
+        src: [
+          'build/some_files/*.html',
+          'build/js/*.min.js',
+          'build/css/*.css'
+        ],
+        dest: 'manifest.appcache'
+        }
       }
     },
 
