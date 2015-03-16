@@ -8,7 +8,6 @@ exports.todolist_post = function(req, res, next, connection, auth, jwt){
 		color: req.body.color,
 		id_owner: _id
 	};
-	
 	connection.query('INSERT INTO TODOLIST SET ?', data, function(err, rows) {
 		if (err) {
 			console.log(err);
@@ -84,8 +83,8 @@ exports.todo_id_delete = function(req, res, next, connection, auth){
 	});
 }
 
-exports.todo_id_put = function(req, res, next, connection, auth){
-	connection.query('UPDATE TODO SET ? WHERE id_todo = ?', [req.body, req.params.id], function(err, rows) {
+exports.subtodo_id_delete = function(req, res, next, connection, auth){
+    connection.query('DELETE FROM SUBTODO WHERE id_subtodo = ?', req.params.id, function(err, rows) {
 		if (err) {
 			console.log(err);
 			return next("Mysql error, check your query");
@@ -94,10 +93,48 @@ exports.todo_id_put = function(req, res, next, connection, auth){
 	});
 }
 
+exports.todo_id_put = function(req, res, next, connection, auth){
+	console.log("updating")
+	var subtodos = req.body.subtodos;
+	delete req.body.subtodos;
+	console.log("updating 2")
+	connection.query('UPDATE TODO SET ? WHERE id_todo = ?', [req.body, req.params.id], function(err, rows) {
+		console.log("updating 3")
+		if (err) {
+			console.log(err);
+			return next("Mysql error, check your query on todo update");
+		}
+		console.log("updating 4")
+		if(subtodos){
+			if(subtodos.length > 0){
+				console.log("updating 5")
+				subtodos.forEach(function(elem, index, array){
+					console.log("updating 6")
+					console.log(elem)
+					connection.query('UPDATE SUBTODO SET ? WHERE id_subtodo = ?', [elem, elem.id_subtodo], function(err, rows) {
+						if (err) {
+							console.log(err);
+							return next("Mysql error, check your query on subtodos update ");
+						}
+						console.log("updating 7")
+					})
+				})
+				return res.status(200).json(rows)
+			}
+			else{
+				console.log("updating 8")
+				return res.status(200).json(rows)
+			}
+		}
+	});
+}
+
 exports.todoadd_post = function(req, res, next, connection, auth, jwt){
 	req.assert('mytodo', 'mytodo is required').notEmpty();
 	var _id = auth.checkAuthorization(req, res, jwt);
-	
+	console.log("req.body.mytodo")
+	console.log(req.body.mytodo)
+	console.log("req.body.mytodo")
 	var errors = req.validationErrors();
 	if (errors) {
 		return res.status(422).json(errors);;
@@ -105,19 +142,43 @@ exports.todoadd_post = function(req, res, next, connection, auth, jwt){
 	
 	req.body.mytodo.id_owner = _id;
 
+	var subtodos = []
+
+	if(req.body.mytodo.subtodos){
+		subtodos = req.body.mytodo.subtodos
+		delete req.body.mytodo.subtodos
+	}
+	console.log(req.body.mytodo)
+
+
 	connection.query("INSERT INTO TODO SET ?", req.body.mytodo, function(err, rows) {
 		if (err) {
 				console.log(err);
 				return next("Mysql error on insert, check your query  ");
 		}
-		else
+		else{
+
+			var _id = rows.insertId
+			subtodos.forEach(function (elem, index, array) {
+				elem.id_todo = _id;
+				connection.query('INSERT INTO SUBTODO SET ?', elem, function(err, rows) {
+					if (err) {
+						console.log(err);
+						res.status(401).json({error: "Une erreur est survenue pendant l'ajout des subtodos", content: err});
+					}
+		
+					//res.status(200).json(content);
+				});
+			})
+
 			return res.status(200).json(rows);
+		}
 	});
 }
 
 exports.todo_id_get = function(req, res, next, connection, auth, jwt){
    auth.checkAuthorization(req, res, jwt);
-
+   	var result = new Array();
    	connection.query('SELECT * FROM TODO WHERE id_todo = ?', req.params.id, function(err, rows) {
 		if (err) {
 			console.log(err);
@@ -132,10 +193,24 @@ exports.todo_id_get = function(req, res, next, connection, auth, jwt){
 		}
 
 		if(rows.length == 1){
-            return res.status(200).send(rows);
-        }
+			result = rows
+			connection.query('SELECT * FROM SUBTODO WHERE id_todo = ?', req.params.id, function(err, subtodo) {
+					if (err) {
+						console.log(err);
+						return next("Mysql error on connection, check your query");
+					}
 
-	});
+				result[0].subtodos = subtodo;
+				//pour gérer l'asynchrone on ne sait pas quand les requetes sont finies				
+
+        	res.status(200).json(result);
+
+
+
+            //return res.status(200).send(rows);
+        	});
+		}
+	})
 }
 
 isShareLinkAlreadyCreated = function(connection, url, callback){
@@ -286,9 +361,9 @@ exports.listtodolistwithtodos_get = function(req, res, next, connection, auth, j
 						return next("Mysql error on connection, check your query");
 					}
 
-					result[index].todos = rows;
 
 					
+					result[index].todos = rows;
 
 
 

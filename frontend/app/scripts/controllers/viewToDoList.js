@@ -10,12 +10,22 @@
 
 angular.module('ToDoManagerApp').controller('ViewToDoList', function($scope, $stateParams, $window, alert, TDMService, $state, APP_URL, $modal) {
     
+	$scope.list = {};
+	$scope.displayedCollection = {};
     TDMService.refresh(function(){
     	console.log("accessing shared data")
 		$scope.list = TDMService.getAList($stateParams.id)
 		TDMService.data.isWorking = false;
+		console.log($scope.list)
+		$scope.displayedCollection = [].concat($scope.list.todos);
+
     })
 	$scope.hidecompleted = false;
+
+	$scope.itemsByPage=15;
+
+    //copy the references (you could clone ie angular.copy but then have to go through a dirty checking for the matches)
+
 
 	$scope.hideCompleted = function(todo){
 		$scope.hidecompleted = !$scope.hidecompleted;
@@ -23,7 +33,6 @@ angular.module('ToDoManagerApp').controller('ViewToDoList', function($scope, $st
 
 	$scope.shareTodo = function(todo){
 		console.log("Share todo")
-
 		TDMService.generateShareToDoLink(todo.id_todo)
 		.success(function(result){
 			$scope.openShareInfo(APP_URL + 'share/' + result.url + '/' + "todo")
@@ -57,8 +66,13 @@ angular.module('ToDoManagerApp').controller('ViewToDoList', function($scope, $st
 	    });
 	}
 
-	$scope.deleteTodo = function(todo_id){
+	$scope.deleteTodo = function(todo_id, row){
 		console.log("[deleteTodo]");
+
+		var index = $scope.list.indexOf(row);
+        if (index !== -1) {
+            $scope.list.splice(index, 1);
+        }
 
 		TDMService.deleteToDo(todo_id)
 		.success(function(data) {
@@ -110,6 +124,7 @@ angular.module('ToDoManagerApp').controller('ViewToDoList', function($scope, $st
 			console.log("[updateTodo] failure");
 		});
 	}
+
 });
 
 angular.module('ToDoManagerApp')

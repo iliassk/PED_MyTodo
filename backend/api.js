@@ -161,6 +161,10 @@ app.delete('/todo/:id', function(req, res, next) {
 	todo.todo_id_delete(req, res, next, connection, auth)
 });
 
+app.delete('/subtodo/:id', function(req, res, next) {
+	todo.subtodo_id_delete(req, res, next, connection, auth)
+});
+
 app.put('/todo/:id', function(req, res, next) {
 	todo.todo_id_put(req, res, next, connection, auth)
 });

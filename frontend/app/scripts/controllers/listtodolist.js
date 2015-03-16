@@ -4,6 +4,7 @@ angular.module('ToDoManagerApp').controller('ListTodoListCtrl', function($scope,
     
 	$scope.hidecompleted = false;
 	
+	
 	angular.element('[data-toggle="popover"]').popover()
 	angular.element('i').click(function(e) {
     	e.stopPropagation();
@@ -47,8 +48,6 @@ angular.module('ToDoManagerApp').controller('ListTodoListCtrl', function($scope,
 			alert('warning', 'Oops!', 'update failed');
 		});
 	}
-
-	
 
 	$scope.total = function(group, contact){
 		var total = 0, i = 0;

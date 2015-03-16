@@ -34,6 +34,7 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 		.success(function(_data){
 			console.log("Success fetching all data !!!")
 			ToDoManagerApp.data.listsWithToDo = _data;
+			console.log(ToDoManagerApp.data.listsWithToDo)
 			$rootScope.isWorking = false;
 			if(f)f();
 		})
@@ -198,6 +199,11 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 		}).error(function(){
 			$rootScope.isWorking = false;
 		});
+	};
+
+	//DELETE subtodo
+	this.deleteSubToDo = function(_id) {
+		return $http.delete(API_URL + 'subtodo/'+ _id);
 	};
 
 

@@ -26,17 +26,20 @@
         </div>
 </script>
 
-<!-- DEBUG
-<div class="well">{{mytodo}}</div>
--->
 
-<div class="form-group col-lg-4">
+<div class="well">{{mytodo}}</div>
+
+
+<div class="form-group">
     <form class="form-signin" role="form" ng-model="mytodo" ng-submit="submit()">
-        <h2 class="form-signin-heading">Edit a Todo</h2>
+        <h2 class="form-signin-heading">Todo n°{{myotodo.id_list}}</h2>
+        <small><a ng-click="isNotEditing = !isNotEditing"><i class="glyphicon glyphicon-pencil"></i> Edit this todo</a></small>
+        <div class='row'>
+        <div class="col-lg-6">
         <h3><i class="glyphicon glyphicon-info-sign"></i> General information</h3>
-        <input type="text" class="form-control" placeholder="Title" ng-model="mytodo.title" ng-value="mytodo.title" required autofocus>
-        <input type="text" class="form-control" placeholder="Description" ng-model="mytodo.description" >
-        <select class="form-control" id="sel1" ng-model="mytodo.priority">
+        <input type="text" class="form-control" placeholder="Title" ng-model="mytodo.title" ng-value="mytodo.title" ng-disabled="isNotEditing" required autofocus>
+        <input type="text" class="form-control" placeholder="Description" ng-model="mytodo.description" ng-disabled="isNotEditing" >
+        <select class="form-control" id="sel1" ng-model="mytodo.priority" ng-disabled="isNotEditing">
             <option value="" disabled selected>Priority</option>
             <option>1</option>
             <option>2</option>
@@ -44,25 +47,26 @@
             <option>4</option>
             <option>5</option>
         </select>
-        <input type="text" class="form-control" placeholder="Context" ng-model="mytodo.context">
+        <input type="text" class="form-control" placeholder="Context" ng-model="mytodo.context" ng-disabled="isNotEditing">
 
-         <select class="form-control" id="sel2" ng-model="mytodo.id_list" required>
+         <select class="form-control" id="sel2" ng-model="mytodo.id_list" required ng-disabled="isNotEditing">
             <option value="" disabled selected>Choose a list</option>
             <option ng-repeat="list in data.listsWithToDo" value="{{list.id_list}}">{{list.name}}</option>
         </select>
        
         <div class='input-group'>
-            <input type="text" class="form-control" placeholder="Date" datepicker-popup="{{format}}" ng-model="mytodo.date" is-open="opened" min-date="minDate" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
+            <input type="text" class="form-control" placeholder="Date" datepicker-popup="{{format}}" ng-model="mytodo.date" is-open="opened" min-date="minDate" datepicker-options="dateOptions" ng-required="true" close-text="Close" ng-disabled="isNotEditing"/>
             <span class="input-group-btn">
-                <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                <button type="button" ng-disabled="isNotEditing" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
             </span>
         </div>
         <small>Selected date is: <em>{{mytodo.date | date:'fullDate' }}</em></small>
-
-        <timepicker ng-model="mytodo.date" ng-change="changed()" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></timepicker>
+        <fieldset ng-disabled="isNotEditing">
+            <timepicker  ng-model="mytodo.date" ng-change="changed()" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></timepicker>
+        </fieldset>
 
         <div class='input-group'>
-        <h4><i class="glyphicon glyphicon-ok ng-show" ng-show="mytodo.completed"></i><i class="glyphicon glyphicon-remove ng-hide" ng-hide="mytodo.completed"></i> Task Done ? <input type="checkbox" ng-model="mytodo.completed" ng-checked="mytodo.completed"> </h4>
+        <h4><i class="glyphicon glyphicon-ok ng-show" ng-show="mytodo.completed"></i><i class="glyphicon glyphicon-remove ng-hide" ng-hide="mytodo.completed"></i> Task Done ? <input ng-disabled="isNotEditing" type="checkbox" ng-model="mytodo.completed" ng-checked="mytodo.completed"> </h4>
         </div>
 
         <!-- Liste vide pour un séprateur purement esthétique -->
@@ -71,18 +75,66 @@
         </div>
         <!-- ------------------------------------------------ -->
 
-        <h3><i class="glyphicon glyphicon-paperclip"></i> Attachment</h3><small>Maximal file size is 2 MB!</small> <div class='input-group'><input id="input-file" type="file" multiple="false"></div>
+        <h3><i class="glyphicon glyphicon-paperclip"></i> Attachment</h3><small>Maximal file size is 2 MB!</small> <div class='input-group'><input ng-disabled="isNotEditing" id="input-file" type="file" multiple="false"></div>
         <h3><i class="glyphicon glyphicon-link"></i> Link</h3><small>Add an optional link!</small>
-        <input type="text" class="form-control" placeholder="Url" ng-model="mytodo.url">
-        <h3><i class="glyphicon glyphicon-globe"></i>Location</h3><small>Add an adress!</small>
-        <div class='input-group'>
-            <input type="text" class="form-control" placeholder="Address" ng-model="mytodo.localization">
-                <span class="input-group-btn">
-                    <button type="button" class="btn btn-default" ng-click="showLocation('lg')"><i class="glyphicon glyphicon-map-marker"></i>Map</button>
-                </span>
+        <input ng-disabled="isNotEditing" type="text" class="form-control" placeholder="Url" ng-model="mytodo.url">
+         </div>
+        <div class="col-lg-6">
+
+       <h3><i class="glyphicon glyphicon-globe"></i>Location</h3><small>Add an address!</small>
+        <input ng-disabled="isNotEditing" ng-model="mytodo.localization" id="input-address" class="controls" type="text" placeholder="Enter a location">
+        <div id="type-selector" class="controls">
+            <input type="radio" name="type" id="changetype-all" checked="checked">
+            <label for="changetype-all">All</label>
+
+            <input type="radio" name="type" id="changetype-establishment">
+            <label for="changetype-establishment">Etablissement</label>
+
+            <input type="radio" name="type" id="changetype-address">
+            <label for="changetype-address">Adresses</label>
+
+            <input type="radio" name="type" id="changetype-geocode">
+            <label for="changetype-geocode">Géocode</label>
         </div>
-        <button type="submit" id="update_todo_button" class="btn btn-lg btn-info btn-block">Update</button>
-        <button type="submit" id="delete_todo_button" class="btn btn-lg btn-warning btn-block" ng-click="delete()">Delete</button>
+
+        <div id="map-canvas"></div>
+
+            <input ng-disabled="isNotEditing" id="address" type="text" class="form-control" placeholder="Address" ng-model="mytodo.localization">
+            {{mytodo.localization}}
+
+        <h3><i class="glyphicon glyphicon-list"></i> Subtodos</h3>
+
+        <a class="btn btn-info" ng-click="isCollapsed = !isCollapsed">Manage subtodos</a>
+       
+        <div collapse="isCollapsed">
+            <div class="well well-sm">
+                <input ng-disabled="isNotEditing" type="text" class="form-control" placeholder="Title" ng-model="subtodo.title" autofocus>
+                <input ng-disabled="isNotEditing" type="text" class="form-control" placeholder="Description" ng-model="subtodo.description" >
+                <i class="glyphicon glyphicon-arrow-down"></i><a class="btn btn-default" ng-disabled="isNotEditing" ng-click="addSubTodo(subtodo)">Add this subtodo</a>
+            </div> 
+            
+        </div>
+
+        <table class="table table-striped table-hover" ng-hide="mytodo.subtodos.length < 1" ng-model="mytodo.subtodos">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                </tr>
+           </thead>
+           <tbody>
+                <tr ng-repeat="mysubtodo in mytodo.subtodos track by $index">
+                    <td><input ng-disabled="isNotEditing" type="text" class="form-control" placeholder="Title" ng-model="mysubtodo.title" ></td>
+                    <td><input ng-disabled="isNotEditing" type="text" class="form-control" placeholder="Description" ng-model="mysubtodo.description"></td>
+                    <td><a ng-disabled="isNotEditing" class="glyphicon glyphicon-remove" ng-click="eraseSubtodo($index, mysubtodo.id_subtodo);"></a></td>
+                </tr>
+            </tbody>        
+        </table>
+        </div>
+        </div>
+
+        <button ng-disabled="isNotEditing" type="submit" id="add_todo_button" class="btn btn-lg btn-info btn-block">Update</button>
+        <button ng-disabled="isNotEditing" type="submit" id="add_todo_button" class="btn btn-lg btn-warning btn-block" ng-click="delete()">Delete</button>
     </form>
 </div>
 
