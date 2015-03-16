@@ -1,27 +1,12 @@
 'use strict';
 
-/**
- * @ngdoc service
- * @name ToDoManagerApp.TDMService
- * @description
- * 
- * Service in the ToDoManagerApp.
- */
-angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL, $state, $rootScope, TDMServiceOffline, TDMServiceOnline) {
+angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($http, API_URL, $state, $rootScope) {
 
 	var ToDoManagerApp = this;
 
-	//Shared data used for synchronisation between controllers
-	ToDoManagerApp.data = {
-		listsWithToDo: [],
-		groupe: '',
-		contact: '',
-		shareListsWithToDo: []
-	}
-
 	this.refresh = function(callback){
 		
-		if(ToDoManagerApp.data.listsWithToDo == ''){
+		if(TDMService.data.listsWithToDo == ''){
 			$rootScope.isWorking = true
 			ToDoManagerApp.fetchAll(callback);
 		}else if(callback)
@@ -33,7 +18,7 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 		$http.get(API_URL + 'listtodolistwithtodos')
 		.success(function(_data){
 			console.log("Success fetching all data !!!")
-			ToDoManagerApp.data.listsWithToDo = _data;
+			TDMService.data.listsWithToDo = _data;
 			$rootScope.isWorking = false;
 			if(f)f();
 		})
@@ -41,7 +26,7 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 		$http.get(API_URL + 'listsharedtodolistwithtodos')
 		.success(function(_data){
 			console.log("Success fetching all data !!!")
-			ToDoManagerApp.data.shareListsWithToDo = _data;
+			TDMService.data.shareListsWithToDo = _data;
 			$rootScope.isWorking = false;
 			if(f)f();
 		})
@@ -51,21 +36,21 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 
 	this.getAList = function(_id) {
 		$rootScope.isWorking = true
-		for(var i=0; i < ToDoManagerApp.data.listsWithToDo.length; i++){
-			if(ToDoManagerApp.data.listsWithToDo[i].id_list == _id)
-				return ToDoManagerApp.data.listsWithToDo[i]
+		for(var i=0; i < TDMService.data.listsWithToDo.length; i++){
+			if(TDMService.data.listsWithToDo[i].id_list == _id)
+				return TDMService.data.listsWithToDo[i]
 		}
 		$rootScope.isWorking = false
 	};
 
 	this.getAToDo = function(_id) {
 		$rootScope.isWorking = true;
-		for(var i=0; i < ToDoManagerApp.data.listsWithToDo.length; i++){
-			if(ToDoManagerApp.data.listsWithToDo[i].todos)
-			for(var j=0; j < ToDoManagerApp.data.listsWithToDo[i].todos.length; j++){
-				if(ToDoManagerApp.data.listsWithToDo[i].todos[j].id_todo == _id){
+		for(var i=0; i < TDMService.data.listsWithToDo.length; i++){
+			if(TDMService.data.listsWithToDo[i].todos)
+			for(var j=0; j < TDMService.data.listsWithToDo[i].todos.length; j++){
+				if(TDMService.data.listsWithToDo[i].todos[j].id_todo == _id){
 					$rootScope.isWorking = false;
-					return ToDoManagerApp.data.listsWithToDo[i].todos[j]
+					return TDMService.data.listsWithToDo[i].todos[j]
 				}
 			}
 		}
@@ -174,10 +159,10 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 	//DELETE todo
 	this.deleteToDo = function(_id) {
 		$rootScope.isWorking = true;
-		for(var i=0; i < ToDoManagerApp.data.listsWithToDo.length; i++){
-			for(var j=0; j < ToDoManagerApp.data.listsWithToDo[i].todos.length; j++){
-				if(ToDoManagerApp.data.listsWithToDo[i].todos[j].id_todo == _id)
-					ToDoManagerApp.data.listsWithToDo[i].todos.splice(j, 1)
+		for(var i=0; i < TDMService.data.listsWithToDo.length; i++){
+			for(var j=0; j < TDMService.data.listsWithToDo[i].todos.length; j++){
+				if(TDMService.data.listsWithToDo[i].todos[j].id_todo == _id)
+					TDMService.data.listsWithToDo[i].todos.splice(j, 1)
 			}
 		}
 
