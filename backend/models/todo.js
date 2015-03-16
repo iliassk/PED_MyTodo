@@ -94,29 +94,21 @@ exports.subtodo_id_delete = function(req, res, next, connection, auth){
 }
 
 exports.todo_id_put = function(req, res, next, connection, auth){
-	console.log("updating")
 	var subtodos = req.body.subtodos;
 	delete req.body.subtodos;
-	console.log("updating 2")
 	connection.query('UPDATE TODO SET ? WHERE id_todo = ?', [req.body, req.params.id], function(err, rows) {
-		console.log("updating 3")
 		if (err) {
 			console.log(err);
 			return next("Mysql error, check your query on todo update");
 		}
-		console.log("updating 4")
 		if(subtodos){
 			if(subtodos.length > 0){
-				console.log("updating 5")
 				subtodos.forEach(function(elem, index, array){
-					console.log("updating 6")
-					console.log(elem)
 					connection.query('UPDATE SUBTODO SET ? WHERE id_subtodo = ?', [elem, elem.id_subtodo], function(err, rows) {
 						if (err) {
 							console.log(err);
 							return next("Mysql error, check your query on subtodos update ");
 						}
-						console.log("updating 7")
 					})
 				})
 				return res.status(200).json(rows)
@@ -172,6 +164,19 @@ exports.todoadd_post = function(req, res, next, connection, auth, jwt){
 			})
 
 			return res.status(200).json(rows);
+		}
+	});
+}
+
+exports.todo_get = function(req, res, next, connection, auth, jwt){
+	var _id = auth.checkAuthorization(req, res, jwt);
+	connection.query('SELECT * FROM TODO WHERE id_owner = ?', _id, function(err, rows) {
+		if (err) {
+			console.log(err);
+			return next("Mysql error on connection, check your query");
+		}else{
+			console.info(rows);
+			res.status(200).json(rows);
 		}
 	});
 }

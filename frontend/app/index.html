@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="bower_components/animate.css/animate.css" />
     <link rel="stylesheet" href="bower_components/bootstrap-fileinput/css/fileinput.min.css" />
+    <link rel="stylesheet" href="bower_components/fullcalendar/dist/fullcalendar.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
@@ -22,6 +23,7 @@
     <link href="styles/simple-sidebar.css" rel="stylesheet" />
     <link href="styles/left_menu.css" rel="stylesheet" />
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&signed_in=true&libraries=places"></script>
+    
 
     <!-- endbuild -->
 
@@ -37,7 +39,6 @@
     <div id="page-content-wrapper">
       <div class="container-fluid">
         <div class="row">
-
             <div  id="header">
                 <div class="navbar navbar-default" id="header-default"role="navigation" ng-cloak>
                     <div class="container">
@@ -59,6 +60,9 @@
                     <ul class="nav navbar-nav">
                         <li ui-sref-active="active">
                             <a ui-sref="main">Home</a>
+                        </li>
+                         <li ng-show="isAuthenticated()" ui-sref-active="active">
+                            <a ui-sref="calendar">Calendar</a>
                         </li>
                     </ul>
 
@@ -108,6 +112,8 @@
         </div>
     </div>
 </div>
+</div>
+</div>
 
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
@@ -125,7 +131,7 @@
     <!-- build:js(.) scripts/vendor.js -->
     <!-- bower:js -->
     <script src="bower_components/es5-shim/es5-shim.js"></script>
-    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/jquery/jquery.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
@@ -137,6 +143,10 @@
     <script src="bower_components/ng-file-upload/angular-file-upload.js"></script>
     <script src="bower_components/ng-file-upload-shim/angular-file-upload-shim.js"></script>
     <script src="bower_components/angular-smart-table/dist/smart-table.js"></script>
+    <script src="bower_components/moment/moment.js"></script>
+    <script src="bower_components/fullcalendar/dist/fullcalendar.js"></script>
+    <script src="bower_components/jquery-ui/ui/jquery-ui.js"></script>
+    <script src="bower_components/angular-ui-calendar/src/calendar.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -146,7 +156,9 @@
     <script src="scripts/app.js"></script>
     <script src="scripts/app.config.js"></script>
 
+    <!-- directive -->
     <script src="scripts/directives/validateEquals.js"></script>
+    
 
     <!-- javascript -->
     <script src="javascript/left_menu.js"></script>
@@ -168,6 +180,8 @@
     <script src="scripts/controllers/login.js"></script>
     <script src="scripts/controllers/register.js"></script>
     <script src="scripts/controllers/shareTodo.js"></script>
+    <script src="scripts/controllers/calendar.js"></script>
+
 
     <!-- endbuild -->
 

@@ -30,10 +30,12 @@ exports.userslist_get = function(req, res, next, connection, auth){
 	});
 }
 
-exports.addgroup_post = function(req, res, next, connection, auth){
+exports.addgroup_post = function(req, res, next, connection, auth, jwt){
 	//get data from the request
+	var _id = auth.checkAuthorization(req, res, jwt);
 	var data = {
-		name: req.body.name
+		name: req.body.name,
+		id_owner: _id
 	};
 
 	connection.query('INSERT INTO GROUPS SET ?', data, function(err, rows) {
@@ -47,10 +49,10 @@ exports.addgroup_post = function(req, res, next, connection, auth){
 }
 
 
-exports.listgroupe_get = function(req, res, next, connection, auth){
+exports.listgroupe_get = function(req, res, next, connection, auth, jwt){
    // retourne le non et le nombre de votre
-   	
-	connection.query('SELECT * FROM GROUPS',function(err, rows) {
+   	var _id = auth.checkAuthorization(req, res, jwt);
+	connection.query('SELECT * FROM GROUPS WHERE id_owner = ?', _id,function(err, rows) {
 		if (err) {
 			console.log(err);
 			return next("Mysql error, check your query");

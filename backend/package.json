@@ -28,7 +28,8 @@
     "querystring": "^0.2.0",
     "request": "^2.53.0",
     "underscore": "^1.8.2",
-    "multer": "^0.1.8"
+    "multer": "^0.1.8",
+    "mongoskin": "~0.6.0"
   },
   "devDependencies": {
     "grunt-express-server": "^0.4.19",

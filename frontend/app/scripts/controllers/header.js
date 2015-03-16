@@ -24,6 +24,7 @@ angular.module('ToDoManagerApp').controller('HeaderCtrl', function($scope, $auth
         $rootScope.closeMenu = true
 
     $scope.loaded = function() { console.log("Loaded"); }
+
 })
 .directive("myDirective", ["$templateCache", "$compile", function($templateCache, $compile) {
         return {
@@ -42,6 +43,16 @@ angular.module('ToDoManagerApp').controller('HeaderCtrl', function($scope, $auth
                     content: $compile(tpl)(scope),
                     placement: attrs.popoverPlacement
                 });
+              /*  $el.click(function() {
+                    $('.popover').each(function(){
+                        var $this = $(this);
+                        if($this.parent().attr('id') != $element.parent().attr('id'))
+                        {
+                            $this.scope().$hide();
+                        }
+                    }
+                    );
+                });*/
             }
         }
     }]);

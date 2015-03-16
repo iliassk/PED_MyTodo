@@ -3,6 +3,8 @@
 angular.module('ToDoManagerApp').controller('ListTodoListCtrl', function($scope, $window, alert, TDMService, $auth) {
     
 	$scope.hidecompleted = false;
+	$scope.group;
+	$scope.contact;
 	
 	
 	angular.element('[data-toggle="popover"]').popover()
@@ -38,6 +40,12 @@ angular.module('ToDoManagerApp').controller('ListTodoListCtrl', function($scope,
 		.error(function() {
 			alert('warning', 'Oops!', 'update failed');
 		});
+		
+		TDMService.fetchToDoAndListToDos()
+		.success(function(data){
+			$scope.todoList = data;
+		});
+			
 
 		TDMService.listcontact()
 		.success(function(data) {

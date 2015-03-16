@@ -21,6 +21,8 @@ angular.module('ToDoManagerApp').controller('LoginCtrl', function($scope, alert,
 				message = 'Just a reminder, please activate your account soon !';
 
 			alert('success', 'Welcome!', message);
+
+
 		})
 		.catch(function(err) {
 			alert('warning', 'Something went wrong :(', 'Incorrect email or/and password !');

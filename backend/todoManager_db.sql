@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 -- phpMyAdmin SQL Dump
 -- version 4.0.10deb1
 -- http://www.phpmyadmin.net
@@ -56,8 +57,9 @@ CREATE TABLE `CONTACTS` (
 --
 
 CREATE TABLE `GROUPS` (
-`id_group` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL
+  `id_group` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `id_owner` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------

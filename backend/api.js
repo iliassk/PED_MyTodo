@@ -132,11 +132,11 @@ app.get('/listsharedtodolistwithtodos', function(req, res, next) {
 });
 
 app.get('/listgroupe', function(req, res, next) {
-	contact.listgroupe_get(req, res, next, connection, auth)
+	contact.listgroupe_get(req, res, next, connection, auth, jwt)
 });
 
 app.post('/addgroup', function(req, res, next) {
-	contact.addgroup_post(req, res, next, connection, auth)
+	contact.addgroup_post(req, res, next, connection, auth, jwt)
 });
 
 app.get('/userslist', function(req, res, next) {
@@ -167,6 +167,14 @@ app.delete('/subtodo/:id', function(req, res, next) {
 
 app.put('/todo/:id', function(req, res, next) {
 	todo.todo_id_put(req, res, next, connection, auth)
+});
+
+app.put('/todo', function(req, res, next) {
+	todo.todos_put(req, res, next, connection, auth)
+});
+
+app.get('/todo', function(req, res, next) {
+	todo.todo_get(req, res, next, connection, auth, jwt)
 });
 
 

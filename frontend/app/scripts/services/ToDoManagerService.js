@@ -170,7 +170,15 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 		}).error(function(){
 			$rootScope.isWorking = false;
 		})
-	};
+};
+
+	//GET all todo
+	this.getTodo = function() {
+		return $http.get(API_URL + 'todo/')
+		.success(function(data, status, headers, config){ 
+		});
+	}
+	
 
 	//DELETE todo
 	this.deleteToDo = function(_id) {
@@ -204,6 +212,12 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 	//DELETE subtodo
 	this.deleteSubToDo = function(_id) {
 		return $http.delete(API_URL + 'subtodo/'+ _id);
+	};
+
+	this.updateTodos = function(data) {
+		return $http.put(API_URL + 'todo/',{
+			data : data
+		})
 	};
 
 
