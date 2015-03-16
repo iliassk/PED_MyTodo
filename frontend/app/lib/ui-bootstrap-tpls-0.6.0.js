@@ -179,6 +179,7 @@ angular.module('ui.bootstrap.collapse',['ui.bootstrap.transition'])
   };
 }]);
 
+/*
 angular.module('ui.bootstrap.accordion', ['ui.bootstrap.collapse'])
 
 .constant('accordionConfig', {
@@ -320,6 +321,7 @@ angular.module('ui.bootstrap.accordion', ['ui.bootstrap.collapse'])
     }
   };
 });
+*/
 
 angular.module("ui.bootstrap.alert", []).directive('alert', function () {
   return {

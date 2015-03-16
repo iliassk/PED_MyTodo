@@ -2,29 +2,20 @@
 
 angular.module('ToDoManagerApp')
 
-.controller('AddTodoCtrl', ['$scope', '$location', '$log', '$modal', 'TDMService','alert', '$upload', '$http', 'API_URL', function($scope, $location, $log, $modal, TDMService, alert, $upload,$http, API_URL) {
-
-
+.controller('AddTodoCtrl', function($scope, $location, $log, $modal, TDMService, alert, $upload,$http, API_URL, $state) {
+  TDMService.refresh();
   ////////////////Submit form /////////////////
-  $scope.mytodo = {title: '', description: '', priority: '', context: '', date: '', completed: false, id_owner: '', url: '', attachment_path:'', localization: '', id_list:'', id_category:''};
-  $scope.mytodolist;
+  $scope.mytodo     = {title: '', description: '', priority: '', context: '', date: '', completed: false, id_owner: '', url: '', attachment_path:'', localization: '', id_list:'', id_category:''};
+  $scope.data = TDMService.data;
   $scope.file;
-  
-
-  TDMService.listtodolist()
-  .success(function(data) {
-    console.log('success', 'OK!', 'update success');
-    $scope.mytodolist = data;
-  })
-  .error(function() {
-    alert('warning', 'Oops!', 'update failed');
-  });
   
   $scope.submit = function() {
 
     TDMService.addTodo($scope.mytodo) 
       .success(function(res) {
         alert('success', 'Todo created!', 'Your todo has been created !');
+        TDMService.fetchAll()
+        $state.go('main');
       })
       .error(function(err) {
         alert('warning', 'Something went wrong :(', err.message);
@@ -158,7 +149,7 @@ $scope.today = function() {
     });
   };
 
-}]);
+});
 
   ////////////////Controller map modal /////////////////
 

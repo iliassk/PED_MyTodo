@@ -19,6 +19,7 @@ function getAdresse(idTab, successFindingAdresseCallback, errorFindingAdresseCal
 	};
 
 	var map = new google.maps.Map(document.getElementById(idTab[0]), options);
+    google.maps.event.trigger(map, 'resize');
 
 	var marker = new google.maps.Marker({
     	map: map,
@@ -147,13 +148,15 @@ function getAdresse(idTab, successFindingAdresseCallback, errorFindingAdresseCal
 	  	});
 
 	}
+
+	return map;
 }
 
 //google.maps.event.addDomListener(window, 'load', _initialize);
 
 function _initialize() {
 
-	getAdresse(["map-canvas", "input-address", "type-selector"], function(position, address){
+	return getAdresse(["map-canvas", "input-address", "type-selector"], function(position, address){
 		console.log(position)
 		console.log(address)
 

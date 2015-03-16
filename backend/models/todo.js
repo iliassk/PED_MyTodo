@@ -138,58 +138,147 @@ exports.todo_id_get = function(req, res, next, connection, auth, jwt){
 	});
 }
 
+isShareLinkAlreadyCreated = function(connection, url, callback){
+	connection.query('SELECT * FROM SHARE_OUTSIDER WHERE url = ?', url, function(err, rows) {
+		if (err) {
+			console.log("Erreur")
+			console.log(err);
+		}
+		
+		if (rows.length >= 1) {
+			return callback(rows[0])
+		}
+		return callback(null)
+	});
+}
+
 exports.sharetodo_id_get = function(req, res, next, connection, auth, share, jwt){
    	auth.checkAuthorization(req, res, jwt)
 
-	share.createHash(req.params.id+"todo", function(err, data){
+	share.createHash(req.params.id, "todo", function(err, data){
 
 		var content = {
 			id_reference: req.params.id,
 			url: data
 		}
 
-		connection.query('INSERT INTO SHARE_OUTSIDER SET ?', content, function(err, rows) {
-			if (err) {
-				console.log(err);
-				res.status(401).json({error: "Une erreur est survenue pendant la création de l'url!", content: err});
-			}
+		isShareLinkAlreadyCreated(connection, content.url, function(data){
 			
-			res.status(200).json(content);
-		});
+			if(data != null){
+				return res.status(200).json(data);
+			}else{
+				connection.query('INSERT INTO SHARE_OUTSIDER SET ?', content, function(err, rows) {
+					if (err) {
+						console.log(err);
+						return res.status(401).json({error: "Une erreur est survenue pendant la création de l'url!", content: err});
+					}
+					return res.status(200).json(content);
+				});
+			}
+		})		
 	})
 }
 
 exports.sharetodolist_id_get = function(req, res, next, connection, auth, share, jwt){
    	auth.checkAuthorization(req, res, jwt)
 
-	share.createHash(req.params.id+"todolist", function(err, data){
+	share.createHash(req.params.id, "todolist", function(err, data){
 
 		var content = {
 			id_reference: req.params.id,
 			url: data
 		}
 
-		connection.query('INSERT INTO SHARE_OUTSIDER SET ?', content, function(err, rows) {
-			if (err) {
-				console.log(err);
-				res.status(401).json({error: "Une erreur est survenue pendant la création de l'url!", content: err});
+		isShareLinkAlreadyCreated(connection, content.url, function(data){
+			if(data != null){
+				return res.status(200).json(data);
+			}else{
+				connection.query('INSERT INTO SHARE_OUTSIDER SET ?', content, function(err, rows) {
+					if (err) {
+						console.log(err);
+						return res.status(401).json({error: "Une erreur est survenue pendant la création de l'url!", content: err});
+					}
+					
+					return res.status(200).json(content);
+				});
 			}
-			
-			res.status(200).json(content);
-		});
+		})
 	})
+}
+
+exports.getSharedData = function(req, res, next, connection, share){
+	//renvoie un todo ou une liste
+
+	var content = {
+		type: req.params.type,
+		url: req.params.url
+	}
+
+	//je cherche l'url demandé en récupérant id
+	//si id+type == url (crypter)
+	//je renvoie l'objet de l'id
+	connection.query('SELECT * FROM SHARE_OUTSIDER WHERE url = ?', content.url, function(err, rows) {
+		if (err) {
+			console.log(err);
+		}
+		
+		if (rows.length == 0) {
+			return res.status(401).json({message: "Url non fonctionnelle !!"});
+		}
+		var data = rows[0]
+
+		if(content.type == "todolist"){
+			connection.query('SELECT * FROM TODOLIST WHERE id_list = ?', data.id_reference , function(err, lists) {
+				if (err) {
+					console.log(err);
+					return next("Mysql error, check your query");
+				}else{
+					var result = lists;
+					
+					connection.query('SELECT * FROM TODO WHERE id_list = ?', result[0].id_list, function(err, rows) {
+						if (err) {
+							console.log(err);
+							return next("Mysql error on connection, check your query");
+						}
+
+						result[0].todos = rows;
+
+						return res.status(200).json(result);
+					})
+				}
+			});
+		}else if(content.type == "todo"){
+			connection.query('SELECT * FROM TODO WHERE id_todo = ?', data.id_reference, function(err, rows) {
+				if (err) {
+					console.log(err);
+					return next("Mysql error on connection, check your query");
+				}
+
+				if(rows.length == 0){
+					return res.status(401).json({message: "Url non fonctionnelle !!"});
+				}
+
+				return res.status(200).send(rows);
+			});
+		}else
+			return res.status(401).json({message: "Url non fonctionnelle !!"});
+	});
 }
 
 exports.listtodolistwithtodos_get = function(req, res, next, connection, auth, jwt){
 
-	var result = new Array();
+	var result = {};
 	var _id = auth.checkAuthorization(req, res, jwt);
+	var cpt = 0;
+
+	//Récupère les listes
 	connection.query('SELECT * FROM TODOLIST WHERE id_owner = ?', _id , function(err, lists) {
 		if (err) {
 			console.log(err);
 			return next("Mysql error, check your query");
 		}else{
 			result = lists;
+			//récupère tous les todos de chaque liste
 			lists.forEach(function (elem, index, array) {
   				connection.query('SELECT * FROM TODO WHERE id_list = ?', elem.id_list, function(err, rows) {
 					if (err) {
@@ -197,15 +286,60 @@ exports.listtodolistwithtodos_get = function(req, res, next, connection, auth, j
 						return next("Mysql error on connection, check your query");
 					}
 
-				result[index].todos = rows;
+					result[index].todos = rows;
 
-				//pour gérer l'asynchrone on ne sait pas quand les requetes sont finies
-				if(index == result.length-1)
-					res.status(200).json(result);
+					
+
+
+
+					cpt ++;
+					//pour gérer l'asynchrone on ne sait pas quand les requetes sont finies
+					if(cpt == result.length)
+						return res.status(200).json(result);
 				});
-
-
 			})
+		}
+	});
+}
+
+exports.listsharedtodolistwithtodos_get = function(req, res, next, connection, auth, jwt){
+
+//récupère les listes partagés
+						//récupère les todos de chaque liste
+					//récupère les todos partagés
+
+	var result = {};
+	var _id = auth.checkAuthorization(req, res, jwt);
+	var cpt = 0;
+
+	//Récupère les listes
+	connection.query('SELECT * FROM TODOLIST WHERE id_owner = ?', _id , function(err, lists) {
+		if (err) {
+			console.log(err);
+			return next("Mysql error, check your query");
+		}else{
+			result = lists;
+			return res.status(200).json(result);
+			//récupère tous les todos de chaque liste
+			/*lists.forEach(function (elem, index, array) {
+  				connection.query('SELECT * FROM TODO WHERE id_list = ?', elem.id_list, function(err, rows) {
+					if (err) {
+						console.log(err);
+						return next("Mysql error on connection, check your query");
+					}
+
+					result[index].todos = rows;
+
+					
+
+
+
+					cpt ++;
+					//pour gérer l'asynchrone on ne sait pas quand les requetes sont finies
+					if(cpt == result.length)
+						return res.status(200).json(result);
+				});
+			})*/
 		}
 	});
 }

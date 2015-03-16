@@ -4,19 +4,6 @@
     </div>
     <div class="modal-body" ng-init="init()">
         <input id="input-address" class="controls" type="text" placeholder="Enter a location">
-        <div id="type-selector" class="controls">
-            <input type="radio" name="type" id="changetype-all" checked="checked">
-            <label for="changetype-all">All</label>
-
-            <input type="radio" name="type" id="changetype-establishment">
-            <label for="changetype-establishment">Etablissement</label>
-
-            <input type="radio" name="type" id="changetype-address">
-            <label for="changetype-address">Adresses</label>
-
-            <input type="radio" name="type" id="changetype-geocode">
-            <label for="changetype-geocode">Géocode</label>
-        </div>
         <div id="map-canvas"></div>
     </div>
     <div class="modal-footer">
@@ -61,7 +48,7 @@
 
          <select class="form-control" id="sel2" ng-model="mytodo.id_list" required>
             <option value="" disabled selected>Choose a list</option>
-            <option ng-repeat="list in mytodolist" value="{{list.id_list}}">{{list.name}}</option>
+            <option ng-repeat="list in data.listsWithToDo" value="{{list.id_list}}">{{list.name}}</option>
         </select>
        
         <div class='input-group'>
@@ -94,8 +81,8 @@
                     <button type="button" class="btn btn-default" ng-click="showLocation('lg')"><i class="glyphicon glyphicon-map-marker"></i>Map</button>
                 </span>
         </div>
-        <button type="submit" id="add_todo_button" class="btn btn-lg btn-info btn-block">Update</button>
-        <button type="submit" id="add_todo_button" class="btn btn-lg btn-warning btn-block" ng-click="delete()">Delete</button>
+        <button type="submit" id="update_todo_button" class="btn btn-lg btn-info btn-block">Update</button>
+        <button type="submit" id="delete_todo_button" class="btn btn-lg btn-warning btn-block" ng-click="delete()">Delete</button>
     </form>
 </div>
 

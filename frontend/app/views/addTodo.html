@@ -4,19 +4,6 @@
     </div>
     <div class="modal-body" ng-init="init()">
         <input id="input-address" class="controls" type="text" placeholder="Enter a location">
-        <div id="type-selector" class="controls">
-            <input type="radio" name="type" id="changetype-all" checked="checked">
-            <label for="changetype-all">All</label>
-
-            <input type="radio" name="type" id="changetype-establishment">
-            <label for="changetype-establishment">Etablissement</label>
-
-            <input type="radio" name="type" id="changetype-address">
-            <label for="changetype-address">Adresses</label>
-
-            <input type="radio" name="type" id="changetype-geocode">
-            <label for="changetype-geocode">Géocode</label>
-        </div>
         <div id="map-canvas"></div>
     </div>
     <div class="modal-footer">
@@ -48,7 +35,7 @@
 
         <select class="form-control" id="sel2" ng-model="mytodo.id_list" required>
             <option value="" disabled selected>Choose a list</option>
-            <option ng-repeat="list in mytodolist" value="{{list.id_list}}">{{list.name}}</option>
+            <option ng-repeat="list in data.listsWithToDo" value="{{list.id_list}}">{{list.name}}</option>
         </select>
 
         <div class='input-group'>

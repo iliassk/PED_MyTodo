@@ -15,17 +15,16 @@
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
-    <link rel="stylesheet" href="styles/main.css">
-    <link rel="stylesheet" href="styles/map.css">
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="styles/bootstrap-superhero.css">
-    <link href="styles/simple-sidebar.css" rel="stylesheet">
-    <link href="styles/left_menu.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles/main.css" />
+    <link rel="stylesheet" href="styles/map.css" />
+    <link rel="stylesheet" href="styles/font-awesome/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="styles/bootstrap-superhero.css" />
+    <link href="styles/simple-sidebar.css" rel="stylesheet" />
+    <link href="styles/left_menu.css" rel="stylesheet" />
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&signed_in=true&libraries=places"></script>
 
-
     <!-- endbuild -->
-    
+
   </head>
   <body ng-app="ToDoManagerApp">
     <!--[if lt IE 7]>
@@ -33,54 +32,67 @@
     <![endif]-->
     <div id="wrapper">
     <div ng-controller = "HeaderCtrl" >
-    <div ng-if="isAuthenticated()" ng-include="'views/sidebar.html'"></div>
-
-    <!-- Add your site or application content here -->
-    <!-- see views/header.html -->
+    <div ng-include="'views/sidebar.html'"></div>
     
     <div id="page-content-wrapper">
       <div class="container-fluid">
         <div class="row">
 
-          <div  id="header">
-  <div class="navbar navbar-default" id="header-default"role="navigation">
-        <div class="container">
-          <div class="navbar-header">
+            <div  id="header">
+                <div class="navbar navbar-default" id="header-default"role="navigation" ng-cloak>
+                    <div class="container">
+                        <div class="navbar-header">
 
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#js-navbar-collapse">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <a ng-show="isAuthenticated()" href="#menu-toggle" id="menu-toggle" class="navbar-brand"> <span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span> </a>
+                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#js-navbar-collapse">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                            <a ng-show="isAuthenticated()" href="#menu-toggle" id="menu-toggle" class="navbar-brand"> <span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span> </a>
 
-        <a class="navbar-brand" href="#/">ToDoManager</a>
-      </div>
+                            <a class="navbar-brand" href="#/">ToDoManager</a>
+                        </div>
 
-      <div class="collapse navbar-collapse" id="js-navbar-collapse">
+                    <div class="collapse navbar-collapse" id="js-navbar-collapse">
 
-        <ul class="nav navbar-nav">
-          <li ui-sref-active="active">
-            <a ui-sref="main">Home</a>
-          </li>
-          <li ui-sref-active="active">
-            <a ui-sref="todos">To-dos</a>
-          </li>
-    
-        </ul>
-        <ul class="nav navbar-nav pull-right">
-          <li ng-hide="isAuthenticated()" ui-sref-active="active">
-            <a class="pull-right" ui-sref="login">Login</a>
-          </li>
-          <li ng-show="isAuthenticated()" ui-sref-active="active">
-            <a class="pull-right" ui-sref="logout">Logout</a>
-          </li>
-          
-        </ul>
-      </div>
-    </div>
-  </div>
+                    <ul class="nav navbar-nav">
+                        <li ui-sref-active="active">
+                            <a ui-sref="main">Home</a>
+                        </li>
+                    </ul>
+
+                    <ul class="nav navbar-nav navbar-right" ng-cloak>
+
+                        <li ng-show="isWorking" style="margin-right:15px;margin-top:3px">
+                            <i class="fa fa-spinner fa-pulse fa-3x"></i>
+                        </li>
+                        <li ng-show="isAuthenticated()" style="margin-right:5px">
+                            <a ui-sref="add/todo" id="addTodoNav" class="btn btn-primary">Add a ToDo</a>
+                        </li>
+                        <li ng-show="isAuthenticated()" >
+                            <a ui-sref="todolist" id="addListNav" class="btn btn-info">Add a list</a>
+                        </li>
+                        <li ng-hide="isAuthenticated()" ui-sref-active="active">
+                            <a ui-sref="login" class="btn btn-link"> <span class="glyphicon glyphicon-user" aria-hidden="true"></span> Login</a>
+                        </li>
+                        <li ng-show="isAuthenticated()" ui-sref-active="active">
+                            <a ui-sref="logout" class="btn btn-link"> <span class="glyphicon glyphicon-user" aria-hidden="true"></span>  Logout</a>
+                        </li>
+
+                         <!-- glyphicon glyphicon-cloud    -->
+                        
+                        <li ng-show="online" title="Application online" style="margin-left:5px;margin-top:3px; color:green">
+                            <i class="fa fa-sellsy fa-3x"></i>
+                        </li>
+                        <li ng-hide="online" title="Application offline" style="margin-left:5px;margin-top:3px; color:red">
+                            <i class="fa fa-hdd-o fa-3x"></i>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
 
         <div class="container" ng-cloak>
             <div class="row">
@@ -94,8 +106,6 @@
 
             <div class="footer"></div>
         </div>
-
-
     </div>
 </div>
 
@@ -130,6 +140,7 @@
     <!-- endbuild -->
 
     <script src="./lib/map.js"></script>
+    <!--script src="./lib/ui-bootstrap-tpls-0.6.0.js"></script-->
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
     <script src="scripts/app.js"></script>
     <script src="scripts/app.config.js"></script>
@@ -147,8 +158,7 @@
     <!-- Controllers -->
     <script src="scripts/controllers/header.js"></script>
     <script src="scripts/controllers/contact.js"></script>
-    <script src="scripts/controllers/logout.js"></script>
-    <script src="scripts/controllers/todos.js"></script>
+    <script src="scripts/controllers/logout.js"></script>   
     <script src="scripts/controllers/viewToDoList.js"></script>
     <script src="scripts/controllers/todolist.js"></script>
     <script src="scripts/controllers/listtodolist.js"></script>
@@ -156,7 +166,7 @@
     <script src="scripts/controllers/addTodo.js"></script>
     <script src="scripts/controllers/login.js"></script>
     <script src="scripts/controllers/register.js"></script>
-
+    <script src="scripts/controllers/shareTodo.js"></script>
 
     <!-- endbuild -->
 

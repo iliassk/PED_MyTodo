@@ -4,58 +4,78 @@
         <ul class="sidebar-nav">
             <li class="sidebar-brand"></li>
            
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <input  type="text" class="form-control input-sm" ng-model="query" placeholder="Search ..." >
-                        <div class="btn-group pull-right" role="group" aria-label="...">
-                            <a ng-click="hideCompleted()" class="btn btn-sm btn-primary" data-toggle="button">
-                                Hide <span style="color:Chartreuse " class="glyphicon glyphicon-ok"></span>
-                            </a>
-                            <a ui-sref="todolist" class="btn btn-sm btn-primary">
-                                <span class="glyphicon glyphicon-plus"></span>  <span class="glyphicon glyphicon-th-list"></span>
-                            </a>
-                            <a ui-sref="add/todo" class="btn btn-sm btn-primary">
-                                <span class="glyphicon glyphicon-plus"></span> abc <span class="glyphicon glyphicon-check"></span>
-                            </a>
-                        </div>    
-                    </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <input  type="text" class="form-control input-sm" ng-model="query" placeholder="Search ..." >
+                    <div class="btn-group pull-right" role="group" aria-label="...">
+                        <a ng-click="hideCompleted()" class="btn btn-sm btn-primary" data-toggle="button">
+                            Hide <span style="color:Chartreuse " class="glyphicon glyphicon-ok"></span>
+                        </a>
+                        <a ui-sref="todolist" id="addListSideMenu" class="btn btn-sm btn-primary">
+                            <span class="glyphicon glyphicon-plus"></span>  <span class="glyphicon glyphicon-th-list"></span>
+                        </a>
+                        <a ui-sref="add/todo" id="addToDoSideMenu" class="btn btn-sm btn-primary">
+                            <span class="glyphicon glyphicon-plus"></span> abc <span class="glyphicon glyphicon-check"></span>
+                        </a>
+                    </div>    
                 </div>
+            </div>
 
-                <div id="left_menu_tabs">
+            <div id="left_menu_tabs">
 
-                <table>
-                    <tbody>
-                        <tr>
-                            <td width="33%"> <li ui-sref-active="active"><a onclick ="toggle('listTodo')" ng-click="todoList()"><B>ListTodo</B></a></li></td>
-                            <td width="33%" ><li ui-sref-active="active"><a onclick ="toggle('groupe')"><B>Contacts</B></a></li></td>
-                        </tr>
-                    </tbody>
-                </table>
-                    
+            <table>
+                <tbody>
+                    <tr>
+                        <td width="30%"> <li ui-sref-active="active"><a onclick ="toggle('listTodo')" ng-click="todoList()"><B>ListTodo</B></a></li></td>
+                        <td width="30%" ><li ui-sref-active="active"><a onclick ="toggle('groupe')"><B>Contacts</B></a></li></td>
+                        <td width="30%" ><li ui-sref-active="active"><a onclick ="toggle('sharedToDo')"><B>Shared Todo</B></a></li></td>
+                    </tr>
+                </tbody>
+            </table>
+                
+            </div>
+            <div id="listTodo" style="visibility: visible" name="listTodo">
+                <div class="row"  ng-switch on="data.listsWithToDo.length" ng-cloak>
+                    <ul ng-switch-when="0">
+                        <a ui-sref="todolist" class="btn btn-info">You have no Todo list, create one</a>
+                    </ul>
+
+                    <accordion close-others="false">
+                        <accordion-group  is-open="status.open" ng-repeat="list in data.listsWithToDo | filter:query ">
+                            <accordion-heading ng-click=""><a class="accordion-toggle" ng-style="{color: '{{list.color}}'}">{{list.name}}</a>
+                            <a ng-click="status.open = !status.open" class="pull-right" ui-sref="viewToDoList({ id: {{list.id_list}} })"> <i class="glyphicon glyphicon-info-sign"></i> </a>
+                            </accordion-heading>
+                            <li ng-repeat="todo in list.todos | filter:query | orderBy:['-date', 'name'] " ng-hide="hidecompleted && (todo.completed == true) ">
+                                <a style="display: inline; color: white;" ui-sref="todo/({ id: {{todo.id_todo}} })" popover-trigger="mouseenter" popover-placement="up" popover-title="{{todo.description}}" popover="{{todo.date | date:'short'}}">{{todo.title}}</a>
+                                <a class="pull-right"><i style="display: inline; color:Chartreuse;"  ng-click="onTodoModified(todo)" class="glyphicon glyphicon-ok ng-show" ng-show="todo.completed"></i></a>
+                                <a class="pull-right"><i style="display: inline; color:Gainsboro"  ng-click="onTodoModified(todo)" class="glyphicon glyphicon-ok ng-hide " ng-hide="todo.completed"></i></a>
+                            </li>
+                        </accordion-group>
+                    </accordion>
                 </div>
-                <div id="listTodo" style="visibility: visible" name="listTodo">
-                 <div class="row"  ng-switch on="todoList.length" ng-cloak>
-                <ul ng-switch-when="0">
-                    <a ui-sref="todolist" class="btn btn-info">You have no Todo list, create one</a>
-                </ul>
+            </div>
+            <div ng-include="'views/groupe.html'"></div>
 
-                <accordion close-others="false">
-                    <accordion-group  is-open="status.open" ng-repeat="list in todoList | filter:query ">
-                        <accordion-heading ng-click=""><a class="accordion-toggle" ng-style="{color: '{{list.color}}'}">{{list.name}}</a>
-                        <a ng-click="status.open = !status.open" class="pull-right" ui-sref="viewToDoList({ id: {{list.id_list}} })"> <i class="glyphicon glyphicon-info-sign"></i> </a>
-                        </accordion-heading>
-                        <li ng-repeat="todo in list.todos | filter:query | orderBy:['-date', 'name'] " ng-hide="hidecompleted && (todo.completed == true) ">
-                            <a style="display: inline; color: white;" ui-sref="todo/({ id: {{todo.id_todo}} })" popover-trigger="mouseenter" popover-placement="up" popover-title="{{todo.description}}" popover="{{todo.date | date:'short'}}">{{todo.title}}</a>
-                            <a class="pull-right"><i style="display: inline; color:Chartreuse;"  ng-click="onTodoModified(todo)" class="glyphicon glyphicon-ok ng-show" ng-show="todo.completed"></i></a>
-                            <a class="pull-right"><i style="display: inline; color:Gainsboro"  ng-click="onTodoModified(todo)" class="glyphicon glyphicon-ok ng-hide " ng-hide="todo.completed"></i></a>
-                        </li>
-                    </accordion-group>
-                 </accordion>
-            
-                </div>  
+            <div id="sharedToDo" style="visibility: hidden" >
+                <div class="row"  ng-switch on="data.shareListsWithToDo.length" ng-cloak>
+                    <ul ng-switch-when="0">
+                        <a class="btn btn-info">You have no shared list</a>
+                    </ul>
+
+                    <accordion close-others="false">
+                        <accordion-group  is-open="status.open" ng-repeat="list in data.shareListsWithToDo | filter:query ">
+                            <accordion-heading ng-click=""><a class="accordion-toggle" ng-style="{color: '{{list.color}}'}">{{list.name}}</a>
+                            <a ng-click="status.open = !status.open" id="{{list.name}}InfoClick" class="pull-right" ui-sref="viewToDoList({ id: {{list.id_list}} })"> <i class="glyphicon glyphicon-info-sign"></i> </a>
+                            </accordion-heading>
+                            <li ng-repeat="todo in list.todos | filter:query | orderBy:['-date', 'name'] " ng-hide="hidecompleted && (todo.completed == true) ">
+                                <a style="display: inline; color: white;" ui-sref="todo/({ id: {{todo.id_todo}} })" popover-trigger="mouseenter" popover-placement="up" popover-title="{{todo.description}}" popover="{{todo.date | date:'short'}}">{{todo.title}}</a>
+                                <a class="pull-right"><i style="display: inline; color:Chartreuse;"  ng-click="onTodoModified(todo)" class="glyphicon glyphicon-ok ng-show" ng-show="todo.completed"></i></a>
+                                <a class="pull-right"><i style="display: inline; color:Gainsboro"  ng-click="onTodoModified(todo)" class="glyphicon glyphicon-ok ng-hide " ng-hide="todo.completed"></i></a>
+                            </li>
+                        </accordion-group>
+                    </accordion>
                 </div>
-                <div ng-include="'views/groupe.html'"></div>
-                  
+            </div>
         </ul>
     </div>
 </div>
