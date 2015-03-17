@@ -4,19 +4,22 @@ angular.module('ToDoManagerApp')
 
 .controller('AddTodoCtrl', function($scope, $location, $log, $modal, TDMService, alert, $upload,$http, API_URL, $state) {
  
-  TDMService.refresh();
+  TDMService.refresh(function(){
+    $scope.data = TDMService.data;
+
+  });
   ////////////////Submit form /////////////////
   $scope.data = TDMService.data;
 
-  $scope.mytodo = {title: '', description: '', priority: '', context: '', date: '', completed: false, id_owner: '', url: '', attachment_path:'', localization: '', id_list:'', id_category:'', subtodos: []};
+  $scope.mytodo = {title: '', description: '', priority: '', context: '', date: '', completed: false, id_owner: '', url: '', attachment_path:'', localization: '', id_list:'', id_category:'', subtodos: new Array()};
   $scope.subtodo = {title: '', description: ''}
-  $scope.mytodolist;
   $scope.file;
   $scope.isCollapsed = true;
 
   $scope.addSubTodo = function(subtodo) {
     if(subtodo.title != ''){
       var subtodoTmp = {title : subtodo.title, description : subtodo.description}
+      debugger;
       $scope.mytodo.subtodos.push(subtodoTmp)
     }
     else
@@ -77,7 +80,7 @@ angular.module('ToDoManagerApp')
   };
   ////////////////Calendar /////////////////
 
-$scope.today = function() {
+  $scope.today = function() {
     var today = new Date();
     /*var dd = today.getDate();
     var mm = today.getMonth()+1; //January is 0!
