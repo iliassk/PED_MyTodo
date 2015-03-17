@@ -11,6 +11,8 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 
 	var ToDoManagerApp = this;
 
+
+
 	//Shared data used for synchronisation between controllers
 	ToDoManagerApp.data = {
 		listsWithToDo: [],
