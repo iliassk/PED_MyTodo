@@ -1,14 +1,14 @@
 
 <div id="groupe" style="visibility: hidden">
 
-                    <div class="row"  ng-switch on="data.groupe.length" ng-cloak id="groupe">
+                    <div class="row"  ng-switch on="groupe.length" ng-cloak id="groupe">
                 <ul ng-switch-when="0">
                     <a onclick="groupe('show')" class="btn btn-info">You have no group, create one</a>
                 </ul>
 
                 <div id="groupe" ng-switch-default ng-cloak >
                     <li>
-                   <a ui-sref="listcontact"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add a contact</a>
+                   <a ui-sref="addcontact"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add a contact </a>
                    </li>
                 <accordion close-others="oneAtATime" >
                     <accordion-group id="groupee">
@@ -40,7 +40,7 @@
                     <accordion-heading ng-click="isopen=!isopen" >
                     {{listgroup.name}}
                     
-                    <span class="badge" >{{total(listgroup, contact)}}</span>
+                    <span class="badge" >{{total(listgroup.id_group)}}</span>
 
                     
                     </accordion-heading>

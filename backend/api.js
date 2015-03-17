@@ -144,9 +144,9 @@ app.get('/userslist', function(req, res, next) {
 });
 
 app.post('/addcontact', function(req, res, next) {
-	console.log("toto debut")
+	
 	contact.addcontact_post(req, res, next, connection, auth)
-	console.log("toto fin")
+	
 });
 
 app.get('/listcontact', function(req, res, next) {	

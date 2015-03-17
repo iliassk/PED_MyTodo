@@ -1,4 +1,11 @@
+<div ng-switch on="users.length">
+<div ng-switch-when="0">
+  <div class="jumbotron">
+                    No new User To add
+  </div>
 
+</div>
+<div ng-switch-default >
 <table class="table table-striped" >
   <tbody>
     <tr ng-repeat="user in users" >
@@ -25,3 +32,6 @@
     </tbody>
 
 </table>
+</div>
+
+</div>

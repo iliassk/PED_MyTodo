@@ -49,9 +49,9 @@ angular.module('ToDoManagerApp').config(function($urlRouterProvider, $stateProvi
 			templateUrl: '/views/todo.html',
 			controller: 'TodoCtrl'
 		})
-		.state('listcontact', {
-			url: '/listcontact',
-			templateUrl: '/views/listcontact.html',
+		.state('addcontact', {
+			url: '/addcontact',
+			templateUrl: '/views/addcontact.html',
 			controller: 'contactCtrl'
 		})
 		.state('logout', {

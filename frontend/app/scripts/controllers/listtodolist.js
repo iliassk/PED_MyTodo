@@ -57,10 +57,11 @@ angular.module('ToDoManagerApp').controller('ListTodoListCtrl', function($scope,
 		});
 	}
 
-	$scope.total = function(group, contact){
+	$scope.total = function(obj){
 		var total = 0, i = 0;
+		var contact = $scope.contact;
 		for(i=0; i< contact.length; i++){
-			if(contact[i].id_group == group.id_group)
+			if(contact[i].id_group == obj)
 				total = total+1;
 			
 		}
