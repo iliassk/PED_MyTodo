@@ -73,11 +73,6 @@ function getAdresse(idTab, successFindingAdresseCallback, errorFindingAdresseCal
          successFindingAdresseCallback(place.geometry.location, place.name)
      });
 
-    setupClickListener('changetype-all', []);
-  	setupClickListener('changetype-address', ['address']);
-  	setupClickListener('changetype-establishment', ['establishment']);
-  	setupClickListener('changetype-geocode', ['geocode']);
-
   	var centerControlDiv = document.createElement('div');
   	localisationControl(centerControlDiv, map);
 

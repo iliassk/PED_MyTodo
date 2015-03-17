@@ -3,10 +3,8 @@
 angular.module('ToDoManagerApp')
 .controller('TodoCtrl',  function($scope, $location, $log, $modal, TDMService, alert, $stateParams, $state) {
 
-  $scope.todo_id = $stateParams.id;
-
   $scope.mytodo = {};
-  $scope.mytodolist;
+
   $scope.isCollapsed = true;
   $scope.isNotEditing = true;
 
@@ -16,7 +14,7 @@ angular.module('ToDoManagerApp')
     TDMService.deleteSubToDo(id);
   }
 
-    $scope.addSubTodo = function(subtodo) {
+  $scope.addSubTodo = function(subtodo) {
     if(subtodo.title != ''){
       var subtodoTmp = {title : subtodo.title, description : subtodo.description}
       if(!$scope.mytodo.subtodos)
@@ -154,16 +152,6 @@ angular.module('ToDoManagerApp')
     $scope.mytodo.date = null;
   };  
 
-  TDMService.refresh(function(){
-    //debugger;
-    $scope.mytodo = TDMService.getAToDo($stateParams.id);
-    console.log("accessing shared data")
-    console.log($scope.mytodo)
-
-    $scope.data = TDMService.data;
-    $scope.today();
-    $scope.toggleMin();
-  })
 
   ////////////////Localization /////////////////
 
@@ -218,6 +206,17 @@ angular.module('ToDoManagerApp')
       $log.info('Modal dismissed at: ' + new Date());
     });
   };
+
+
+  TDMService.refresh(function(){
+    //debugger;
+    $scope.mytodo = TDMService.getAToDo($stateParams.id);
+    console.log($scope.mytodo)
+
+    $scope.data = TDMService.data;
+    $scope.today();
+    $scope.toggleMin();
+  })
 
 });
 

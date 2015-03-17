@@ -8,17 +8,16 @@
  * Controller of the ToDoManagerApp
  */
 
-angular.module('ToDoManagerApp').controller('ViewToDoList', function($scope, $stateParams, $window, alert, TDMService, $state, APP_URL, $modal) {
+angular.module('ToDoManagerApp').controller('ViewToDoList', function($scope, $stateParams, $window, alert, TDMService, $state, APP_URL, $modal, $rootScope) {
     
 	$scope.list = {};
 	$scope.displayedCollection = {};
     TDMService.refresh(function(){
     	console.log("accessing shared data")
 		$scope.list = TDMService.getAList($stateParams.id)
-		TDMService.data.isWorking = false;
 		console.log($scope.list)
 		$scope.displayedCollection = [].concat($scope.list.todos);
-
+		$rootScope.isWorking = false;
     })
 	$scope.hidecompleted = false;
 
@@ -68,11 +67,6 @@ angular.module('ToDoManagerApp').controller('ViewToDoList', function($scope, $st
 
 	$scope.deleteTodo = function(todo_id, row){
 		console.log("[deleteTodo]");
-
-		var index = $scope.list.indexOf(row);
-        if (index !== -1) {
-            $scope.list.splice(index, 1);
-        }
 
 		TDMService.deleteToDo(todo_id)
 		.success(function(data) {

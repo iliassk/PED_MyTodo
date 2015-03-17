@@ -1,18 +1,4 @@
-<script type="text/ng-template" id="localizaton_map.html">
-    <div class="modal-header">
-        <h3 class="modal-title">Choose a location</h3>
-    </div>
-    <div class="modal-body" ng-init="init()">
-        <input id="input-address" class="controls" type="text" placeholder="Enter a location">
-        <div id="map-canvas"></div>
-    </div>
-    <div class="modal-footer">
-        <button class="btn btn-primary" ng-click="ok()">Ok</button>
-        <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
-    </div>
-</script>
-
-    
+   
 <script type="text/ng-template" id="modalDelete.html">
         <div class="modal-header">
             <h3 class="modal-title">Delete this todo?</h3>
@@ -32,7 +18,7 @@
 
 <div class="form-group">
     <form class="form-signin" role="form" ng-model="mytodo" ng-submit="submit()">
-        <h2 class="form-signin-heading">Todo n°{{myotodo.id_list}}</h2>
+        <h2 class="form-signin-heading">Todo n°{{mytodo.id_list}}</h2>
         <small><a ng-click="isNotEditing = !isNotEditing"><i class="glyphicon glyphicon-pencil"></i> Edit this todo</a></small>
         <div class='row'>
         <div class="col-lg-6">
@@ -83,19 +69,6 @@
 
        <h3><i class="glyphicon glyphicon-globe"></i>Location</h3><small>Add an address!</small>
         <input ng-disabled="isNotEditing" ng-model="mytodo.localization" id="input-address" class="controls" type="text" placeholder="Enter a location">
-        <div id="type-selector" class="controls">
-            <input type="radio" name="type" id="changetype-all" checked="checked">
-            <label for="changetype-all">All</label>
-
-            <input type="radio" name="type" id="changetype-establishment">
-            <label for="changetype-establishment">Etablissement</label>
-
-            <input type="radio" name="type" id="changetype-address">
-            <label for="changetype-address">Adresses</label>
-
-            <input type="radio" name="type" id="changetype-geocode">
-            <label for="changetype-geocode">Géocode</label>
-        </div>
 
         <div id="map-canvas"></div>
 
