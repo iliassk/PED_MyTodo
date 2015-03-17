@@ -19,7 +19,11 @@ angular.module('ToDoManagerApp')
     $scope.addSubTodo = function(subtodo) {
     if(subtodo.title != ''){
       var subtodoTmp = {title : subtodo.title, description : subtodo.description}
+      if(!$scope.mytodo.subtodos)
+        $scope.mytodo.subtodos = []
       $scope.mytodo.subtodos.push(subtodoTmp)
+      subtodo.title = ""
+      subtodo.description = ""
     }
     else
       alert('warning', 'Empty Subtodo : ', 'If you want to add a subtodo, give it a name!')
