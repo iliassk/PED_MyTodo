@@ -26,9 +26,11 @@ describe('ToDoManager e2e login tests', function() {
 
         expect(element(by.id('logout')).isDisplayed()).toBeTruthy();
         browser.findElement(protractor.By.id('logout')).click();
+        // to manage the reload timeout caused by $window.location.reload() in logout
+        browser.sleep(500);
 
         expect(browser.getCurrentUrl()).toBe(browser.baseUrl + '#/');
-    }, 10000);
+    }, 30000);
 
     it('should not allow a user to log in with incorrect credentials', function() {
 
@@ -45,5 +47,5 @@ describe('ToDoManager e2e login tests', function() {
         expect(element(by.id('logout')).isDisplayed()).toBeFalsy();
 
         expect(browser.getCurrentUrl()).toBe(browser.baseUrl + '#/login');
-    }, 10000);
+    }, 30000);
 });
