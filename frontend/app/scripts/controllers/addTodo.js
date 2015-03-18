@@ -30,6 +30,9 @@ angular.module('ToDoManagerApp')
   $scope.submit = function() {
     console.log("truc")
     console.log($scope.mytodo)
+
+    debugger;
+
     TDMService.addTodo($scope.mytodo) 
       .success(function(res) {
         alert('success', 'Todo created!', 'Your todo has been created !');
@@ -149,31 +152,10 @@ angular.module('ToDoManagerApp')
     $scope.mytodo.date = null;
   };  
 
-  ////////////////Localization /////////////////
-
-  $scope.showLocation = function(size){
-
-    var modalInstance = $modal.open({
-      templateUrl: 'localizaton_map.html',
-      controller: 'MapCtrl',
-      size: size
-    });
-
-    modalInstance.result.then(function (address) {
-      $scope.mytodo.localization = address;
-      console.log('result got : ' + address);
-
-    }, function () {
-      $log.info('Modal dismissed at: ' + new Date());
-    });
-  };
-
-  $scope.address = '';
   $scope.init = function(){ 
+
     getAdresse(['map-canvas', 'input-address', 'type-selector'], function(position, address){
-      console.log(position);
-      console.log(address);
-      $scope.address = address;
+      $scope.mytodo.localization = address;
     }, function(msg){
       console.log(msg);
     });

@@ -8,7 +8,7 @@
  * Controller of the ToDoManagerApp
  */
 
-angular.module('ToDoManagerApp').controller('CalendarCtrl', function($scope, $window, uiCalendarConfig, alert, TDMService) {
+angular.module('ToDoManagerApp').controller('CalendarCtrl', function($scope, $window, uiCalendarConfig, alert, TDMService, $rootScope) {
   
     $scope.events = [];
     $scope.eventSources = $scope.events;

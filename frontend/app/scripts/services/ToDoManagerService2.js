@@ -228,9 +228,9 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 		$rootScope.isWorking = true;
 
 		if(ToDoManagerApp.isOnLine()){
-			return TDMServiceOnline.updateTodos(todo)
+			return TDMServiceOnline.updateTodos(data)
 		}else{
-			return TDMServiceOffline.updateTodos(todo)
+			return TDMServiceOffline.updateTodos(data)
 		}
 	}
 
