@@ -24,7 +24,6 @@ angular.module('ToDoManagerApp').controller('ListTodoListCtrl', function($scope,
 		TDMService.updateTodo(todo)
 		.success(function(data) {
 			console.log("[updateTodo] success");
-			//$scope.fetchData();
 		})
 		.error(function(data) {
 			console.log("[updateTodo] failure");
@@ -40,12 +39,6 @@ angular.module('ToDoManagerApp').controller('ListTodoListCtrl', function($scope,
 		.error(function() {
 			alert('warning', 'Oops!', 'update failed');
 		});
-		
-		TDMService.fetchToDoAndListToDos()
-		.success(function(data){
-			$scope.todoList = data;
-		});
-			
 
 		TDMService.listcontact()
 		.success(function(data) {
@@ -75,15 +68,11 @@ angular.module('ToDoManagerApp').controller('ListTodoListCtrl', function($scope,
  		TDMService.deletetodolist(obj)
  		.success(function(data) {
 			alert('success', 'OK!', 'delete success');
-			$scope.todoList = data;
 		})
 		.error(function() {
 			alert('warning', 'Oops!', 'delete failed');
 		});
-
- 		$window.location.reload();
 	};
-
 	
 	$scope.submitgroup = function(name){
 
