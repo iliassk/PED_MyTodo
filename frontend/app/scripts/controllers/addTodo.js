@@ -33,7 +33,7 @@ angular.module('ToDoManagerApp')
     TDMService.addTodo($scope.mytodo) 
       .success(function(res) {
         alert('success', 'Todo created!', 'Your todo has been created !');
-        TDMService.fetchAll()
+        console.warn("Fetchall retiré ici !!! l'ajout peut être buggé!!! ")
         $state.go('main');
       })
       .error(function(err) {

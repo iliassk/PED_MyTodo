@@ -8,7 +8,6 @@
  * Controller of the ToDoManagerApp
  */
 
-
 angular.module('ToDoManagerApp').controller('CalendarCtrl', function($scope, $window, uiCalendarConfig, alert, TDMService) {
   
     $scope.events = [];
@@ -16,7 +15,6 @@ angular.module('ToDoManagerApp').controller('CalendarCtrl', function($scope, $wi
     var regExp = new RegExp("IEMobile", "i");
 
     TDMService.refresh(function(){
-    	console.log("accessing shared data")
     	var data = TDMService.getAllToDo()
     	for(var i = 0; i < data.length; i++){
 			//todo[i] = {title: data[0].title ,start: new Date(y, m, 1), editable: true};
@@ -60,7 +58,6 @@ angular.module('ToDoManagerApp').controller('CalendarCtrl', function($scope, $wi
 	    };
  	}	
 		   
-
 	$scope.submit = function(){
 		var data =[];
 		var t = $scope.events;

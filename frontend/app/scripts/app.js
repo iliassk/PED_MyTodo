@@ -11,7 +11,14 @@
 angular.module('ToDoManagerApp', ['ui.router','ui.calendar', 'ngAnimate','ui.bootstrap','angularFileUpload', 'satellizer','smart-table'])
 .run(function($window, $rootScope) {
 
-	$rootScope.isWorking = false
+    console.offline = function(text){
+      console.log("[offline] => " + text)
+    }
+    console.online = function(text){
+      console.log("[online] => " + text)
+    }
+
+	   $rootScope.isWorking = false
 
   	$rootScope.online = navigator.onLine;
   	$window.addEventListener("offline", function () {

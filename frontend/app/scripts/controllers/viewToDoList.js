@@ -119,6 +119,10 @@ angular.module('ToDoManagerApp').controller('ViewToDoList', function($scope, $st
 		});
 	}
 
+	$scope.showMapButton = function(place){
+		return place == "" || place == undefined || place == null
+	}
+
 });
 
 angular.module('ToDoManagerApp')

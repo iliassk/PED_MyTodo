@@ -31,6 +31,7 @@ angular.module('ToDoManagerApp')
   $scope.submit = function() {
      TDMService.updateTodo($scope.mytodo) 
       .success(function(res) {
+        $state.go('main')
         alert('success', 'Todo edited!', 'Your todo has been edited !');
       })
       .error(function(err) {
