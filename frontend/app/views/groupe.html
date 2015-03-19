@@ -1,7 +1,7 @@
 
 <div id="groupe" style="visibility: hidden">
 
-                    <div class="row"  ng-switch on="groupe.length" ng-cloak id="groupe">
+                    <div class="row"  ng-switch on="data.group.length" ng-cloak id="groupe">
                 <ul ng-switch-when="0">
                     <a onclick="groupe('show')" class="btn btn-info">You have no group, create one</a>
                 </ul>
@@ -21,7 +21,7 @@
                       <ul>
                       
                     
-                      <div ng-repeat="listcontact in contact" > 
+                      <div ng-repeat="listcontact in data.contact" > 
                       <table>
                       <tbody>
                         <tr>
@@ -36,16 +36,17 @@
 
                       </ul>
                     </accordion-group id="groupee">
-                    <accordion-group ng-repeat="listgroup in groupe | filter:query ">
+                    <accordion-group ng-repeat="listgroup in data.group | filter:query ">
                     <accordion-heading ng-click="isopen=!isopen" >
                     {{listgroup.name}}
                     
-                    <span class="badge" >{{total(listgroup.id_group)}}</span>
+                    <!-- {{ total(listgroup) }} -->
+                    <span class="badge" >{{ listgroup.contact.length }}</span>
 
                     
                     </accordion-heading>
                     <ul>
-                      <div ng-repeat="listcontact in contact"  >
+                      <div ng-repeat="listcontact in data.contact"  >
                       <div ng-if="listgroup.id_group == listcontact.id_group">
                        <table>
                       <tbody>

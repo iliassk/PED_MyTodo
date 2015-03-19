@@ -14,7 +14,7 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 	//Shared data used for synchronisation between controllers
 	ToDoManagerApp.data = {
 		listsWithToDo: [],
-		groupe: '',
+		group: '',
 		contact: '',
 		shareListsWithToDo: []
 	}
@@ -315,7 +315,7 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 	}
 
 	//GET all groupe
-	this.listGroupe = function() {
+	/*this.listGroupe = function() {
 		$rootScope.isWorking = true;
 
 		if(ToDoManagerApp.isOnLine()){
@@ -323,10 +323,10 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 		}else{
 			return TDMServiceOffline.listGroupe()
 		}
-	};
+	};*/
 
 	//GET all contact
-	this.listcontact = function() {
+	/*this.listcontact = function() {
 		$rootScope.isWorking = true;
 
 		if(ToDoManagerApp.isOnLine()){
@@ -334,7 +334,7 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 		}else{
 			return TDMServiceOffline.listcontact()
 		}
-	}
+	}*/
 
 	//GET User Avatar
 	this.userAvatar = function(obj_id) {

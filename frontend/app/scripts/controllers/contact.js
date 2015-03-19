@@ -8,22 +8,26 @@
  * Controller of the ToDoManagerApp
  */
 
-angular.module('ToDoManagerApp').controller('contactCtrl', function ($scope, CMService, $rootScope){
+angular.module('ToDoManagerApp').controller('contactCtrl', function ($scope, CMService, TDMService, $rootScope){
 
-  CMService.userslist()
-	.success(function(data) {
-		$scope.users = data;
-	})
+	$scope.data = TDMService.data;
 	
+	//$scope.users => $scope.data.contact
+	 //$scope.groups = $scope.data.group
+	// 
 
-	CMService.listGroupe()
-	.success(function(data) {
-		$scope.groups = data;
-	})
+	$rootScope.$watch('accessData', function(accessData) {
+        console.log("accessData  ViewToDoList")
+        if(accessData){
+           TDMService.refresh(function(){
+		    	$scope.data = TDMService.data;
+		   })
+        }
+    });
 
 	$scope.addContact=function(id, item){
 		CMService.addContact(id, item).success(function() {
-			alert('success', 'OK!', 'add contact success');
+			$rootScope.mustRefresh = true
 		})
 	}
  

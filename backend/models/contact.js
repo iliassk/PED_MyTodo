@@ -66,6 +66,7 @@ exports.addgroup_post = function(req, res, next, connection, auth, jwt){
 exports.listgroupe_get = function(req, res, next, connection, auth, jwt){
    // retourne le non et le nombre de votre
    	var _id = auth.checkAuthorization(req, res, jwt);
+   	var cpt = 0;
 	connection.query('SELECT * FROM GROUPS WHERE id_owner = ?', _id,function(err, rows) {
 		if (err) {
 			console.log(err);
@@ -74,6 +75,24 @@ exports.listgroupe_get = function(req, res, next, connection, auth, jwt){
 			//console.info(rows);
 			res.status(200).json(rows);
 		}
+
+		result = rows;
+		
+		rows.forEach(function (elem, index, array) {
+
+				connection.query('SELECT * FROM CONTACTS C, USERS U,  WHERE C.id_user=U.id_user AND C.id_group = ?', elem.id_group, function(err, contacts) {
+				if (err) {
+					console.log(err);
+					return next("Mysql error on connection, check your query");
+				}
+
+				result[index].contact = contacts;
+				cpt ++;
+				//pour gérer l'asynchrone on ne sait pas quand les requetes sont finies
+				if(cpt == result.length)
+					return res.status(200).json(result);
+			});
+		})
 	});
 }
 

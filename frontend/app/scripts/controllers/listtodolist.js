@@ -30,27 +30,10 @@ angular.module('ToDoManagerApp').controller('ListTodoListCtrl', function($scope,
 		});
 	}
 
-	$scope.fetchData = function(){
-		TDMService.listGroupe()
-		.success(function(data) {
-			alert('success', 'OK!', 'update success');
-			$scope.groupe = data;
-		})
-		.error(function() {
-			alert('warning', 'Oops!', 'update failed');
-		});
 
-		TDMService.listcontact()
-		.success(function(data) {
-			alert('success', 'OK!', 'update success');
-			$scope.contact = data;
-		})
-		.error(function() {
-			alert('warning', 'Oops!', 'update failed');
-		});
-	}
+	$scope.total = function(group){
+		var obj = group.id_group;
 
-	$scope.total = function(obj){
 		var total = 0, i = 0;
 		var contact = $scope.contact;
 		for(i=0; i< contact.length; i++){
@@ -86,12 +69,13 @@ angular.module('ToDoManagerApp').controller('ListTodoListCtrl', function($scope,
 		})
 	};
 
+	//$scope.group = TDMService.getGroups()
 
 	$rootScope.$watch('accessData', function(accessData) {
         console.log("accessData  listtodolist.js")
 
         if(accessData){
-           // $scope.fetchData()
+
         }
     });
 
