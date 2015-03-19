@@ -97,13 +97,13 @@ exports.authGoogle = function(req, res, next, connection, jwt, request) {
 				if (rows.length == 1) {
 					return auth.createSendToken(rows[0], connection, req, res, jwt);
 				}
-			console.log(profile.name);
 			//API KEY
 				var data = {
 					username: profile.name,
 					email: profile.email,
 					password: profile.sub, // To add an extra security
-					googleId: profile.sub
+					googleId: profile.sub,
+					avatar_path: profile.picture
 				};
 
 				//Hash passwords
