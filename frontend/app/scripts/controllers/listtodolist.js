@@ -1,9 +1,11 @@
 'use strict';
 
-angular.module('ToDoManagerApp').controller('ListTodoListCtrl', function($scope, $window, alert, TDMService) {
+angular.module('ToDoManagerApp').controller('ListTodoListCtrl', function($scope, $window, alert, TDMService, $auth) {
     
-	$scope.todoList;
 	$scope.hidecompleted = false;
+	$scope.group;
+	$scope.contact;
+	
 	
 	angular.element('[data-toggle="popover"]').popover()
 	angular.element('i').click(function(e) {
@@ -30,39 +32,36 @@ angular.module('ToDoManagerApp').controller('ListTodoListCtrl', function($scope,
 	}
 
 	$scope.fetchData = function(){
+		TDMService.listGroupe()
+		.success(function(data) {
+			alert('success', 'OK!', 'update success');
+			$scope.groupe = data;
+		})
+		.error(function() {
+			alert('warning', 'Oops!', 'update failed');
+		});
+		
 		TDMService.fetchToDoAndListToDos()
 		.success(function(data){
-			console.log('success', 'OK!', 'update success');
 			$scope.todoList = data;
-			console.log($scope.todoList)
+		});
+			
+
+		TDMService.listcontact()
+		.success(function(data) {
+			alert('success', 'OK!', 'update success');
+			$scope.contact = data;
 		})
 		.error(function() {
 			alert('warning', 'Oops!', 'update failed');
 		});
 	}
 
-	TDMService.listGroupe()
-	.success(function(data) {
-		alert('success', 'OK!', 'update success');
-		$scope.groupe = data;
-	})
-	.error(function() {
-		alert('warning', 'Oops!', 'update failed');
-	});
-
-	TDMService.listcontact()
-	.success(function(data) {
-		alert('success', 'OK!', 'update success');
-		$scope.contact = data;
-	})
-	.error(function() {
-		alert('warning', 'Oops!', 'update failed');
-	});
-
-	$scope.total = function(group, contact){
+	$scope.total = function(obj){
 		var total = 0, i = 0;
+		var contact = $scope.contact;
 		for(i=0; i< contact.length; i++){
-			if(contact[i].id_group == group.id_group)
+			if(contact[i].id_group == obj)
 				total = total+1;
 			
 		}
@@ -95,8 +94,9 @@ angular.module('ToDoManagerApp').controller('ListTodoListCtrl', function($scope,
 		})
 		.error(function() {
 			alert('warning', 'Oops!', 'add group failed');
-		});
+		})
 	};
-	$scope.fetchData();
 
+	if($auth.isAuthenticated())
+		$scope.fetchData()
 });

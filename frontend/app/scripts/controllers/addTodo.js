@@ -2,29 +2,39 @@
 
 angular.module('ToDoManagerApp')
 
-.controller('AddTodoCtrl', ['$scope', '$location', '$log', '$modal', 'TDMService','alert', '$upload', '$http', 'API_URL', function($scope, $location, $log, $modal, TDMService, alert, $upload,$http, API_URL) {
+.controller('AddTodoCtrl', function($scope, $location, $log, $modal, TDMService, alert, $upload,$http, API_URL, $state) {
+ 
+  TDMService.refresh(function(){
+    $scope.data = TDMService.data;
 
-
-  ////////////////Submit form /////////////////
-  $scope.mytodo = {title: '', description: '', priority: '', context: '', date: '', completed: false, id_owner: '', url: '', attachment_path:'', localization: '', id_list:'', id_category:''};
-  $scope.mytodolist;
-  $scope.file;
-  
-
-  TDMService.listtodolist()
-  .success(function(data) {
-    console.log('success', 'OK!', 'update success');
-    $scope.mytodolist = data;
-  })
-  .error(function() {
-    alert('warning', 'Oops!', 'update failed');
   });
+  ////////////////Submit form /////////////////
+  $scope.data = TDMService.data;
+
+  $scope.mytodo = {title: '', description: '', priority: '', context: '', date: '', completed: false, id_owner: '', url: '', attachment_path:'', localization: '', id_list:'', id_category:'', subtodos: new Array()};
+  $scope.subtodo = {title: '', description: ''}
+  $scope.file;
+  $scope.isCollapsed = true;
+
+  $scope.addSubTodo = function(subtodo) {
+    if(subtodo.title != ''){
+      var subtodoTmp = {title : subtodo.title, description : subtodo.description}
+      $scope.mytodo.subtodos.push(subtodoTmp)
+      subtodo.title = ""
+      subtodo.description = ""
+    }
+    else
+      alert('warning', 'Empty Subtodo : ', 'If you want to add a subtodo, give it a name!')
+  };
   
   $scope.submit = function() {
-
+    console.log("truc")
+    console.log($scope.mytodo)
     TDMService.addTodo($scope.mytodo) 
       .success(function(res) {
         alert('success', 'Todo created!', 'Your todo has been created !');
+        TDMService.fetchAll()
+        $state.go('main');
       })
       .error(function(err) {
         alert('warning', 'Something went wrong :(', err.message);
@@ -71,7 +81,7 @@ angular.module('ToDoManagerApp')
   };
   ////////////////Calendar /////////////////
 
-$scope.today = function() {
+  $scope.today = function() {
     var today = new Date();
     /*var dd = today.getDate();
     var mm = today.getMonth()+1; //January is 0!
@@ -158,13 +168,6 @@ $scope.today = function() {
     });
   };
 
-}]);
-
-  ////////////////Controller map modal /////////////////
-
-angular.module('ToDoManagerApp')
-.controller('MapCtrl', function ($scope, $modalInstance) {
-
   $scope.address = '';
   $scope.init = function(){ 
     getAdresse(['map-canvas', 'input-address', 'type-selector'], function(position, address){
@@ -176,12 +179,7 @@ angular.module('ToDoManagerApp')
     });
   };
 
-  $scope.ok = function () {
-    $modalInstance.close($scope.address);
-  };
+  $scope.init();
 
-  $scope.cancel = function () {
-    $modalInstance.dismiss('cancel');
-  };
 });
 

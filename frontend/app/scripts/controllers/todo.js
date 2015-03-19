@@ -1,39 +1,31 @@
 'use strict';
 
 angular.module('ToDoManagerApp')
+.controller('TodoCtrl',  function($scope, $location, $log, $modal, TDMService, alert, $stateParams, $state) {
 
+  $scope.mytodo = {};
 
-.controller('TodoCtrl', ['$scope', '$location', '$log', '$modal', 'TDMService','alert','$stateParams', function($scope, $location, $log, $modal, TDMService, alert, $stateParams) {
+  $scope.isCollapsed = true;
+  $scope.isNotEditing = true;
 
-  $scope.todo_id = $stateParams.id;
-
-  $scope.mytodo = {}
-  $scope.mytodolist;
-
-  $scope.fetchData = function(){
-    TDMService.getTodo($scope.todo_id)
-      .success(function(data) {
-        data.completed = (data.completed == 1 ? true: false)
-        $scope.mytodo = data[0];
-        console.log("Success fetchData");
-      })
-      .error(function() {
-        console.log("Faillure fetchData");
-      });
-
-
-    TDMService.listtodolist()
-    .success(function(data) {
-      console.log('success', 'OK!', 'update success');
-      $scope.mytodolist = data;
-      console.log($scope.mytodolist)
-    })
-    .error(function() {
-      alert('warning', 'Oops!', 'update failed');
-    });
+  //This function erases the chosen subtodo
+  $scope.eraseSubtodo = function(index, id){
+    $scope.mytodo.subtodos.splice(index, 1);
+    TDMService.deleteSubToDo(id);
   }
 
-  $scope.fetchData();
+  $scope.addSubTodo = function(subtodo) {
+    if(subtodo.title != ''){
+      var subtodoTmp = {title : subtodo.title, description : subtodo.description}
+      if(!$scope.mytodo.subtodos)
+        $scope.mytodo.subtodos = []
+      $scope.mytodo.subtodos.push(subtodoTmp)
+      subtodo.title = ""
+      subtodo.description = ""
+    }
+    else
+      alert('warning', 'Empty Subtodo : ', 'If you want to add a subtodo, give it a name!')
+  };
 
   ////////////////Submit form /////////////////
   $scope.submit = function() {
@@ -46,19 +38,54 @@ angular.module('ToDoManagerApp')
       });
   };
 
+
+
   ////////////////Completed boolean ///////////
 
-  $scope.onTodoModified = function(todo){
-
-    mytodo.completed = (mytodo.completed ? 1 : 0)
+  $scope.onTodoModified = function(){
+    $scope.mytodo.completed = ($scope.mytodo.completed ? 1 : 0)
   }
 
   ////////////////Attachment file /////////////////
   angular.element('#input-file').fileinput({showCaption: false,showUpload: false, maxFileSize:2000}); 
+  $scope.onFileSelect = function($files) {
+    //$files: an array of files selected, each file has name, size, and type. 
+    for (var i = 0; i < $files.length; i++) {
+      var file = $files[i];
+      $scope.upload = $upload.upload({
+        url: API_URL + 'uploadAvatar', //upload.php script, node.js route, or servlet url 
+        //method: 'POST' or 'PUT', 
+        //headers: {'header-key': 'header-value'}, 
+        //withCredentials: true, 
+        data: {myObj: $scope.file},
+        file: file, // or list of files ($files) for html5 only 
+        //fileName: 'doc.jpg' or ['1.jpg', '2.jpg', ...] // to modify the name of the file(s) 
+        // customize file formData name ('Content-Desposition'), server side file variable name.  
+        //fileFormDataName: myFile, //or a list of names for multiple files (html5). Default is 'file'  
+        // customize how data is added to formData. See #40#issuecomment-28612000 for sample code 
+        //formDataAppender: function(formData, key, val){} 
+      }).progress(function(evt) {
+        console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
+      }).success(function(data, status, headers, config) {
+        // file is uploaded successfully 
+        console.log("File : ")
+        console.log(data['file']['path']);
+        $scope.user.avatar_path = data['file']['path'];
+        $scope.file = data['file']['path'];
+        console.log("End of file")
+      });
+      //.error(...) 
+      //.then(success, error, progress);  
+      // access or attach event listeners to the underlying XMLHttpRequest. 
+      //.xhr(function(xhr){xhr.upload.addEventListener(...)}) 
+    }
+    /* alternative way of uploading, send the file binary with the file's content-type.
+       Could be used to upload files to CouchDB, imgur, etc... html5 FileReader is needed. 
+       It could also be used to monitor the progress of a normal http post/put request with large data*/
+    // $scope.upload = $upload.http({...})  see 88#issuecomment-31366487 for sample code. 
+  };  ////////////////Calendar /////////////////
 
-  ////////////////Calendar /////////////////
-
-$scope.today = function() {
+  $scope.today = function() {
     var today = new Date();
     /*var dd = today.getDate();
     var mm = today.getMonth()+1; //January is 0!
@@ -70,7 +97,7 @@ $scope.today = function() {
     $scope.mytodo.date = today;
 
   };
-  $scope.today();
+  
 
   $scope.clear = function () {
     $scope.mytodo.date = null;
@@ -79,7 +106,6 @@ $scope.today = function() {
   $scope.toggleMin = function() {
     $scope.minDate = $scope.minDate ? null : new Date();
   };
-  $scope.toggleMin();
 
   $scope.open = function($event) {
     $event.preventDefault();
@@ -126,6 +152,7 @@ $scope.today = function() {
     $scope.mytodo.date = null;
   };  
 
+
   ////////////////Localization /////////////////
 
   $scope.showLocation = function(size){
@@ -144,6 +171,19 @@ $scope.today = function() {
       $log.info('Modal dismissed at: ' + new Date());
     });
   };
+
+  $scope.address = '';
+  $scope.init = function(){ 
+    getAdresse(['map-canvas', 'input-address', 'type-selector'], function(position, address){
+      console.log(position);
+      console.log(address);
+      $scope.address = address;
+    }, function(msg){
+      console.log(msg);
+    });
+  };
+
+  $scope.init();
 
   ////////////////Delete todo /////////////////
 
@@ -167,34 +207,23 @@ $scope.today = function() {
     });
   };
 
-}]);
+
+  TDMService.refresh(function(){
+    //debugger;
+    $scope.mytodo = TDMService.getAToDo($stateParams.id);
+    console.log($scope.mytodo)
+
+    $scope.data = TDMService.data;
+    $scope.today();
+    $scope.toggleMin();
+  })
+
+});
 
   
 
   ////////////////Controller map modal /////////////////
 
-angular.module('ToDoManagerApp')
-.controller('MapCtrl', function ($scope, $modalInstance) {
-
-  $scope.address = '';
-  $scope.init = function(){ 
-    getAdresse(['map-canvas', 'input-address', 'type-selector'], function(position, address){
-      console.log(position);
-      console.log(address);
-      $scope.address = address;
-    }, function(msg){
-      console.log(msg);
-    });
-  };
-
-  $scope.ok = function () {
-    $modalInstance.close($scope.address);
-  };
-
-  $scope.cancel = function () {
-    $modalInstance.dismiss('cancel');
-  };
-});
 
 angular.module('ToDoManagerApp')
 .controller('deleteTodoCtrl', function ($scope, $modalInstance, id, $state, TDMService) {

@@ -8,16 +8,16 @@
 		<label><h2>Description</h2></label>
 		<textarea ng-model="description" class="form-control" id="Qcmnbr" placeholder="Enter the Description" required></textarea>
 		<label><h2>color</h2></label>
-		<input type="color" ng-model="color" class="form-control" id="TodoListColor" size="20" value="#000000"/>
+		<input type="color" ng-model="color" class="form-control" id="TodoListColor" size="20" />
 	</div>
 	
 	<p><hr></p>
 	<div class="row">
-		<div class="col-xs-6">
+		<!--div class="col-xs-6">
 			<a href="#/" class="btn btn-default" role="button"><span class="glyphicon glyphicon-arrow-left"></span> Back to Home</a>
-		</div>
+		</div-->
 		<div class="col-xs-6">
-			<button class="btn btn-primary pull-right" type="submit"><span class="glyphicon glyphicon-saved"></span> Create TodoList &raquo;</button>
+			<button class="btn btn-primary pull-right" id="submitListButton" type="submit"><span class="glyphicon glyphicon-saved"></span> Create TodoList &raquo;</button>
 		</div>
 	</div>
 	

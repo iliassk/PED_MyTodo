@@ -107,8 +107,6 @@ app.get('/auth/twitter', function(req, res, next) {
 	auth.authTwitter(req, res, next, connection, jwt, request);
 });
 
-
-
 app.post('/todolist', function(req, res, next) {
 	todo.todolist_post(req, res, next, connection, auth, jwt)
 });
@@ -129,22 +127,28 @@ app.get('/listtodolistwithtodos', function(req, res, next) {
 	todo.listtodolistwithtodos_get(req, res, next, connection, auth, jwt)
 });
 
+app.get('/listsharedtodolistwithtodos', function(req, res, next) {
+	todo.listsharedtodolistwithtodos_get(req, res, next, connection, auth, jwt)
+});
+
 app.get('/listgroupe', function(req, res, next) {
-	contact.listgroupe_get(req, res, next, connection, auth)
+	contact.listgroupe_get(req, res, next, connection, auth, jwt)
 });
 
 app.post('/addgroup', function(req, res, next) {
-	contact.addgroup_post(req, res, next, connection, auth)
+	contact.addgroup_post(req, res, next, connection, auth, jwt)
 });
 
 app.get('/userslist', function(req, res, next) {
 	contact.userslist_get(req, res, next, connection, auth)
 });
 
+app.get('/user/:id', function(req, res, next) {
+	contact.userid_get(req, res, next, connection, auth)
+});
+
 app.post('/addcontact', function(req, res, next) {
-	console.log("toto debut")
 	contact.addcontact_post(req, res, next, connection, auth)
-	console.log("toto fin")
 });
 
 app.get('/listcontact', function(req, res, next) {	
@@ -159,8 +163,20 @@ app.delete('/todo/:id', function(req, res, next) {
 	todo.todo_id_delete(req, res, next, connection, auth)
 });
 
+app.delete('/subtodo/:id', function(req, res, next) {
+	todo.subtodo_id_delete(req, res, next, connection, auth)
+});
+
 app.put('/todo/:id', function(req, res, next) {
 	todo.todo_id_put(req, res, next, connection, auth)
+});
+
+app.put('/todo', function(req, res, next) {
+	todo.todos_put(req, res, next, connection, auth)
+});
+
+app.get('/todo', function(req, res, next) {
+	todo.todo_get(req, res, next, connection, auth, jwt)
 });
 
 
@@ -190,10 +206,32 @@ app.get('/share/todolist/:id', function(req, res, next) {
 })
 
 /**
+ * Renvoi les données correspondant à la donnée partagée
+ */
+app.get('/share/data/:url/:type', function(req, res, next) {
+   	todo.getSharedData(req, res, next, connection, utils)
+})
+
+/**
 * Permet l'upload de fichier
 *
 */
 app.post('/upload',function(req,res){
+  if(done==true){
+    console.log(req.files);
+    res.status(200).json(req.files);
+    res.end("File uploaded.");
+  }
+})
+
+app.post('/avatarpath', function(req, res, next) {
+	console.log('debut')
+    todo.avatarpath_post(req, res, next, connection, auth, utils, jwt)
+    console.log('fin')
+})
+
+
+app.post('/uploadAvatar',function(req,res){
   if(done==true){
     console.log(req.files);
     res.status(200).json(req.files);

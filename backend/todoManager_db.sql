@@ -56,8 +56,9 @@ CREATE TABLE `CONTACTS` (
 --
 
 CREATE TABLE `GROUPS` (
-`id_group` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL
+  `id_group` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `id_owner` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -69,6 +70,12 @@ CREATE TABLE `GROUPS` (
 CREATE TABLE `SHARE_LIST` (
   `id_user` int(11) NOT NULL,
   `id_list` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+CREATE TABLE `SHARE_OUTSIDER` (
+  `id_reference` int(11) NOT NULL,
+  `url` varchar(255) NOT NULL, UNIQUE(`id_reference`, `url`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------

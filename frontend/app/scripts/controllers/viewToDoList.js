@@ -8,61 +8,75 @@
  * Controller of the ToDoManagerApp
  */
 
-angular.module('ToDoManagerApp').controller('ViewToDoList', function($scope, $stateParams, $window, alert, TDMService) {
+angular.module('ToDoManagerApp').controller('ViewToDoList', function($scope, $stateParams, $window, alert, TDMService, $state, APP_URL, $modal, $rootScope) {
     
-	$scope.list_id = $stateParams.id
-	$scope.list
-	$scope.todos
+	$scope.list = {};
+	$scope.displayedCollection = {};
+    TDMService.refresh(function(){
+    	console.log("accessing shared data")
+		$scope.list = TDMService.getAList($stateParams.id)
+		console.log($scope.list)
+		$scope.displayedCollection = [].concat($scope.list.todos);
+		$rootScope.isWorking = false;
+    })
 	$scope.hidecompleted = false;
+
+	$scope.itemsByPage=15;
+
+    //copy the references (you could clone ie angular.copy but then have to go through a dirty checking for the matches)
+
+
 	$scope.hideCompleted = function(todo){
 		$scope.hidecompleted = !$scope.hidecompleted;
 	}
 
-	$scope.popup = {
-  		content: '<p>Popup content here</p>',
-  		options: {
-  			html: true,
-    		title: null,
-    		placement: 'bottom'
-  		}
-	}; 
-
-
-	$scope.fetchData = function(){
-		TDMService.fetchToDoListToDos($scope.list_id)
-		.success(function(data) {
-			data.forEach(function(todo){
-				todo.completed = (todo.completed == 1 ? true : false)
-			})
-			$scope.todos = data;
-			console.log("Success fetchData");
+	$scope.shareTodo = function(todo){
+		console.log("Share todo")
+		TDMService.generateShareToDoLink(todo.id_todo)
+		.success(function(result){
+			$scope.openShareInfo(APP_URL + 'share/' + result.url + '/' + "todo")
+		}).error(function(){
+			alert("Impossible de générer un lien !");
 		})
-		.error(function() {
-			console.log("Faillure fetchData");
-		});
-
-		TDMService.gettodolist($scope.list_id)
-		.success(function(data) {
-			$scope.list = data[0];
-			console.log('Success get list');
-		})
-		.error(function() {
-			console.log('Failure get list');
-		});
+		
 	}
 
-	$scope.deleteTodo = function(todo_id){
+	$scope.shareList = function(list){
+		console.log("Share list")
+		TDMService.generateShareListLink(list.id_list)
+		.success(function(result){
+			$scope.openShareInfo(APP_URL + 'share/' + result.url + '/' + "todolist")
+		}).error(function(){
+			alert("Impossible de générer un lien !");
+		})
+	}
+
+	$scope.openShareInfo = function(_url){
+		console.log("ouverture modal avec url : " + _url)
+		var modalInstance = $modal.open({
+	      templateUrl: 'share_data.html',
+	      controller: 'ShareModalCtrl',
+	     // size: 'sm',
+	      resolve: {
+	        url: function () {
+	          return _url;
+	        }
+	      }
+	    });
+	}
+
+	$scope.deleteTodo = function(todo_id, row){
 		console.log("[deleteTodo]");
 
 		TDMService.deleteToDo(todo_id)
 		.success(function(data) {
-		console.log("[deleteTodo] success");
-			$scope.fetchData();
+			console.log("[deleteTodo] success");
+			
 		})
+		
 		.error(function(data) {
 			console.log("[deleteTodo] failure");
 		});
-
 	}
 
 	$scope.addToCalendar = function(type, todo){
@@ -99,44 +113,19 @@ angular.module('ToDoManagerApp').controller('ViewToDoList', function($scope, $st
 		TDMService.updateTodo(todo)
 		.success(function(data) {
 			console.log("[updateTodo] success");
-			$scope.fetchData();
 		})
 		.error(function(data) {
 			console.log("[updateTodo] failure");
 		});
 	}
 
-	$scope.fetchData();
-
 });
 
-angular.module('ToDoManagerApp').
-directive('popup', function() {
-  return {
-    restrict: 'A',
-    require: 'ngModel',
-    scope: {
-      ngModel: '=',
-      options: '=popup'
-    },
-    link: function(scope, element) {
-      scope.$watch('ngModel', function(val) {
-        element.attr('data-content', val);
-      });
+angular.module('ToDoManagerApp')
+.controller('ShareModalCtrl', function ($scope, $modalInstance, url) {
 
-      var options = scope.options || {} ; 
-
-      var title = options.title || null;
-      var placement = options.placement || 'right';
-      var html = options.html || false;
-      var delay = options.delay ? angular.toJson(options.delay) : null;
-      var trigger = options.trigger || 'hover';
-
-      element.attr('title', title);
-      element.attr('data-placement', placement);
-      element.attr('data-html', html);
-      element.attr('data-delay', delay);
-      element.popover({ trigger: trigger });
-    }
+  $scope.url = url;
+  $scope.close = function () {
+    $modalInstance.dismiss('cancel');
   };
 });

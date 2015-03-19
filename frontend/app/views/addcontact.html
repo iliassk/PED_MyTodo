@@ -1,10 +1,18 @@
+<div ng-switch on="users.length">
+<div ng-switch-when="0">
+  <div class="jumbotron">
+                    No new User To add
+  </div>
 
+</div>
+<div ng-switch-default >
 <table class="table table-striped" >
   <tbody>
     <tr ng-repeat="user in users" >
        <td ><div class="photo_equipe">
-      <img id="photo" src="{{user.avatar_path}}">
+    <img id="photo" src="{{user.avatar_path}}">
       </div></td>
+
       <td >{{user.username}}</td>
       <td >{{user.email}} </td>  
       <td >
@@ -24,3 +32,6 @@
     </tbody>
 
 </table>
+</div>
+
+</div>
