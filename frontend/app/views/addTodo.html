@@ -1,21 +1,3 @@
-<!--<script type="text/ng-template" id="localizaton_map.html">
-    <div class="modal-header">
-        <h3 class="modal-title">Choose a location</h3>
-    </div>
-    <div class="modal-body" ng-init="init()">
-        <input id="input-address" class="controls" type="text" placeholder="Enter a location">
-        <div id="map-canvas"></div>
-    </div>
-    <div class="modal-footer">
-        <button class="btn btn-primary" ng-click="ok()">Ok</button>
-        <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
-    </div>
-</script>-->
-
-<!-- DEBUG
-<div class="well">{{mytodo}}</div>
--->
-
 <div class="form-group">
     <form class="form-signin" role="form" ng-submit="submit()">
         <div class='row'>
@@ -51,10 +33,6 @@
 
         <timepicker ng-model="mytodo.date" ng-change="changed()" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></timepicker>
 
-
-
-<!--        <hr>-->
-
         <h3><i class="glyphicon glyphicon-paperclip"></i> Attachment</h3><small>Maximal file size is 2 MB!</small> <div class='input-group'><input id="input-file" ng-file-select="onFileSelect($files)" ng-model="mytodo.attachment_path" type="file" multiple="false"></div>
     
         <h3><i class="glyphicon glyphicon-link"></i> Link</h3><small>Add an optional link!</small>
@@ -67,8 +45,7 @@
 
         <div id="map-canvas"></div>
 
-            <input id="address" type="text" class="form-control" placeholder="Address" ng-model="mytodo.localization">
-            {{mytodo.localization}}
+        <input id="address" type="text" class="form-control" placeholder="Address" ng-model="mytodo.localization">
 
         <h3><i class="glyphicon glyphicon-list"></i> Subtodos</h3>
 

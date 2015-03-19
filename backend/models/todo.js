@@ -94,7 +94,6 @@ exports.subtodo_id_delete = function(req, res, next, connection, auth){
 }
 
 exports.todo_id_put = function(req, res, next, connection, auth){
-
 	var subtodos = req.body.subtodos;
 	var cpt = 0;
 	delete req.body.subtodos;
@@ -107,16 +106,31 @@ exports.todo_id_put = function(req, res, next, connection, auth){
 		if(subtodos){
 			if(subtodos.length > 0){
 				subtodos.forEach(function(elem, index, array){
-					connection.query('UPDATE SUBTODO SET ? WHERE id_subtodo = ?', [elem, elem.id_subtodo], function(err, rows) {
-						if (err) {
-							console.log(err);
-							return next("Mysql error, check your query on subtodos update ");
-						}
-						cpt++
+					if(elem.id_subtodo){
+						connection.query('UPDATE SUBTODO SET ? WHERE id_subtodo = ?', [elem, elem.id_subtodo], function(err, rows) {
+							if (err) {
+								console.log(err);
+								return next("Mysql error, check your query on subtodos update ");
+							}
+							cpt++
 
-						if(cpt == subtodos.length)
-							return res.status(200).json(rows)
-					})
+							if(cpt == subtodos.length)
+								return res.status(200).json(rows)
+						})
+					}
+					else{
+						var id_todo = req.params.id
+						elem.id_todo = id_todo
+						connection.query('INSERT INTO SUBTODO SET ?', elem, function(err, rows) {
+							if (err) {
+								console.log(err);
+								res.status(401).json({error: "Une erreur est survenue pendant l'ajout des subtodos", content: err});
+							}
+							cpt++
+							if(cpt == subtodos.length)
+								return res.status(200).json(rows)
+						});
+					}
 				})
 			}else{
 				return res.status(200).json(rows)
@@ -438,15 +452,15 @@ exports.listsharedtodolistwithtodos_get = function(req, res, next, connection, a
 	var cpt = 0;
 
 	//Récupère les listes
-	connection.query('SELECT * FROM TODOLIST WHERE id_owner = ?', _id , function(err, lists) {
+	connection.query('SELECT TODOLIST.* FROM TODOLIST JOIN SHARE_LIST ON TODOLIST.id_list = SHARE_LIST.id_list WHERE id_user = ?', _id , function(err, lists) {
 		if (err) {
 			console.log(err);
 			return next("Mysql error, check your query");
 		}else{
 			result = lists;
-			return res.status(200).json(result);
+			//return res.status(200).json(result);
 			//récupère tous les todos de chaque liste
-			/*lists.forEach(function (elem, index, array) {
+			lists.forEach(function (elem, index, array) {
   				connection.query('SELECT * FROM TODO WHERE id_list = ?', elem.id_list, function(err, rows) {
 					if (err) {
 						console.log(err);
@@ -464,7 +478,7 @@ exports.listsharedtodolistwithtodos_get = function(req, res, next, connection, a
 					if(cpt == result.length)
 						return res.status(200).json(result);
 				});
-			})*/
+			})
 		}
 	});
 }

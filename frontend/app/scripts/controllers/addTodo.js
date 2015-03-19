@@ -18,7 +18,7 @@ angular.module('ToDoManagerApp')
 
   $scope.addSubTodo = function(subtodo) {
     if(subtodo.title != ''){
-      var subtodoTmp = {title : subtodo.title, description : subtodo.description}
+      var subtodoTmp = {title : subtodo.title, completed: false, description : subtodo.description}
       $scope.mytodo.subtodos.push(subtodoTmp)
       subtodo.title = ""
       subtodo.description = ""
@@ -28,8 +28,6 @@ angular.module('ToDoManagerApp')
   };
   
   $scope.submit = function() {
-    console.log("truc")
-    console.log($scope.mytodo)
     TDMService.addTodo($scope.mytodo) 
       .success(function(res) {
         alert('success', 'Todo created!', 'Your todo has been created !');
@@ -116,7 +114,7 @@ angular.module('ToDoManagerApp')
     startingDay: 1
   };
 
-  $scope.format = "EEE MMM dd yyyy HH:mm:ss G'M'TZ '(CET)'";
+  $scope.format = "EEE MMM dd yyyy HH:mm G'M'TZ '(CET)'";
   
   ////////////////Time /////////////////
 
@@ -151,22 +149,6 @@ angular.module('ToDoManagerApp')
 
   ////////////////Localization /////////////////
 
-  $scope.showLocation = function(size){
-
-    var modalInstance = $modal.open({
-      templateUrl: 'localizaton_map.html',
-      controller: 'MapCtrl',
-      size: size
-    });
-
-    modalInstance.result.then(function (address) {
-      $scope.mytodo.localization = address;
-      console.log('result got : ' + address);
-
-    }, function () {
-      $log.info('Modal dismissed at: ' + new Date());
-    });
-  };
 
   $scope.address = '';
   $scope.init = function(){ 

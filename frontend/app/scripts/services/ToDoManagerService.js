@@ -21,7 +21,7 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 
 	this.refresh = function(callback){
 		
-		if(ToDoManagerApp.data.listsWithToDo == ''){
+		if(ToDoManagerApp.data.listsWithToDo == '' || ToDoManagerApp.data.shareListsWithToDo == ''){
 			$rootScope.isWorking = true
 			ToDoManagerApp.fetchAll(callback);
 		}else if(callback)
@@ -59,6 +59,15 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 		$rootScope.isWorking = false
 	};
 
+	this.getASharedList = function(_id) {
+		$rootScope.isWorking = true
+		for(var i=0; i < ToDoManagerApp.data.shareListsWithToDo.length; i++){
+			if(ToDoManagerApp.data.shareListsWithToDo[i].id_list == _id)
+				return ToDoManagerApp.data.shareListsWithToDo[i]
+		}
+		$rootScope.isWorking = false
+	};
+
 	this.getAToDo = function(_id) {
 		$rootScope.isWorking = true;
 		for(var i=0; i < ToDoManagerApp.data.listsWithToDo.length; i++){
@@ -67,6 +76,19 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 				if(ToDoManagerApp.data.listsWithToDo[i].todos[j].id_todo == _id){
 					$rootScope.isWorking = false;
 					return ToDoManagerApp.data.listsWithToDo[i].todos[j]
+				}
+			}
+		}
+	};
+
+	this.getASharedToDo = function(_id) {
+		$rootScope.isWorking = true;
+		for(var i=0; i < ToDoManagerApp.data.shareListsWithToDo.length; i++){
+			if(ToDoManagerApp.data.shareListsWithToDo[i].todos)
+			for(var j=0; j < ToDoManagerApp.data.shareListsWithToDo[i].todos.length; j++){
+				if(ToDoManagerApp.data.shareListsWithToDo[i].todos[j].id_todo == _id){
+					$rootScope.isWorking = false;
+					return ToDoManagerApp.data.shareListsWithToDo[i].todos[j]
 				}
 			}
 		}

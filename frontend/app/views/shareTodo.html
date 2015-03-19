@@ -1,1 +1,72 @@
-{{data}}
+<div id="isAList" ng-show="isList">
+</div>
+
+<div id="isATodo" ng-hide="isList">
+	<div class="form-group">
+	    <form class="form-signin" role="form" ng-model="mytodo" ng-submit="submit()">
+	    	<fieldset ng-disabled="true">
+		        <h2 class="form-signin-heading">Todo n°{{mytodo.id_todo}}</h2>
+		        <div class='row'>
+		        <div class="col-lg-6">
+		        <h3><i class="glyphicon glyphicon-info-sign"></i> General information</h3>
+		        <input type="text" class="form-control" placeholder="Title" ng-model="mytodo.title" ng-value="mytodo.title"  required autofocus>
+		        <input type="text" class="form-control" placeholder="Description" ng-model="mytodo.description" ng-show="mytodo.description"  >
+		        <select ng-show="mytodo.priority" class="form-control" id="sel1" ng-model="mytodo.priority">
+		            <option value="" disabled selected>Priority</option>
+		            <option>1</option>
+		            <option>2</option>
+		            <option>3</option>
+		            <option>4</option>
+		            <option>5</option>
+		        </select>
+		        <input type="text" class="form-control" placeholder="Context" ng-model="mytodo.context" ng-show="mytodo.context" >
+		        <div class='input-group'>
+		            <input type="text" class="form-control" placeholder="Date" datepicker-popup="{{format}}" ng-model="mytodo.date" is-open="opened" min-date="minDate" datepicker-options="dateOptions" ng-required="true" close-text="Close"/>
+		            <span class="input-group-btn">
+		                <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+		            </span>
+		        </div>
+		        <small>Selected date is: <em>{{mytodo.date | date:'EEEE, MMMM d, y hh:mm a' }}</em></small>
+
+		        <div class='input-group'>
+		        <h4><i class="glyphicon glyphicon-ok ng-show" ng-show="mytodo.completed"></i><i class="glyphicon glyphicon-remove ng-hide" ng-hide="mytodo.completed"></i> Task Done ? <input type="checkbox" ng-model="mytodo.completed" ng-checked="mytodo.completed"> </h4>
+		        </div>
+
+		        <h3><i class="glyphicon glyphicon-paperclip"></i> Attachment</h3><small>Maximal file size is 2 MB!</small> <div class='input-group'><input id="input-file" type="file" multiple="false"></div>
+		        <h3 ng-show="mytodo.url"><i class="glyphicon glyphicon-link"></i> Link</h3><small ng-show="mytodo.url">Add an optional link!</small>
+		        <input ng-show="mytodo.url"  type="text" class="form-control" placeholder="Url" ng-model="mytodo.url">
+		         </div>
+		        <div class="col-lg-6">
+
+		       <h3 ng-show="mytodo.localization"><i class="glyphicon glyphicon-globe"></i>Location</h3><small ng-show="mytodo.localization">Add an address!</small>
+		        <input ng-show="mytodo.localization" ng-model="mytodo.localization" id="input-address" class="controls" type="text" placeholder="Enter a location">
+
+		        <div ng-show="mytodo.localization" id="map-canvas"></div>
+
+		            <input ng-show="mytodo.localization"  id="address" type="text" class="form-control" placeholder="Address" ng-model="mytodo.localization">
+
+		        <div id="subtodos" ng-show="hasSubtodo">
+		        <h3><i class="glyphicon glyphicon-list"></i> Subtodos</h3>
+		        <table class="table table-striped table-hover" ng-hide="mytodo.subtodos.length < 1" ng-model="mytodo.subtodos">
+		            <thead>
+		                <tr>
+		                    <th>Title</th>
+		                    <th>Description</th>
+		                </tr>
+		           </thead>
+		           <tbody>
+		                <tr ng-repeat="mysubtodo in mytodo.subtodos track by $index">
+		                    <td><input type="text" class="form-control" placeholder="Title" ng-model="mysubtodo.title" ></td>
+		                    <td><input type="text" class="form-control" placeholder="Description" ng-model="mysubtodo.description"></td>
+		                    <td><p>
+		                        <button type="button" class="btn btn-link btn-sm" ng-click="mysubtodo.completed = !mysubtodo.completed" ng-show="mysubtodo.completed"><i style="display: inline; color:Chartreuse;"  ng-model="mysubtodo.completed" class="glyphicon glyphicon-ok ng-show" ng-show="mysubtodo.completed"></i></button><button type="button" class="btn btn-link btn-sm" ng-click="mysubtodo.completed = !mysubtodo.completed" ng-hide="mysubtodo.completed" ><i style="display: inline; color:Gainsboro"  class="glyphicon glyphicon-ok ng-hide"  ng-hide="mysubtodo.completed"></i></button><button type="button" class="btn btn-link glyphicon glyphicon-remove btn-sm" ng-click="eraseSubtodo($index, mysubtodo.id_subtodo);"></button></p></td>
+		                </tr>
+		            </tbody>        
+		        </table>
+		         </div>
+		        </div>
+		        </div>
+	        </fieldset>
+	    </form>
+	</div>
+</div>
