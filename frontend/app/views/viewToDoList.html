@@ -28,34 +28,6 @@
  
                             
 <div class="container-fluid">
-	
-<!--
-	<div ng-repeat="todo in todos" ng-hide="hidecompleted && (todo.completed == true)" >
-			<div class="col-xs-6 col-md-4">
-	    		<div class="thumbnail" >
-	    			<p ng-class="{ 'pull-left':true, 'text-info': todo.priority == 1, 'text-primary': todo.priority == 4, 'text-success': todo.priority == 2, 'text-warning': todo.priority == 3, 'text-danger': todo.priority == 5 }">{{todo.priority}}</p>
-	    			<a><i ng-click="onTodoModified(todo)" class="glyphicon glyphicon-ok ng-show pull-right" style="color:Chartreuse " ng-show="todo.completed"></i></a>
-	    			<a><i ng-click="onTodoModified(todo)" style="color:Gainsboro" class="glyphicon glyphicon-ok ng-hide pull-right" ng-hide="todo.completed"></i></a>
-	        		<h3 class='text-center'>{{todo.title}}</h3>
-	        		<p>Description : {{todo.description}}</p>
-	        		<p>Context : {{todo.context}}</p>
-	        		<p>End date is {{todo.date | date:'medium'}}</p>
-	        		
-	        		<div class="text-center">
-	        			<a class="btn btn-info" ui-sref="todo/({ id: {{todo.id_todo}} })">More...</a>
-	        			<a class="pull-right" ng-click="deleteTodo(todo.id_todo)"><i class="glyphicon glyphicon-trash" ></i></a>
-	        		<a class="pull-left" popover-placement="bottom" popover-template="template.html" ><i class="glyphicon glyphicon-calendar" ></i></a>
-	        		</div>
-
-	        		
-	        		 <script id="template.html" type="text/ng-template">
-		  				<button ng-click="addToCalendar('google', todo)" type="button" class="btn btn-primary btn-lg btn-block">Google</button>
-						<button ng-click="addToCalendar('hotmail', todo)" type="button" class="btn btn-primary btn-lg btn-block">Hotmail</button>
-					</script>
-	      		</div>
-			</div>
-	</div>
--->
 
 		<table st-table="displayedCollection" st-safe-src="list.todos" class="table table-striped table-hover">
 			<thead>
@@ -83,6 +55,7 @@
 				<td>{{row.date | date:'medium'}}</td>
 				<td>
 					<a target="_blank" ng-hide="showMapButton(row.localization)" class="btn btn-sm btn-info" href="https://maps.google.com/?q={{row.localization}}"><i class="glyphicon glyphicon-map-marker" ></i></a>
+
 					<span class="dropdown" dropdown>
 				      <a href class="btn btn-sm btn-primary" class="dropdown-toggle" dropdown-toggle>
 				        <i class="glyphicon glyphicon-calendar" ></i><span class="caret"></span>
@@ -106,18 +79,3 @@
 		</tfoot>
 		</table>
 </div>
-
-<!--
-<ul ng-repeat="todo in todos">
-    <div class="checkbox">
-        <script id="template.html" type="text/ng-template">
-		  	<button ng-click="addToCalendar('google', todo)" type="button" class="btn btn-primary btn-lg btn-block">Google</button>
-			<button ng-click="addToCalendar('hotmail', todo)" type="button" class="btn btn-primary btn-lg btn-block">Hotmail</button>
-		</script>
-
-        		
-      		</div>
-		</div>
-	</div>
-</div>
--->

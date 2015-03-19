@@ -7,22 +7,25 @@
  * # HeaderCtrl
  * Controller of the ToDoManagerApp
  */
-angular.module('ToDoManagerApp').controller('HeaderCtrl', function($scope, $auth, TDMService, $rootScope, TDMServiceOffline) {
+angular.module('ToDoManagerApp').controller('HeaderCtrl', function($scope, $auth, TDMService, $rootScope, $modal, $log,  API_URL, $upload) {
+    console.log("Header.js");
 	// Satellizer auth service instead of authToken
 	$scope.isAuthenticated = $auth.isAuthenticated;
-
-    /*if($scope.isAuthenticated() && $rootScope.online)
-        TDMService.refresh(function(){
-            $scope.data = TDMService.data;
-        })*/
-
-    $rootScope.$watch('canFetchData', function(canFetchData) {
+   
+   $rootScope.$watch('canFetchData', function(canFetchData) {
         console.log("$rootScope.$watch('canFetchData'  " + canFetchData)
 
             if(canFetchData){
-                TDMService.refresh(function(){
-                    $scope.data = TDMService.data;
-                })
+                //get user avatar
+              var idUser = $auth.getPayload().sub;
+              TDMService.userAvatar(idUser)
+               .success(function(data) {
+                 $scope.user_avatar = data[0].avatar_path;
+               });
+              TDMService.refresh(function(){
+                  $scope.data = TDMService.data;
+              });
+
             }
     });
 
@@ -34,6 +37,54 @@ angular.module('ToDoManagerApp').controller('HeaderCtrl', function($scope, $auth
         $rootScope.closeMenu = true
 
     $scope.loaded = function() { console.log("Loaded"); }
+
+    $scope.changeAvatar = function () {
+
+    var modalInstance = $modal.open({
+      templateUrl: 'modalDelete.html',
+      size: 'sm',
+      controller: 'HeaderCtrl',
+      resolve: {
+        id: function () {
+          return "toto";
+        }
+      }
+    });
+
+    modalInstance.result.then(function () {
+    }, function () {
+      $log.info('Modal dismissed at: ' + new Date());
+    });
+  };
+
+  ////////////////Attachment file /////////////////
+  angular.element('#input-file').fileinput({showCaption: false,showUpload: false, maxFileSize:2000}); 
+  
+    $scope.onFileSelect = function($files) {
+    //$files: an array of files selected, each file has name, size, and type. 
+    for (var i = 0; i < $files.length; i++) {
+      var file = $files[i];
+      $scope.upload = $upload.upload({
+        url: API_URL + 'upload', //upload.php script, node.js route, or servlet url 
+        data: {myObj: $scope.file},
+        file: file, 
+      }).progress(function(evt) {
+        console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
+      }).success(function(data, status, headers, config) {
+        // file is uploaded successfully 
+        console.log("File : ")
+        console.log(data['file']['path']);
+       
+        file : data['file']['path'];
+        TDMService.avatar_path(data['file']['path'],idUser);
+        $scope.file = data['file']['path'];
+        console.log("End of file");
+      
+      });
+    }
+    
+  };
+
 
 })
 .directive("myDirective", ["$templateCache", "$compile", function($templateCache, $compile) {

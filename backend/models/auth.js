@@ -97,6 +97,8 @@ exports.authGoogle = function(req, res, next, connection, jwt, request) {
 				if (rows.length == 1) {
 					return auth.createSendToken(rows[0], connection, req, res, jwt);
 				}
+			console.log(profile.name);
+			//API KEY
 				var data = {
 					username: profile.name,
 					email: profile.email,
@@ -166,7 +168,8 @@ exports.authFacebook = function(req, res, next, connection, jwt, request) {
 					username: profile.name,
 					email: profile.email,
 					password: profile.id, // To add an extra security
-					facebookId: profile.id
+					facebookId: profile.id,
+					avatar_path: 'http://graph.facebook.com/' + profile.id + '/picture'
 				};
 
 				//Hash passwords

@@ -53,7 +53,7 @@ angular.module('ToDoManagerApp', ['ui.router','ui.calendar', 'ngAnimate','ui.boo
           angular.element("#wrapper").removeClass("toggled");
         }
     });
-
+    
     $rootScope.canFetchData = ($auth.isAuthenticated() && $rootScope.online) ? true : false; //$rootScope.online
 
     if(!$rootScope.online)

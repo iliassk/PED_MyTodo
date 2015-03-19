@@ -240,7 +240,7 @@ angular.module('ToDoManagerApp')
   $scope.deleteTodo = function () {
     TDMService.deleteToDo(id).success(function(res) {
         console.log('success', 'Todo deleted!', 'Your todo has been deleted !');
-        $state.go('main');
+        $state.go('calendar');
       })
       .error(function(err) {
         alert('warning', 'Something went wrong :(', err.message);

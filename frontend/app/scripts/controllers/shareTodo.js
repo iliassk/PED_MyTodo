@@ -28,6 +28,7 @@ angular.module('ToDoManagerApp').controller('ShareCtrl', function($scope, $state
 
     $scope.init();
 
+
     //fetch the data
     TDMService.fetchSharedData($stateParams.url, $stateParams.type)
     .success(function(data){

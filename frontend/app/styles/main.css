@@ -171,3 +171,6 @@ body {
 .social-em:hover {
     color: #f39c12;
 }
+.fc-unthemed .fc-today {
+  background: rgba(255, 255, 255, 0.2);
+}

@@ -3,6 +3,7 @@
 angular.module('ToDoManagerApp')
 .controller('TodoCtrl',  function($scope, $location, $log, $modal, TDMService, alert, $stateParams, $state, $rootScope) {
 
+
   $scope.mytodo = {};
 
   $scope.isCollapsed = true;
@@ -13,11 +14,13 @@ angular.module('ToDoManagerApp')
     $scope.mytodo.subtodos.splice(index, 1);
     if(id)
       TDMService.deleteSubToDo(id);
+
   }
 
   $scope.addSubTodo = function(subtodo) {
     if(subtodo.title != ''){
       var subtodoTmp = {id_subtodo:'', title : subtodo.title, completed: false, description : subtodo.description}
+
       if(!$scope.mytodo.subtodos)
         $scope.mytodo.subtodos = []
       $scope.mytodo.subtodos.push(subtodoTmp)
@@ -33,7 +36,7 @@ angular.module('ToDoManagerApp')
     console.log("Trololo")
      TDMService.updateTodo($scope.mytodo) 
       .success(function(res) {
-        $state.go('main')
+        $state.go('calendar')
         alert('success', 'Todo edited!', 'Your todo has been edited !');
       })
       .error(function(err) {
@@ -57,6 +60,7 @@ angular.module('ToDoManagerApp')
       var file = $files[i];
       $scope.upload = $upload.upload({
         url: API_URL + 'upload', //upload.php script, node.js route, or servlet url 
+
         //method: 'POST' or 'PUT', 
         //headers: {'header-key': 'header-value'}, 
         //withCredentials: true, 
@@ -155,7 +159,6 @@ angular.module('ToDoManagerApp')
     $scope.mytodo.date = null;
   };  
 
-
   ////////////////Localization /////////////////
 
   $scope.init = function(){ 
@@ -205,6 +208,7 @@ angular.module('ToDoManagerApp')
             }
     });
 
+
 });
 
   
@@ -220,7 +224,7 @@ angular.module('ToDoManagerApp')
   $scope.deleteTodo = function () {
     TDMService.deleteToDo(id).success(function(res) {
         console.log('success', 'Todo deleted!', 'Your todo has been deleted !');
-        $state.go('main');
+        $state.go('calendar');
       })
       .error(function(err) {
         alert('warning', 'Something went wrong :(', err.message);

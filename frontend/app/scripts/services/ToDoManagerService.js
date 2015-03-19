@@ -41,7 +41,7 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 
 	this.sync = function(){
 		console.log("[Master] => sync data to server")
-		
+
 	}
 
 	this.forgaveData = function(){
@@ -123,7 +123,6 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 	this.todolist = function(name, description, color) {
 		$rootScope.isWorking = true;
 		
-		//ajoute au tableau
 
 		if(ToDoManagerApp.isOnLine()){
 			return TDMServiceOnline.todolist(name, description, color)
@@ -135,6 +134,8 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 	this.addTodo = function(_mytodo) {
 		$rootScope.isWorking = true;
 		
+		//ajoute au tableau
+
 		if(ToDoManagerApp.isOnLine()){
 			return TDMServiceOnline.addTodo(_mytodo)
 		}else{
@@ -144,6 +145,8 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 
 	this.addgroup = function(namegroup) {
 		$rootScope.isWorking = true;
+
+		//ajoute au tableau
 
 		if(ToDoManagerApp.isOnLine()){
 			return TDMServiceOnline.addgroup(namegroup)
@@ -306,4 +309,20 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 			return TDMServiceOffline.listcontact()
 		}
 	}
+
+	//GET User Avatar
+	this.userAvatar = function(obj_id) {
+		return $http.get(API_URL +'user/'+obj_id)
+	};
+
+
+	this.avatar_path = function(obj_file, obj_id){
+		return $http.post(API_URL + 'avatarpath', {
+			file : obj_file,
+			iduser : obj_id
+		})
+
+	};
+
 });
+

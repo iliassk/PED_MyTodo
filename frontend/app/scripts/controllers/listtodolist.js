@@ -1,6 +1,7 @@
 'use strict';
 
 angular.module('ToDoManagerApp').controller('ListTodoListCtrl', function($scope, $window, alert, TDMService, $auth ,$rootScope) {
+
     
 	$scope.hidecompleted = false;
 	$scope.group;
@@ -85,8 +86,6 @@ angular.module('ToDoManagerApp').controller('ListTodoListCtrl', function($scope,
 		})
 	};
 
-	/*if($auth.isAuthenticated() &&  $rootScope.online)
-		$scope.fetchData()*/
 
 	$rootScope.$watch('canFetchData', function(canFetchData) {
         console.log("$rootScope.$watch('canFetchData'  " + canFetchData)
@@ -95,4 +94,5 @@ angular.module('ToDoManagerApp').controller('ListTodoListCtrl', function($scope,
                // $scope.fetchData()
             }
     });
+
 });

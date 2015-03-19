@@ -1,7 +1,6 @@
 'use strict';
 
 angular.module('ToDoManagerApp')
-
 .controller('AddTodoCtrl', function($scope, $location, $log, $modal, TDMService, $rootScope, alert, $upload,$http, API_URL, $state) {
  
   
@@ -38,7 +37,7 @@ angular.module('ToDoManagerApp')
     TDMService.addTodo($scope.mytodo) 
       .success(function(res) {
         alert('success', 'Todo created!', 'Your todo has been created !');
-        $state.go('main');
+        $state.go('calendar');
       })
       .error(function(err) {
         alert('warning', 'Something went wrong :(', err.message);

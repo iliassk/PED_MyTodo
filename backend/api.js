@@ -143,10 +143,12 @@ app.get('/userslist', function(req, res, next) {
 	contact.userslist_get(req, res, next, connection, auth)
 });
 
-app.post('/addcontact', function(req, res, next) {
-	
-	contact.addcontact_post(req, res, next, connection, auth)
-	
+app.get('/user/:id', function(req, res, next) {
+	contact.userid_get(req, res, next, connection, auth)
+});
+
+app.post('/addcontact', function(req, res, next) {	
+	contact.addcontact_post(req, res, next, connection, auth)	
 });
 
 app.get('/listcontact', function(req, res, next) {	
@@ -215,6 +217,21 @@ app.get('/share/data/:url/:type', function(req, res, next) {
 *
 */
 app.post('/upload',function(req,res){
+  if(done==true){
+    console.log(req.files);
+    res.status(200).json(req.files);
+    res.end("File uploaded.");
+  }
+})
+
+app.post('/avatarpath', function(req, res, next) {
+	console.log('debut')
+    todo.avatarpath_post(req, res, next, connection, auth, utils, jwt)
+    console.log('fin')
+})
+
+
+app.post('/uploadAvatar',function(req,res){
   if(done==true){
     console.log(req.files);
     res.status(200).json(req.files);

@@ -10,14 +10,14 @@
 
 angular.module('ToDoManagerApp').controller('TodoListCtrl', function($scope, alert, TDMService, $state) {
     
+
+    $scope.color = "#000000";
 	$scope.submit = function() {
         
 		TDMService.todolist($scope.name, $scope.description, $scope.color)
 		.success(function() {
 			alert('success', 'OK!', 'add todolist success');
-			
-        console.warn("Fetchall retiré ici !!! l'ajout peut être buggé!!! ")
-			$state.go('main');
+			$state.go('calendar');
 		})
 		.error(function() {
 			alert('warning', 'Oops!', 'add todolist failed');

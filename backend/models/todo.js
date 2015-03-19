@@ -1,3 +1,17 @@
+exports.avatarpath_post = function(req, res, next, connection, auth, jwt){
+console.log(req.body.iduser)
+connection.query('UPDATE USERS SET avatar_path = ? WHERE id_user = ?', [req.body.file, req.body.iduser], function(err, rows) {
+if (err) {
+			console.log(err);
+			return next("Mysql error, check your query");
+		}
+	else{	
+		//console.log(rows);
+		res.sendStatus(200);
+	}
+	});
+}
+
 //Créer liste dans la base de donées
 exports.todolist_post = function(req, res, next, connection, auth, jwt){
 	//get data from the request
@@ -94,6 +108,7 @@ exports.subtodo_id_delete = function(req, res, next, connection, auth){
 }
 
 exports.todo_id_put = function(req, res, next, connection, auth){
+
 	var subtodos = req.body.subtodos;
 	var cpt = 0;
 	delete req.body.subtodos;
@@ -131,6 +146,7 @@ exports.todo_id_put = function(req, res, next, connection, auth){
 								return res.status(200).json(rows)
 						});
 					}
+
 				})
 			}else{
 				return res.status(200).json(rows)
@@ -229,9 +245,6 @@ exports.todo_id_get = function(req, res, next, connection, auth, jwt){
 				//pour gérer l'asynchrone on ne sait pas quand les requetes sont finies				
 
         	res.status(200).json(result);
-
-
-
             //return res.status(200).send(rows);
         	});
 		}
@@ -461,6 +474,7 @@ exports.listsharedtodolistwithtodos_get = function(req, res, next, connection, a
 			//return res.status(200).json(result);
 			//récupère tous les todos de chaque liste
 			lists.forEach(function (elem, index, array) {
+
   				connection.query('SELECT * FROM TODO WHERE id_list = ?', elem.id_list, function(err, rows) {
 					if (err) {
 						console.log(err);
@@ -468,11 +482,6 @@ exports.listsharedtodolistwithtodos_get = function(req, res, next, connection, a
 					}
 
 					result[index].todos = rows;
-
-					
-
-
-
 					cpt ++;
 					//pour gérer l'asynchrone on ne sait pas quand les requetes sont finies
 					if(cpt == result.length)

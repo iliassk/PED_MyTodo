@@ -64,6 +64,7 @@
                          <li ng-show="isAuthenticated()" ui-sref-active="active">
                             <a ui-sref="calendar">Calendar</a>
                         </li>
+
                     </ul>
 
                     <ul class="nav navbar-nav navbar-right" ng-cloak>
@@ -77,6 +78,15 @@
                         <li ng-show="isAuthenticated()" >
                             <a ui-sref="todolist" id="addListNav" class="btn btn-info">Add a list</a>
                         </li>
+
+                        <li ng-show="isAuthenticated()" >
+                           <a ng-click="changeAvatar()">
+                           <div id="avatar">
+                               <img HEIGHT="35" WIDTH="35"src="{{user_avatar}}">
+                           </div>
+                           </a>
+                        </li>
+
                         <li ng-hide="isAuthenticated()" ui-sref-active="active">
                             <a ui-sref="login" class="btn btn-link"> <span class="glyphicon glyphicon-user" aria-hidden="true"></span> Login</a>
                         </li>
@@ -90,6 +100,7 @@
                             <i class="fa fa-sellsy fa-3x"></i>
                         </li>
                         <li ng-hide="online" title="Offline Application " style="margin-left:5px;margin-top:3px; color:red">
+
                             <i class="fa fa-hdd-o fa-3x"></i>
                         </li>
                         
@@ -115,7 +126,16 @@
 </div>
 </div>
 
-
+ <script type="text/ng-template" id="modalDelete.html">
+        <div class="modal-header">
+            <h3><i class="glyphicon glyphicon-paperclip"></i> Attachment</h3><small>Maximal file size is 2 MB!</small> 
+        </div>
+        <div class="modal-body">
+        
+            <input id="input-file" ng-file-select="onFileSelect($files)" ng-model="mytodo.attachment_path" type="file" multiple="false">
+        </div>
+       
+</script>
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
     <script>
     ! function(A, n, g, u, l, a, r) {
@@ -170,8 +190,9 @@
     <script src="scripts/services/ToDoManagerServiceOffline.js"></script>
     <script src="scripts/services/ToDoManagerServiceOnline.js"></script>
 
+
     <!-- Controllers -->
-    <script src="scripts/controllers/header.js"></script>
+    
     <script src="scripts/controllers/contact.js"></script>
     <script src="scripts/controllers/logout.js"></script>   
     <script src="scripts/controllers/viewToDoList.js"></script>
@@ -179,12 +200,14 @@
     <script src="scripts/controllers/listtodolist.js"></script>
     <script src="scripts/controllers/todo.js"></script>
     <script src="scripts/controllers/addTodo.js"></script>
+    <script src="scripts/controllers/header.js"></script>
     <script src="scripts/controllers/login.js"></script>
     <script src="scripts/controllers/register.js"></script>
     <script src="scripts/controllers/shareTodo.js"></script>
     <script src="scripts/controllers/sharedTodo.js"></script>
     <script src="scripts/controllers/calendar.js"></script>
     <script src="scripts/controllers/sharedViewToDoList.js"></script>
+
 
     <!-- endbuild -->
 
