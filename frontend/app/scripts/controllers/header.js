@@ -35,7 +35,7 @@ angular.module('ToDoManagerApp').controller('HeaderCtrl', function($scope, $auth
       console.log("Je suis coupable !!")
       TDMService.refresh(function(){
         console.log("====================================refresh header.js")
-        debugger
+
           $rootScope.accessData = true
           $scope.data = TDMService.data;
       });
