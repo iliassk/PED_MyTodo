@@ -20,7 +20,7 @@ angular.module('ToDoManagerApp', ['ui.router','ui.calendar', 'ngAnimate','ui.boo
 
 	$rootScope.isWorking = false
 
-  	$rootScope.online = true;
+  	$rootScope.online = false;
     //$rootScope.online = navigator.onLine;
   	$window.addEventListener("offline", function () {
       $rootScope.online = false;
@@ -40,7 +40,6 @@ angular.module('ToDoManagerApp', ['ui.router','ui.calendar', 'ngAnimate','ui.boo
             }
           }
         });
-
       }
       TDMService.markAsOnLine()
   	}, false);
