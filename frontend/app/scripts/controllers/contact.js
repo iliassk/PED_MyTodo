@@ -8,9 +8,8 @@
  * Controller of the ToDoManagerApp
  */
 
-angular.module('ToDoManagerApp').controller('contactCtrl', function ($scope, CMService){
-	
-  
+angular.module('ToDoManagerApp').controller('contactCtrl', function ($scope, CMService, $rootScope){
+
   CMService.userslist()
 	.success(function(data) {
 		$scope.users = data;

@@ -41,7 +41,6 @@ angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($http, AP
 			description : description,
 			color : color
 		}).success(function(){
-			ToDoManagerApp.fetchAll()
 			$rootScope.isWorking = false
 		}).error(function(){
 			$rootScope.isWorking = false
@@ -55,7 +54,6 @@ angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($http, AP
 		return $http.post(API_URL + 'add/todo', {
 			mytodo : _mytodo
 		}).success(function(){
-			ToDoManagerApp.fetchAll()
 			$rootScope.isWorking = false;
 		}).error(function(){
 			$rootScope.isWorking = false;
@@ -70,7 +68,6 @@ angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($http, AP
 			name : namegroup
 		})
 		.success(function(){
-			ToDoManagerApp.fetchAll()
 			$rootScope.isWorking = false;
 		}).error(function(){
 			$rootScope.isWorking = false;

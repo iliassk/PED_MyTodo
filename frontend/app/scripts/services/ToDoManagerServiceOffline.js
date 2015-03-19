@@ -29,7 +29,7 @@ angular.module('ToDoManagerApp').service('TDMServiceOffline', function ($http, A
 	///////////////////////////////////////////////////
 
 	//ADD a todoList
-	this.todolist = function(name, description, color) {
+	this.todolist = function(name, description, color, callback) {
 		console.offline("todolist")
 		$rootScope.isWorking = true
 		alert('warning', 'OffLine error', 'You cannot create object while in offline mode !!');
@@ -37,7 +37,7 @@ angular.module('ToDoManagerApp').service('TDMServiceOffline', function ($http, A
 	};
 
 	//ADD a todo
-	this.addTodo = function(_mytodo) {
+	this.addTodo = function(_mytodo, callback) {
 		console.offline("addTodo")
 		$rootScope.isWorking = true
 		alert('warning', 'OffLine error', 'You cannot create object while in offline mode !!');
@@ -45,7 +45,7 @@ angular.module('ToDoManagerApp').service('TDMServiceOffline', function ($http, A
 	}
 
 	//ADD a todo
-	this.addgroup = function(_mytodo) {
+	this.addgroup = function(_mytodo, callback) {
 		console.offline("addgroup")
 		$rootScope.isWorking = true
 		alert('warning', 'OffLine error', 'You cannot create object while in offline mode !!');

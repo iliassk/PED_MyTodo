@@ -13,17 +13,18 @@ angular.module('ToDoManagerApp').controller('ViewToDoList', function($scope, $st
 	$scope.list = {};
 	$scope.displayedCollection = {};
 
-	$rootScope.$watch('canFetchData', function(canFetchData) {
-        console.log("$rootScope.$watch('canFetchData'  " + canFetchData)
+	$rootScope.$watch('accessData', function(accessData) {
+        console.log("accessData  ViewToDoList")
 
-            if(canFetchData){
+            if(accessData){
+
                TDMService.refresh(function(){
 			    	console.log("accessing shared data")
 					$scope.list = TDMService.getAList($stateParams.id)
 					console.log($scope.list)
 					$scope.displayedCollection = [].concat($scope.list.todos);
 					$rootScope.isWorking = false;
-			    })
+			   })
             }
     });
     

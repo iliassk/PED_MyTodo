@@ -12,21 +12,34 @@ angular.module('ToDoManagerApp').controller('HeaderCtrl', function($scope, $auth
 	// Satellizer auth service instead of authToken
 	$scope.isAuthenticated = $auth.isAuthenticated;
    
+  $rootScope.$watch('mustRefresh', function(mustRefresh) {
+    console.log("REFRESH SIDE BAR !!! : " + mustRefresh)
+    if(mustRefresh == true){
+      TDMService.forceRefresh(function(){
+          $scope.data = TDMService.data;
+      });
+     $rootScope.mustRefresh = false
+    }
+  });
+
    $rootScope.$watch('canFetchData', function(canFetchData) {
-        console.log("$rootScope.$watch('canFetchData'  " + canFetchData)
+        
+    if(canFetchData){
 
-            if(canFetchData){
-                //get user avatar
-              var idUser = $auth.getPayload().sub;
-              TDMService.userAvatar(idUser)
-               .success(function(data) {
-                 $scope.user_avatar = data[0].avatar_path;
-               });
-              TDMService.refresh(function(){
-                  $scope.data = TDMService.data;
-              });
+        //get user avatar
+      //var idUser = $auth.getPayload().sub;
+      /*TDMService.userAvatar(idUser)
+       .success(function(data) {
+         $scope.user_avatar = data[0].avatar_path;
+       });*/
+      console.log("Je suis coupable !!")
+      TDMService.refresh(function(){
+        console.log("====================================refresh header.js")
+          $rootScope.accessData = true
+          $scope.data = TDMService.data;
+      });
 
-            }
+    }
     });
 
     $scope.data = TDMService.data;

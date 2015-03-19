@@ -87,12 +87,12 @@ angular.module('ToDoManagerApp').controller('ListTodoListCtrl', function($scope,
 	};
 
 
-	$rootScope.$watch('canFetchData', function(canFetchData) {
-        console.log("$rootScope.$watch('canFetchData'  " + canFetchData)
+	$rootScope.$watch('accessData', function(accessData) {
+        console.log("accessData  listtodolist.js")
 
-            if(canFetchData){
-               // $scope.fetchData()
-            }
+        if(accessData){
+           // $scope.fetchData()
+        }
     });
 
 });

@@ -207,11 +207,10 @@ angular.module('ToDoManagerApp')
     });
   };
 
+$rootScope.$watch('accessData', function(accessData) {
+        console.log("accessData  sharedTodo.js")
 
-$rootScope.$watch('canFetchData', function(canFetchData) {
-        console.log("$rootScope.$watch('canFetchData'  " + canFetchData)
-
-            if(canFetchData){
+            if(accessData){
                TDMService.refresh(function(){
 
           $scope.mytodo = TDMService.getASharedToDo($stateParams.id);

@@ -2,12 +2,11 @@
 
 angular.module('ToDoManagerApp')
 .controller('AddTodoCtrl', function($scope, $location, $log, $modal, TDMService, $rootScope, alert, $upload,$http, API_URL, $state) {
- 
-  
-  $rootScope.$watch('canFetchData', function(canFetchData) {
-        console.log("$rootScope.$watch('canFetchData'  " + canFetchData)
 
-            if(canFetchData){
+  $rootScope.$watch('accessData', function(accessData) {
+        console.log("accessData  addTodo.js")
+
+            if(accessData){
                TDMService.refresh(function(){
                   $scope.data = TDMService.data;
 

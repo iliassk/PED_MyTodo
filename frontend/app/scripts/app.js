@@ -18,6 +18,7 @@ angular.module('ToDoManagerApp', ['ui.router','ui.calendar', 'ngAnimate','ui.boo
       console.log("[online] => " + text)
     }
 
+  $rootScope.mustRefresh = false
 	$rootScope.isWorking = false
 
   	$rootScope.online = true;

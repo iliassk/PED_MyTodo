@@ -14,10 +14,10 @@ angular.module('ToDoManagerApp').controller('CalendarCtrl', function($scope, $wi
     $scope.eventSources = $scope.events;
     var regExp = new RegExp("IEMobile", "i");
 
-    $rootScope.$watch('canFetchData', function(canFetchData) {
-        console.log("$rootScope.$watch('canFetchData'  " + canFetchData)
+    $rootScope.$watch('accessData', function(accessData) {
+        console.log("accessData  calendar.js")
 
-            if(canFetchData){
+            if(accessData){
                TDMService.refresh(function(){
 			    	var data = TDMService.getAllToDo()
 			    	for(var i = 0; i < data.length; i++){

@@ -70,6 +70,21 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 			callback()
 	}
 
+	this.forceRefresh = function(callback){
+		$rootScope.isWorking = true
+		if(ToDoManagerApp.isOnLine()){
+			TDMServiceOnline.fetchAll(function(_data){
+				ToDoManagerApp.data = _data
+				callback()
+			})
+		}else{
+			TDMServiceOffline.fetchAll(function(_data){
+				ToDoManagerApp.data = _data
+				callback()
+			})
+		}
+	}
+
 	/**
 	* Accessors to the shared data
 	**/
@@ -122,10 +137,13 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 	//ADD a todoList
 	this.todolist = function(name, description, color) {
 		$rootScope.isWorking = true;
-		
 
 		if(ToDoManagerApp.isOnLine()){
 			return TDMServiceOnline.todolist(name, description, color)
+			.success(function(){
+				$rootScope.mustRefresh = true
+				$rootScope.isWorking = false
+			})
 		}else{
 			return TDMServiceOffline.todolist(name, description, color)
 		}
@@ -138,6 +156,10 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 
 		if(ToDoManagerApp.isOnLine()){
 			return TDMServiceOnline.addTodo(_mytodo)
+			.success(function(){
+				$rootScope.mustRefresh = true
+				$rootScope.isWorking = false
+			})
 		}else{
 			return TDMServiceOffline.addTodo(_mytodo)
 		}	
@@ -150,6 +172,10 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 
 		if(ToDoManagerApp.isOnLine()){
 			return TDMServiceOnline.addgroup(namegroup)
+			.success(function(){
+				$rootScope.mustRefresh = true
+				$rootScope.isWorking = false
+			})
 		}else{
 			return TDMServiceOffline.addgroup(namegroup)
 		}

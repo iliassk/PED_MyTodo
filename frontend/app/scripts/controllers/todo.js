@@ -193,20 +193,21 @@ angular.module('ToDoManagerApp')
     });
   };
 
-  $rootScope.$watch('canFetchData', function(canFetchData) {
-        console.log("$rootScope.$watch('canFetchData'  " + canFetchData)
+  $scope.data = TDMService.data;
 
-            if(canFetchData){
-                 TDMService.refresh(function(){
-                  //debugger;
-                  $scope.mytodo = TDMService.getAToDo($stateParams.id);
-                  console.log($scope.mytodo)
+  $rootScope.$watch('accessData', function(accessData) {
+    if(accessData){
+      TDMService.refresh(function(){
+        console.log("=======================================refresh on todo.js")
 
-                  $scope.data = TDMService.data;
-                  $scope.toggleMin();
-                })
-            }
-    });
+        $scope.mytodo = TDMService.getAToDo($stateParams.id);
+        console.log($scope.mytodo)
+
+        $scope.data = TDMService.data;
+        $scope.toggleMin();
+      })
+    }
+  });
 
 
 });

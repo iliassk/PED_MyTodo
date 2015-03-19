@@ -3,6 +3,7 @@
         <div class='row'>
         <div class="col-lg-6">
         <h2 class="form-signin-heading">Add a Todo</h2>
+        {{nico}}
         <h3><i class="glyphicon glyphicon-info-sign"></i> General information</h3>
         <input type="text" class="form-control" placeholder="Title" ng-model="mytodo.title" required autofocus>
         <input type="text" class="form-control" placeholder="Description" ng-model="mytodo.description" >
@@ -15,7 +16,7 @@
             <option>5</option>
         </select>
 
-        <input type="text" class="form-control" placeholder="Context" ng-model="mytodo.context">
+        <input type="text" class="form-control" placeholder="Context" ng-model="nico">
 
         <select class="form-control" id="sel2" ng-model="mytodo.id_list" required>
             <option value="" disabled selected>Choose a list</option>
