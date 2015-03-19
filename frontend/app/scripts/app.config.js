@@ -29,15 +29,15 @@ angular.module('ToDoManagerApp').config(function($urlRouterProvider, $stateProvi
 			templateUrl: '/views/ViewToDoList.html',
 			controller: 'ViewToDoList'
 		})
+		.state('viewSharedToDoList', {
+			url: '/sharedtodolist/:id',
+			templateUrl: '/views/SharedViewToDoList.html',
+			controller: 'SharedViewToDoList'
+		})
 		.state('login', {
 			url: '/login',
 			templateUrl: '/views/login.html',
 			controller: 'LoginCtrl'
-		})
-		.state('todos', {
-			url: '/todos',
-			templateUrl: '/views/todos.html',
-			controller: 'TodosCtrl'
 		})
 		.state('add/todo', {
 			url: '/add/todo',
@@ -48,6 +48,11 @@ angular.module('ToDoManagerApp').config(function($urlRouterProvider, $stateProvi
 			url: '/todo/:id',
 			templateUrl: '/views/todo.html',
 			controller: 'TodoCtrl'
+		})
+		.state('sharedtodo/', {
+			url: '/sharedtodo/:id',
+			templateUrl: '/views/sharedtodo.html',
+			controller: 'sharedTodoCtrl'
 		})
 		.state('addcontact', {
 			url: '/addcontact',

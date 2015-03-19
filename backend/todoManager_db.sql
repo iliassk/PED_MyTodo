@@ -177,7 +177,7 @@ ALTER TABLE `CONTACTS`
 -- Index pour la table `GROUPS`
 --
 ALTER TABLE `GROUPS`
- ADD PRIMARY KEY (`id_group`), ADD UNIQUE KEY `name` (`name`);
+ ADD PRIMARY KEY (`id_group`);
 
 --
 -- Index pour la table `SHARE_LIST`

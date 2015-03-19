@@ -9,7 +9,7 @@
  * Main module of the application.
  */
 angular.module('ToDoManagerApp', ['ui.router','ui.calendar', 'ngAnimate','ui.bootstrap','angularFileUpload', 'satellizer','smart-table'])
-.run(function($window, $rootScope, TDMService, $modal) {
+.run(function($window, $rootScope, TDMService, $modal, $auth) {
 
     console.offline = function(text){
       console.log("[offline] => " + text)
@@ -20,7 +20,7 @@ angular.module('ToDoManagerApp', ['ui.router','ui.calendar', 'ngAnimate','ui.boo
 
 	$rootScope.isWorking = false
 
-  	$rootScope.online = false;
+  	$rootScope.online = true;
     //$rootScope.online = navigator.onLine;
   	$window.addEventListener("offline", function () {
       $rootScope.online = false;
@@ -54,7 +54,7 @@ angular.module('ToDoManagerApp', ['ui.router','ui.calendar', 'ngAnimate','ui.boo
         }
     });
 
-    $rootScope.canFetchData = $rootScope.online
+    $rootScope.canFetchData = ($auth.isAuthenticated() && $rootScope.online) ? true : false; //$rootScope.online
 
     if(!$rootScope.online)
     $modal.open({

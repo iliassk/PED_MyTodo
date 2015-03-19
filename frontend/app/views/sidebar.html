@@ -26,7 +26,7 @@
             <table>
                 <tbody>
                     <tr>
-                        <td width="30%"> <li ui-sref-active="active"><a onclick ="toggle('listTodo')" ng-click="todoList()"><B>ListTodo</B></a></li></td>
+                        <td width="30%"> <li ui-sref-active="active"><a onclick ="toggle('listTodo')" ng-click="todoList()"><B>Your Todos</B></a></li></td>
                         <td width="30%" ><li ui-sref-active="active"><a onclick ="toggle('groupe')"><B>Contacts</B></a></li></td>
                         <td width="30%" ><li ui-sref-active="active"><a onclick ="toggle('sharedToDo')"><B>Shared Todo</B></a></li></td>
                     </tr>
@@ -61,14 +61,13 @@
                     <ul ng-switch-when="0">
                         <a class="btn btn-info">You have no shared list</a>
                     </ul>
-
                     <accordion close-others="false">
                         <accordion-group  is-open="status.open" ng-repeat="list in data.shareListsWithToDo | filter:query ">
                             <accordion-heading ng-click=""><a class="accordion-toggle" ng-style="{color: '{{list.color}}'}">{{list.name}}</a>
-                            <a ng-click="status.open = !status.open" id="{{list.name}}InfoClick" class="pull-right" ui-sref="viewToDoList({ id: {{list.id_list}} })"> <i class="glyphicon glyphicon-info-sign"></i> </a>
+                            <a ng-click="status.open = !status.open" id="{{list.name}}InfoClick" class="pull-right" ui-sref="viewSharedToDoList({ id: {{list.id_list}} })"> <i class="glyphicon glyphicon-info-sign"></i> </a>
                             </accordion-heading>
                             <li ng-repeat="todo in list.todos | filter:query | orderBy:['-date', 'name'] " ng-hide="hidecompleted && (todo.completed == true) ">
-                                <a style="display: inline; color: white;" ui-sref="todo/({ id: {{todo.id_todo}} })" popover-trigger="mouseenter" popover-placement="up" popover-title="{{todo.description}}" popover="{{todo.date | date:'short'}}">{{todo.title}}</a>
+                                <a style="display: inline; color: white;" ui-sref="sharedtodo/({ id: {{todo.id_todo}} })" popover-trigger="mouseenter" popover-placement="up" popover-title="{{todo.description}}" popover="{{todo.date | date:'short'}}">{{todo.title}}</a>
                                 <a class="pull-right"><i style="display: inline; color:Chartreuse;"  ng-click="onTodoModified(todo)" class="glyphicon glyphicon-ok ng-show" ng-show="todo.completed"></i></a>
                                 <a class="pull-right"><i style="display: inline; color:Gainsboro"  ng-click="onTodoModified(todo)" class="glyphicon glyphicon-ok ng-hide " ng-hide="todo.completed"></i></a>
                             </li>

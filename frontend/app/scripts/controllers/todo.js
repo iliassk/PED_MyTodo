@@ -11,12 +11,13 @@ angular.module('ToDoManagerApp')
   //This function erases the chosen subtodo
   $scope.eraseSubtodo = function(index, id){
     $scope.mytodo.subtodos.splice(index, 1);
-    TDMService.deleteSubToDo(id);
+    if(id)
+      TDMService.deleteSubToDo(id);
   }
 
   $scope.addSubTodo = function(subtodo) {
     if(subtodo.title != ''){
-      var subtodoTmp = {title : subtodo.title, description : subtodo.description}
+      var subtodoTmp = {id_subtodo:'', title : subtodo.title, completed: false, description : subtodo.description}
       if(!$scope.mytodo.subtodos)
         $scope.mytodo.subtodos = []
       $scope.mytodo.subtodos.push(subtodoTmp)
@@ -29,6 +30,7 @@ angular.module('ToDoManagerApp')
 
   ////////////////Submit form /////////////////
   $scope.submit = function() {
+    console.log("Trololo")
      TDMService.updateTodo($scope.mytodo) 
       .success(function(res) {
         $state.go('main')
@@ -120,7 +122,7 @@ angular.module('ToDoManagerApp')
     startingDay: 1
   };
 
-  $scope.format = "EEE MMM dd yyyy HH:mm:ss G'M'TZ '(CET)'";
+  $scope.format = "EEE MMM dd yyyy HH:mm G'M'TZ '(CET)'";
   
   ////////////////Time /////////////////
 
@@ -198,13 +200,10 @@ angular.module('ToDoManagerApp')
                   console.log($scope.mytodo)
 
                   $scope.data = TDMService.data;
-                  $scope.today();
                   $scope.toggleMin();
                 })
             }
     });
-
-
 
 });
 

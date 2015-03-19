@@ -1,31 +1,24 @@
 'use strict';
 
 angular.module('ToDoManagerApp')
+.controller('sharedTodoCtrl',  function($scope, $location, $log, $modal, TDMService, alert, $stateParams, $state) {
 
-.controller('AddTodoCtrl', function($scope, $location, $log, $modal, TDMService, $rootScope, alert, $upload,$http, API_URL, $state) {
- 
-  
-  $rootScope.$watch('canFetchData', function(canFetchData) {
-        console.log("$rootScope.$watch('canFetchData'  " + canFetchData)
-
-            if(canFetchData){
-               TDMService.refresh(function(){
-                  $scope.data = TDMService.data;
-
-                });
-            }
-    });
-  ////////////////Submit form /////////////////
-  $scope.data = TDMService.data;
-
-  $scope.mytodo = {title: '', description: '', priority: '', context: '', date: '', completed: false, id_owner: '', url: '', attachment_path:'', localization: '', id_list:'', id_category:'', subtodos: new Array()};
-  $scope.subtodo = {title: '', description: ''}
-  $scope.file;
+  $scope.mytodo = {};
+  $scope.data = {};
   $scope.isCollapsed = true;
+  $scope.isNotEditing = true;
+
+  //This function erases the chosen subtodo
+  $scope.eraseSubtodo = function(index, id){
+    $scope.mytodo.subtodos.splice(index, 1);
+    TDMService.deleteSubToDo(id);
+  }
 
   $scope.addSubTodo = function(subtodo) {
     if(subtodo.title != ''){
-      var subtodoTmp = {title : subtodo.title, completed: false, description : subtodo.description}
+      var subtodoTmp = {title : subtodo.title, description : subtodo.description}
+      if(!$scope.mytodo.subtodos)
+        $scope.mytodo.subtodos = []
       $scope.mytodo.subtodos.push(subtodoTmp)
       subtodo.title = ""
       subtodo.description = ""
@@ -33,17 +26,25 @@ angular.module('ToDoManagerApp')
     else
       alert('warning', 'Empty Subtodo : ', 'If you want to add a subtodo, give it a name!')
   };
-  
+
+  ////////////////Submit form /////////////////
   $scope.submit = function() {
-    TDMService.addTodo($scope.mytodo) 
+     TDMService.updateTodo($scope.mytodo) 
       .success(function(res) {
-        alert('success', 'Todo created!', 'Your todo has been created !');
-        $state.go('main');
+        alert('success', 'Todo edited!', 'Your todo has been edited !');
       })
       .error(function(err) {
         alert('warning', 'Something went wrong :(', err.message);
       });
   };
+
+
+
+  ////////////////Completed boolean ///////////
+
+  $scope.onTodoModified = function(){
+    $scope.mytodo.completed = ($scope.mytodo.completed ? 1 : 0)
+  }
 
   ////////////////Attachment file /////////////////
   angular.element('#input-file').fileinput({showCaption: false,showUpload: false, maxFileSize:2000}); 
@@ -82,8 +83,7 @@ angular.module('ToDoManagerApp')
        Could be used to upload files to CouchDB, imgur, etc... html5 FileReader is needed. 
        It could also be used to monitor the progress of a normal http post/put request with large data*/
     // $scope.upload = $upload.http({...})  see 88#issuecomment-31366487 for sample code. 
-  };
-  ////////////////Calendar /////////////////
+  };  ////////////////Calendar /////////////////
 
   $scope.today = function() {
     var today = new Date();
@@ -97,7 +97,7 @@ angular.module('ToDoManagerApp')
     $scope.mytodo.date = today;
 
   };
-  $scope.today();
+  
 
   $scope.clear = function () {
     $scope.mytodo.date = null;
@@ -106,7 +106,6 @@ angular.module('ToDoManagerApp')
   $scope.toggleMin = function() {
     $scope.minDate = $scope.minDate ? null : new Date();
   };
-  $scope.toggleMin();
 
   $scope.open = function($event) {
     $event.preventDefault();
@@ -120,7 +119,7 @@ angular.module('ToDoManagerApp')
     startingDay: 1
   };
 
-  $scope.format = "EEE MMM dd yyyy HH:mm G'M'TZ '(CET)'";
+  $scope.format = "EEE MMM dd yyyy HH:mm:ss G'M'TZ '(CET)'";
   
   ////////////////Time /////////////////
 
@@ -156,10 +155,29 @@ angular.module('ToDoManagerApp')
 
   ////////////////Localization /////////////////
 
-  $scope.init = function(){ 
+  $scope.showLocation = function(size){
 
-    getAdresse(['map-canvas', 'input-address', 'type-selector'], function(position, address){
+    var modalInstance = $modal.open({
+      templateUrl: 'localizaton_map.html',
+      controller: 'MapCtrl',
+      size: size
+    });
+
+    modalInstance.result.then(function (address) {
       $scope.mytodo.localization = address;
+      console.log('result got : ' + address);
+
+    }, function () {
+      $log.info('Modal dismissed at: ' + new Date());
+    });
+  };
+
+  $scope.address = '';
+  $scope.init = function(){ 
+    getAdresse(['map-canvas', 'input-address', 'type-selector'], function(position, address){
+      console.log(position);
+      console.log(address);
+      $scope.address = address;
     }, function(msg){
       console.log(msg);
     });
@@ -167,5 +185,71 @@ angular.module('ToDoManagerApp')
 
   $scope.init();
 
+  ////////////////Delete todo /////////////////
+
+
+ $scope.delete = function () {
+
+    var modalInstance = $modal.open({
+      templateUrl: 'modalDelete.html',
+      controller: 'deleteTodoCtrl',
+      size: 'sm',
+      resolve: {
+        id: function () {
+          return $scope.mytodo.id_todo;
+        }
+      }
+    });
+
+    modalInstance.result.then(function () {
+    }, function () {
+      $log.info('Modal dismissed at: ' + new Date());
+    });
+  };
+
+
+$rootScope.$watch('canFetchData', function(canFetchData) {
+        console.log("$rootScope.$watch('canFetchData'  " + canFetchData)
+
+            if(canFetchData){
+               TDMService.refresh(function(){
+
+          $scope.mytodo = TDMService.getASharedToDo($stateParams.id);
+          $scope.sharedList = $scope.list = TDMService.getASharedList($scope.mytodo.id_list)
+
+          $scope.data = TDMService.data;
+      
+          $scope.toggleMin();
+          })
+            }
+    });
+
+
+});
+
+  
+
+  ////////////////Controller map modal /////////////////
+
+
+angular.module('ToDoManagerApp')
+.controller('deleteTodoCtrl', function ($scope, $modalInstance, id, $state, TDMService) {
+
+  $scope.id = id;
+
+  $scope.deleteTodo = function () {
+    TDMService.deleteToDo(id).success(function(res) {
+        console.log('success', 'Todo deleted!', 'Your todo has been deleted !');
+        $state.go('main');
+      })
+      .error(function(err) {
+        alert('warning', 'Something went wrong :(', err.message);
+      });
+    $modalInstance.close();
+  };
+
+  $scope.cancel = function () {
+    $modalInstance.dismiss('cancel');
+  };
 });
 

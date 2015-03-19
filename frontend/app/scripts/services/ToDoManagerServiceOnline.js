@@ -4,7 +4,6 @@ angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($http, AP
 
 	var ToDoManagerApp = this;
 
-	//done
 	this.fetchAll = function(f) {
 		console.online("fetchAll")
 		$rootScope.isWorking = true
