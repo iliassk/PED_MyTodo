@@ -71,16 +71,13 @@ exports.listgroupe_get = function(req, res, next, connection, auth, jwt){
 		if (err) {
 			console.log(err);
 			return next("Mysql error, check your query");
-		}else{
-			//console.info(rows);
-			res.status(200).json(rows);
 		}
 
 		result = rows;
 		
 		rows.forEach(function (elem, index, array) {
 
-				connection.query('SELECT * FROM CONTACTS C, USERS U,  WHERE C.id_user=U.id_user AND C.id_group = ?', elem.id_group, function(err, contacts) {
+				connection.query('SELECT * FROM USERS JOIN CONTACTS ON USERS.id_user = CONTACTS.id_user WHERE CONTACTS.id_group = ?', elem.id_group, function(err, contacts) {
 				if (err) {
 					console.log(err);
 					return next("Mysql error on connection, check your query");
@@ -93,6 +90,7 @@ exports.listgroupe_get = function(req, res, next, connection, auth, jwt){
 					return res.status(200).json(result);
 			});
 		})
+
 	});
 }
 
