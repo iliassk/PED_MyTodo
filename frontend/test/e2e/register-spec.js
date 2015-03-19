@@ -27,10 +27,12 @@ describe('ToDoManager e2e register tests', function() {
 
 		expect(element(by.id('logout')).isDisplayed()).toBeTruthy();
 		browser.findElement(protractor.By.id('logout')).click();
+		// to manage the reload timeout caused by $window.location.reload() in logout
+		browser.sleep(500);
 
 		expect(browser.getCurrentUrl()).toBe(browser.baseUrl + '#/');
 
-	}, 10000);
+	}, 30000);
 
 
 	it('should not allow registration if Username exists', function() {
@@ -51,7 +53,7 @@ describe('ToDoManager e2e register tests', function() {
 
 		expect(browser.getCurrentUrl()).toBe(browser.baseUrl + '#/register');
 
-	}, 10000);
+	}, 30000);
 
 	it('should not allow registration if Email exists', function() {
 		browser.get('#/register');
@@ -71,5 +73,5 @@ describe('ToDoManager e2e register tests', function() {
 
 		expect(browser.getCurrentUrl()).toBe(browser.baseUrl + '#/register');
 
-	}, 10000);
+	}, 30000);
 });

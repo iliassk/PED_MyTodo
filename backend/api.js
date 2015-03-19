@@ -68,7 +68,7 @@ passport.deserializeUser(function(user, done) {
 app.use(passport.initialize());
 
 // To enable CORS (works with satellizer)
-var whitelist = ['http://localhost:9000'];
+var whitelist = ['http://localhost:9000', 'http://localhost:9001'];
 app.use(cors({
 	origin: function(origin, callback) {
 		var originIsWhitelisted = whitelist.indexOf(origin) !== -1;

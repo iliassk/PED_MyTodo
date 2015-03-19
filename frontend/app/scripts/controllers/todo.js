@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('ToDoManagerApp')
-.controller('TodoCtrl',  function($scope, $location, $log, $modal, TDMService, alert, $stateParams, $state) {
+.controller('TodoCtrl',  function($scope, $location, $log, $modal, TDMService, alert, $stateParams, $state, $rootScope) {
 
   $scope.mytodo = {};
 
@@ -31,6 +31,7 @@ angular.module('ToDoManagerApp')
   $scope.submit = function() {
      TDMService.updateTodo($scope.mytodo) 
       .success(function(res) {
+        $state.go('main')
         alert('success', 'Todo edited!', 'Your todo has been edited !');
       })
       .error(function(err) {
@@ -155,29 +156,9 @@ angular.module('ToDoManagerApp')
 
   ////////////////Localization /////////////////
 
-  $scope.showLocation = function(size){
-
-    var modalInstance = $modal.open({
-      templateUrl: 'localizaton_map.html',
-      controller: 'MapCtrl',
-      size: size
-    });
-
-    modalInstance.result.then(function (address) {
-      $scope.mytodo.localization = address;
-      console.log('result got : ' + address);
-
-    }, function () {
-      $log.info('Modal dismissed at: ' + new Date());
-    });
-  };
-
-  $scope.address = '';
   $scope.init = function(){ 
     getAdresse(['map-canvas', 'input-address', 'type-selector'], function(position, address){
-      console.log(position);
-      console.log(address);
-      $scope.address = address;
+      $scope.mytodo.localization = address;
     }, function(msg){
       console.log(msg);
     });
@@ -207,16 +188,23 @@ angular.module('ToDoManagerApp')
     });
   };
 
+  $rootScope.$watch('canFetchData', function(canFetchData) {
+        console.log("$rootScope.$watch('canFetchData'  " + canFetchData)
 
-  TDMService.refresh(function(){
-    //debugger;
-    $scope.mytodo = TDMService.getAToDo($stateParams.id);
-    console.log($scope.mytodo)
+            if(canFetchData){
+                 TDMService.refresh(function(){
+                  //debugger;
+                  $scope.mytodo = TDMService.getAToDo($stateParams.id);
+                  console.log($scope.mytodo)
 
-    $scope.data = TDMService.data;
-    $scope.today();
-    $scope.toggleMin();
-  })
+                  $scope.data = TDMService.data;
+                  $scope.today();
+                  $scope.toggleMin();
+                })
+            }
+    });
+
+
 
 });
 

@@ -15,7 +15,8 @@ angular.module('ToDoManagerApp').controller('TodoListCtrl', function($scope, ale
 		TDMService.todolist($scope.name, $scope.description, $scope.color)
 		.success(function() {
 			alert('success', 'OK!', 'add todolist success');
-			TDMService.fetchAll()
+			
+        console.warn("Fetchall retiré ici !!! l'ajout peut être buggé!!! ")
 			$state.go('main');
 		})
 		.error(function() {

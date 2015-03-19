@@ -10,14 +10,8 @@ describe('ToDoManager e2e example tests', function() {
 		expect(browser.getLocationAbsUrl()).toMatch("/");
 	});
 
-	it('should consist of ToDoManager as heading', function() {
-		element(by.css('.navbar-brand')).getText().then(function(name) {
-			expect(name).toBe('ToDoManager');
-		});
-	});
-
-	it('should consist of 4 menu items', function() {
+	it('should consist of 9 menu items', function() {
 		var list = element.all(by.css('.nav li'));
-		expect(list.count()).toBe(4);
+		expect(list.count()).toBe(9);
 	});
 });

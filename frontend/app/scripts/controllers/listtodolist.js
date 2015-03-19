@@ -1,11 +1,10 @@
 'use strict';
 
-angular.module('ToDoManagerApp').controller('ListTodoListCtrl', function($scope, $window, alert, TDMService, $auth) {
+angular.module('ToDoManagerApp').controller('ListTodoListCtrl', function($scope, $window, alert, TDMService, $auth ,$rootScope) {
     
 	$scope.hidecompleted = false;
 	$scope.group;
 	$scope.contact;
-	
 	
 	angular.element('[data-toggle="popover"]').popover()
 	angular.element('i').click(function(e) {
@@ -24,7 +23,6 @@ angular.module('ToDoManagerApp').controller('ListTodoListCtrl', function($scope,
 		TDMService.updateTodo(todo)
 		.success(function(data) {
 			console.log("[updateTodo] success");
-			//$scope.fetchData();
 		})
 		.error(function(data) {
 			console.log("[updateTodo] failure");
@@ -40,12 +38,6 @@ angular.module('ToDoManagerApp').controller('ListTodoListCtrl', function($scope,
 		.error(function() {
 			alert('warning', 'Oops!', 'update failed');
 		});
-		
-		TDMService.fetchToDoAndListToDos()
-		.success(function(data){
-			$scope.todoList = data;
-		});
-			
 
 		TDMService.listcontact()
 		.success(function(data) {
@@ -76,15 +68,11 @@ angular.module('ToDoManagerApp').controller('ListTodoListCtrl', function($scope,
  		TDMService.deletetodolist(obj)
  		.success(function(data) {
 			alert('success', 'OK!', 'delete success');
-			$scope.todoList = data;
 		})
 		.error(function() {
 			alert('warning', 'Oops!', 'delete failed');
 		});
-
- 		$window.location.reload();
 	};
-
 	
 	$scope.submitgroup = function(name){
 
@@ -97,6 +85,14 @@ angular.module('ToDoManagerApp').controller('ListTodoListCtrl', function($scope,
 		})
 	};
 
-	if($auth.isAuthenticated())
-		$scope.fetchData()
+	/*if($auth.isAuthenticated() &&  $rootScope.online)
+		$scope.fetchData()*/
+
+	$rootScope.$watch('canFetchData', function(canFetchData) {
+        console.log("$rootScope.$watch('canFetchData'  " + canFetchData)
+
+            if(canFetchData){
+               // $scope.fetchData()
+            }
+    });
 });

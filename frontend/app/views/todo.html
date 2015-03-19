@@ -67,13 +67,10 @@
          </div>
         <div class="col-lg-6">
 
-       <h3><i class="glyphicon glyphicon-globe"></i>Location</h3><small>Add an address!</small>
+        <h3><i class="glyphicon glyphicon-globe"></i>Location</h3><small>Add an address!</small>
         <input ng-disabled="isNotEditing" ng-model="mytodo.localization" id="input-address" class="controls" type="text" placeholder="Enter a location">
 
         <div id="map-canvas"></div>
-
-            <input ng-disabled="isNotEditing" id="address" type="text" class="form-control" placeholder="Address" ng-model="mytodo.localization">
-            {{mytodo.localization}}
 
         <h3><i class="glyphicon glyphicon-list"></i> Subtodos</h3>
 
@@ -106,8 +103,8 @@
         </div>
         </div>
 
-        <button ng-disabled="isNotEditing" type="submit" id="add_todo_button" class="btn btn-lg btn-info btn-block">Update</button>
-        <button ng-disabled="isNotEditing" type="submit" id="add_todo_button" class="btn btn-lg btn-warning btn-block" ng-click="delete()">Delete</button>
+        <button ng-disabled="isNotEditing" type="submit" id="update_todo_button" class="btn btn-lg btn-info btn-block">Update</button>
+        <button ng-disabled="isNotEditing" type="submit" id="delete_todo_button" class="btn btn-lg btn-warning btn-block" ng-click="delete()">Delete</button>
     </form>
 </div>
 

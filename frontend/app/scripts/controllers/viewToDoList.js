@@ -12,13 +12,21 @@ angular.module('ToDoManagerApp').controller('ViewToDoList', function($scope, $st
     
 	$scope.list = {};
 	$scope.displayedCollection = {};
-    TDMService.refresh(function(){
-    	console.log("accessing shared data")
-		$scope.list = TDMService.getAList($stateParams.id)
-		console.log($scope.list)
-		$scope.displayedCollection = [].concat($scope.list.todos);
-		$rootScope.isWorking = false;
-    })
+
+	$rootScope.$watch('canFetchData', function(canFetchData) {
+        console.log("$rootScope.$watch('canFetchData'  " + canFetchData)
+
+            if(canFetchData){
+               TDMService.refresh(function(){
+			    	console.log("accessing shared data")
+					$scope.list = TDMService.getAList($stateParams.id)
+					console.log($scope.list)
+					$scope.displayedCollection = [].concat($scope.list.todos);
+					$rootScope.isWorking = false;
+			    })
+            }
+    });
+    
 	$scope.hidecompleted = false;
 
 	$scope.itemsByPage=15;
@@ -117,6 +125,10 @@ angular.module('ToDoManagerApp').controller('ViewToDoList', function($scope, $st
 		.error(function(data) {
 			console.log("[updateTodo] failure");
 		});
+	}
+
+	$scope.showMapButton = function(place){
+		return place == "" || place == undefined || place == null
 	}
 
 });

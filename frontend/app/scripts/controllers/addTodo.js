@@ -2,12 +2,19 @@
 
 angular.module('ToDoManagerApp')
 
-.controller('AddTodoCtrl', function($scope, $location, $log, $modal, TDMService, alert, $upload,$http, API_URL, $state) {
+.controller('AddTodoCtrl', function($scope, $location, $log, $modal, TDMService, $rootScope, alert, $upload,$http, API_URL, $state) {
  
-  TDMService.refresh(function(){
-    $scope.data = TDMService.data;
+  
+  $rootScope.$watch('canFetchData', function(canFetchData) {
+        console.log("$rootScope.$watch('canFetchData'  " + canFetchData)
 
-  });
+            if(canFetchData){
+               TDMService.refresh(function(){
+                  $scope.data = TDMService.data;
+
+                });
+            }
+    });
   ////////////////Submit form /////////////////
   $scope.data = TDMService.data;
 
@@ -30,10 +37,13 @@ angular.module('ToDoManagerApp')
   $scope.submit = function() {
     console.log("truc")
     console.log($scope.mytodo)
+
+    debugger;
+
     TDMService.addTodo($scope.mytodo) 
       .success(function(res) {
         alert('success', 'Todo created!', 'Your todo has been created !');
-        TDMService.fetchAll()
+        console.warn("Fetchall retiré ici !!! l'ajout peut être buggé!!! ")
         $state.go('main');
       })
       .error(function(err) {
@@ -149,31 +159,10 @@ angular.module('ToDoManagerApp')
     $scope.mytodo.date = null;
   };  
 
-  ////////////////Localization /////////////////
-
-  $scope.showLocation = function(size){
-
-    var modalInstance = $modal.open({
-      templateUrl: 'localizaton_map.html',
-      controller: 'MapCtrl',
-      size: size
-    });
-
-    modalInstance.result.then(function (address) {
-      $scope.mytodo.localization = address;
-      console.log('result got : ' + address);
-
-    }, function () {
-      $log.info('Modal dismissed at: ' + new Date());
-    });
-  };
-
-  $scope.address = '';
   $scope.init = function(){ 
+
     getAdresse(['map-canvas', 'input-address', 'type-selector'], function(position, address){
-      console.log(position);
-      console.log(address);
-      $scope.address = address;
+      $scope.mytodo.localization = address;
     }, function(msg){
       console.log(msg);
     });

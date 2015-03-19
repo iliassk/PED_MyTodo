@@ -82,6 +82,7 @@
 				<td>{{row.context}}</td>
 				<td>{{row.date | date:'medium'}}</td>
 				<td>
+					<a target="_blank" ng-hide="showMapButton(row.localization)" class="btn btn-sm btn-info" href="https://maps.google.com/?q={{row.localization}}"><i class="glyphicon glyphicon-map-marker" ></i></a>
 					<span class="dropdown" dropdown>
 				      <a href class="btn btn-sm btn-primary" class="dropdown-toggle" dropdown-toggle>
 				        <i class="glyphicon glyphicon-calendar" ></i><span class="caret"></span>
@@ -92,7 +93,7 @@
 				      </ul>
 				    </span>
         			<a id="shareOutSiderToDo" class="btn btn-sm btn-info" ng-click="shareTodo(row)"><i class="glyphicon glyphicon-share" ></i></a>
-				<button type="button" class="btn btn-sm btn-danger" ng-click="deleteTodo(row.id_todo,row)"><i class="glyphicon glyphicon-trash" ></i></button>
+					<button type="button" class="btn btn-sm btn-danger" ng-click="deleteTodo(row.id_todo,row)"><i class="glyphicon glyphicon-trash" ></i></button>
 				</td>
 			</tr>
 			</tbody>

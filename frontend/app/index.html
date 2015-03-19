@@ -81,7 +81,7 @@
                             <a ui-sref="login" class="btn btn-link"> <span class="glyphicon glyphicon-user" aria-hidden="true"></span> Login</a>
                         </li>
                         <li ng-show="isAuthenticated()" ui-sref-active="active">
-                            <a ui-sref="logout" class="btn btn-link"> <span class="glyphicon glyphicon-user" aria-hidden="true"></span>  Logout</a>
+                            <a id='logout' ui-sref="logout" class="btn btn-link"> <span class="glyphicon glyphicon-user" aria-hidden="true"></span>  Logout</a>
                         </li>
 
                          <!-- glyphicon glyphicon-cloud    -->
@@ -165,8 +165,10 @@
 
     <!-- Services -->
     <script src="scripts/services/alert.js"></script>
-    <script src="scripts/services/ToDoManagerService.js"></script>
     <script src="scripts/services/contactManagerService.js"></script>
+    <script src="scripts/services/ToDoManagerService2.js"></script>
+    <script src="scripts/services/ToDoManagerServiceOffline.js"></script>
+    <script src="scripts/services/ToDoManagerServiceOnline.js"></script>
 
     <!-- Controllers -->
     <script src="scripts/controllers/header.js"></script>
@@ -184,6 +186,33 @@
 
 
     <!-- endbuild -->
+
+    <script type="text/ng-template" id="modalOffLine.html">
+        <div class="modal-header">
+            <h3 class="modal-title">Mode offline</h3>
+        </div>
+        <div class="modal-body">
+            <div ng-show="offlineFlag">
+            <p>Vous venez de passer en mode offline. N'étant plus connecté au réseau les modifications que vous réaliserez ne seront synchronisées avec le serveur uniquement à votre prochaine connexion.
+            Certaines fonctionnalitées de l'application sont désactivées lors de ce mode : </p>
+            <ul>
+                <li>Utilisation de la carte google</li>
+                <li>Partage de todo</li>
+            </ul>
+
+            <p>IMPORTANT : Si vous modifiez vos données sur cette ordinateur et accédez à votre compte sur un autre PC avant la synchronisation de celui-ci alors vous pourriez perdre une partie de vos données. Pour lancer la synchronisation il vous suffit d'acceder au site avec une connexion internet.</p>
+            </div>
+            <div ng-hide="offlineFlag">
+                <p>Vous venez de vous reconnecter après avoir utilisé le mode offline. Voulez vous synchroniser vos données avec le serveur ?</p>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-show="offlineFlag" ng-click="continue()">Continue offline</button>
+            <button class="btn btn-warning" ng-show="offlineFlag" ng-click="cancel()">Leave</button>
+            <button class="btn btn-primary" ng-hide="offlineFlag" ng-click="synchronisation()">Synchroniser</button>
+            <button class="btn btn-warning" ng-hide="offlineFlag" ng-click="abandonMyData()">Abandonner vos données</button>
+        </div>
+    </script>
 
     <script>
     $("#menu-toggle").click(function(e) {
