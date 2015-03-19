@@ -26,8 +26,6 @@ SET time_zone = "+00:00";
 -- Base de données: `todoManager_db`
 --
 
--- --------------------------------------------------------
-
 --
 -- Structure de la table `CATEGORY`
 --
@@ -56,10 +54,18 @@ CREATE TABLE `CONTACTS` (
 --
 
 CREATE TABLE `GROUPS` (
-  `id_group` int(11) NOT NULL,
+`id_group` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
   `id_owner` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `GROUPS`
+--
+
+INSERT INTO `GROUPS` (`id_group`, `name`, `id_owner`) VALUES
+(1, 'Test', 15),
+(3, 'Test', 17);
 
 -- --------------------------------------------------------
 
@@ -72,11 +78,33 @@ CREATE TABLE `SHARE_LIST` (
   `id_list` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Contenu de la table `SHARE_LIST`
+--
+
+INSERT INTO `SHARE_LIST` (`id_user`, `id_list`) VALUES
+(17, 15),
+(17, 16),
+(18, 16);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `SHARE_OUTSIDER`
+--
 
 CREATE TABLE `SHARE_OUTSIDER` (
   `id_reference` int(11) NOT NULL,
-  `url` varchar(255) NOT NULL, UNIQUE(`id_reference`, `url`)
+  `url` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `SHARE_OUTSIDER`
+--
+
+INSERT INTO `SHARE_OUTSIDER` (`id_reference`, `url`) VALUES
+(8, '95130536204192796f3816cd1a7e176bc57fea8a'),
+(10, 'dfb425ec6fd8e5113a13025af5cfbb63c06316c6');
 
 -- --------------------------------------------------------
 
@@ -98,10 +126,15 @@ CREATE TABLE `SHARE_TODO` (
 CREATE TABLE `SUBTODO` (
 `id_subtodo` int(11) NOT NULL,
   `description` varchar(255) NOT NULL,
-  `status` varchar(255) NOT NULL,
+  `completed` tinyint(1) NOT NULL,
   `title` varchar(255) NOT NULL,
   `id_todo` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `SUBTODO`
+--
+
 
 -- --------------------------------------------------------
 
@@ -123,7 +156,12 @@ CREATE TABLE `TODO` (
   `localization` varchar(255) NOT NULL,
   `id_list` int(11) NOT NULL,
   `id_category` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `TODO`
+--
+
 
 -- --------------------------------------------------------
 
@@ -137,7 +175,11 @@ CREATE TABLE `TODOLIST` (
   `description` varchar(255) NOT NULL,
   `color` varchar(255) NOT NULL,
   `id_owner` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `TODOLIST`
+--
 
 -- --------------------------------------------------------
 
@@ -155,7 +197,8 @@ CREATE TABLE `USERS` (
   `twitterId` varchar(255) DEFAULT NULL,
   `username` varchar(255) NOT NULL,
   `avatar_path` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
+
 
 --
 -- Index pour les tables exportées
@@ -184,6 +227,12 @@ ALTER TABLE `GROUPS`
 --
 ALTER TABLE `SHARE_LIST`
  ADD PRIMARY KEY (`id_user`,`id_list`), ADD KEY `id_list` (`id_list`);
+
+--
+-- Index pour la table `SHARE_OUTSIDER`
+--
+ALTER TABLE `SHARE_OUTSIDER`
+ ADD UNIQUE KEY `id_reference` (`id_reference`,`url`);
 
 --
 -- Index pour la table `SHARE_TODO`
@@ -228,27 +277,27 @@ MODIFY `id_category` int(11) NOT NULL AUTO_INCREMENT;
 -- AUTO_INCREMENT pour la table `GROUPS`
 --
 ALTER TABLE `GROUPS`
-MODIFY `id_group` int(11) NOT NULL AUTO_INCREMENT;
+MODIFY `id_group` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT pour la table `SUBTODO`
 --
 ALTER TABLE `SUBTODO`
-MODIFY `id_subtodo` int(11) NOT NULL AUTO_INCREMENT;
+MODIFY `id_subtodo` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=12;
 --
 -- AUTO_INCREMENT pour la table `TODO`
 --
 ALTER TABLE `TODO`
-MODIFY `id_todo` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
+MODIFY `id_todo` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=16;
 --
 -- AUTO_INCREMENT pour la table `TODOLIST`
 --
 ALTER TABLE `TODOLIST`
-MODIFY `id_list` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=15;
+MODIFY `id_list` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=21;
 --
 -- AUTO_INCREMENT pour la table `USERS`
 --
 ALTER TABLE `USERS`
-MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=15;
+MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=21;
 --
 -- Contraintes pour les tables exportées
 --
