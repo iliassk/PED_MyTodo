@@ -3,11 +3,6 @@
 angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($http, API_URL, $state, $rootScope, TDMServiceOffline) {
 
 	var ToDoManagerApp = this;
-	ToDoManagerApp.data = {};
-
-	this.init = function(_data){
-		ToDoManagerApp.data = _data
-	}
 
 	//done
 	this.fetchAll = function(f) {
@@ -16,10 +11,10 @@ angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($http, AP
 		$http.get(API_URL + 'listtodolistwithtodos')
 		.success(function(_data){
 			console.log("Success fetching all data !!!")
-			ToDoManagerApp.data.listsWithToDo = _data;
-			TDMServiceOffline.save()
+			var data = {listsWithToDo: _data};
+			TDMServiceOffline.save(data)
 			$rootScope.isWorking = false;
-			if(f)f();
+			if(f)f(data);
 		})
 
 		/*$http.get(API_URL + 'listsharedtodolistwithtodos')

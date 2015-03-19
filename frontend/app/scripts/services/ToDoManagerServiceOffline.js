@@ -3,18 +3,13 @@
 angular.module('ToDoManagerApp').service('TDMServiceOffline', function ($http, API_URL, $state, $rootScope) {
 
 	var ToDoManagerApp = this;
-	ToDoManagerApp.data = {};
-
-	this.init = function(_data){
-		ToDoManagerApp.data = _data
-	}
 
 	//done
 	// A appeler DES que vous voulez faire une modif sur un élément des données : ajout, modif, supression, ...
-	this.save = function(){
+	this.save = function(data){
 		console.offline("save")
 		$rootScope.isWorking = true
-		localStorage.ToDoManagerAppData_XYZ = JSON.stringify(ToDoManagerApp.data)
+		localStorage.ToDoManagerAppData_XYZ = JSON.stringify(data)
 		$rootScope.isWorking = false
 	}
 
@@ -22,8 +17,9 @@ angular.module('ToDoManagerApp').service('TDMServiceOffline', function ($http, A
 	this.fetchAll = function(f) {
 		console.offline("fetchAll")
 		$rootScope.isWorking = true
-		ToDoManagerApp.data = JSON.parse(localStorage.ToDoManagerAppData_XYZ)
+		var data = JSON.parse(localStorage.ToDoManagerAppData_XYZ)
 		$rootScope.isWorking = false
+		if(f)f(data);
 	};
 
 	///////////////////////////////////////////////////
@@ -62,26 +58,26 @@ angular.module('ToDoManagerApp').service('TDMServiceOffline', function ($http, A
 	*/
 	///////////////////////////////////////////////////
 	//DELETE a todolist
-	this.deletetodolist = function(obj) {
+	this.deletetodolist = function(obj, data) {
 		console.offline("deletetodolist")
 		$rootScope.isWorking = true
-		ToDoManagerApp.save()
+		ToDoManagerApp.save(data)
 		$rootScope.isWorking = false
 	}
 
 	//DELETE todo
-	this.deleteToDo = function(_id) {
+	this.deleteToDo = function(_id, data) {
 		console.offline("deleteToDo")
 		$rootScope.isWorking = true
-		ToDoManagerApp.save()
+		ToDoManagerApp.save(data)
 		$rootScope.isWorking = false
 	}
 
 	//DELETE subtodo
-	this.deleteSubToDo = function(_id) {
+	this.deleteSubToDo = function(_id, data) {
 		console.offline("deleteSubToDo")
 		$rootScope.isWorking = true
-		ToDoManagerApp.save()
+		ToDoManagerApp.save(data)
 		$rootScope.isWorking = false
 	}
 
@@ -91,13 +87,20 @@ angular.module('ToDoManagerApp').service('TDMServiceOffline', function ($http, A
 	*/
 	///////////////////////////////////////////////////
 	//Update todo
-	this.updateTodo = function(todo) {
+	this.updateTodo = function(todo, data) {
 		console.offline("updateTodo")
 		$rootScope.isWorking = true
-		ToDoManagerApp.save()
+		ToDoManagerApp.save(data)
 		$rootScope.isWorking = false
 	}
 
+	//Update all todos
+	this.updateTodos = function(todo, data) {
+		console.offline("updateTodos")
+		$rootScope.isWorking = true
+		ToDoManagerApp.save(data)
+		$rootScope.isWorking = false
+	}
 	///////////////////////////////////////////////////
 	/**
 	* Manage GET method

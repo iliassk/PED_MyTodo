@@ -2,12 +2,19 @@
 
 angular.module('ToDoManagerApp')
 
-.controller('AddTodoCtrl', function($scope, $location, $log, $modal, TDMService, alert, $upload,$http, API_URL, $state) {
+.controller('AddTodoCtrl', function($scope, $location, $log, $modal, TDMService, $rootScope, alert, $upload,$http, API_URL, $state) {
  
-  TDMService.refresh(function(){
-    $scope.data = TDMService.data;
+  
+  $rootScope.$watch('canFetchData', function(canFetchData) {
+        console.log("$rootScope.$watch('canFetchData'  " + canFetchData)
 
-  });
+            if(canFetchData){
+               TDMService.refresh(function(){
+                  $scope.data = TDMService.data;
+
+                });
+            }
+    });
   ////////////////Submit form /////////////////
   $scope.data = TDMService.data;
 

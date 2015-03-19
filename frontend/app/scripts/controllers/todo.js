@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('ToDoManagerApp')
-.controller('TodoCtrl',  function($scope, $location, $log, $modal, TDMService, alert, $stateParams, $state) {
+.controller('TodoCtrl',  function($scope, $location, $log, $modal, TDMService, alert, $stateParams, $state, $rootScope) {
 
   $scope.mytodo = {};
 
@@ -188,16 +188,23 @@ angular.module('ToDoManagerApp')
     });
   };
 
+  $rootScope.$watch('canFetchData', function(canFetchData) {
+        console.log("$rootScope.$watch('canFetchData'  " + canFetchData)
 
-  TDMService.refresh(function(){
-    //debugger;
-    $scope.mytodo = TDMService.getAToDo($stateParams.id);
-    console.log($scope.mytodo)
+            if(canFetchData){
+                 TDMService.refresh(function(){
+                  //debugger;
+                  $scope.mytodo = TDMService.getAToDo($stateParams.id);
+                  console.log($scope.mytodo)
 
-    $scope.data = TDMService.data;
-    $scope.today();
-    $scope.toggleMin();
-  })
+                  $scope.data = TDMService.data;
+                  $scope.today();
+                  $scope.toggleMin();
+                })
+            }
+    });
+
+
 
 });
 

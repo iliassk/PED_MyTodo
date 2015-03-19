@@ -125,8 +125,6 @@ function getAdresse(idTab, successFindingAdresseCallback, errorFindingAdresseCal
 		controlUI.style.marginBottom = '22px';
 		controlUI.style.textAlign = 'center';
 		controlUI.title = 'Click to center the map on my position';
-		//controlUI.className = "controls"
-		//controlUI.id = "positionButton"
 		controlDiv.appendChild(controlUI);
 
 		// Set CSS for the control interior

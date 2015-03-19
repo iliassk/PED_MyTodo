@@ -18,10 +18,7 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 		contact: '',
 		shareListsWithToDo: []
 	}
-	
-	TDMServiceOffline.init(ToDoManagerApp.data);
-	TDMServiceOnline.init(ToDoManagerApp.data);
-	
+
 	this.markAsOffLine = function(){
 
 		localStorage.hasBeenOffLine = true
@@ -42,14 +39,30 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 		return $rootScope.online
 	}
 
+	this.sync = function(){
+		console.log("[Master] => sync data to server")
+
+	}
+
+	this.forgaveData = function(){
+		console.log("[Master] => forgaveData")
+
+	}
+
 	this.refresh = function(callback){
 		console.log("[Master] => refresh")
 		if(ToDoManagerApp.data.listsWithToDo == ''){
 			$rootScope.isWorking = true
 			if(ToDoManagerApp.isOnLine()){
-				TDMServiceOnline.fetchAll(callback)
+				TDMServiceOnline.fetchAll(function(_data){
+					ToDoManagerApp.data = _data
+					callback()
+				})
 			}else{
-				TDMServiceOffline.fetchAll(callback)
+				TDMServiceOffline.fetchAll(function(_data){
+					ToDoManagerApp.data = _data
+					callback()
+				})
 			}
 		}else if(callback)
 			callback()
@@ -162,7 +175,7 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 		if(ToDoManagerApp.isOnLine()){
 			TDMServiceOnline.deletetodolist(obj)
 		}else{
-			TDMServiceOffline.deletetodolist(obj)
+			TDMServiceOffline.deletetodolist(obj, ToDoManagerApp.data)
 		}
 	}
 
@@ -181,7 +194,7 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 		if(ToDoManagerApp.isOnLine()){
 			return TDMServiceOnline.deleteToDo(_id)
 		}else{
-			return TDMServiceOffline.deleteToDo(_id)
+			return TDMServiceOffline.deleteToDo(_id, ToDoManagerApp.data)
 		}	
 	}
 
@@ -203,7 +216,7 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 		if(ToDoManagerApp.isOnLine()){
 			return TDMServiceOnline.deleteSubToDo(_id)
 		}else{
-			return TDMServiceOffline.deleteSubToDo(_id)
+			return TDMServiceOffline.deleteSubToDo(_id, ToDoManagerApp.data)
 		}
 	}
 
@@ -219,7 +232,7 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 		if(ToDoManagerApp.isOnLine()){
 			return TDMServiceOnline.updateTodo(todo)
 		}else{
-			return TDMServiceOffline.updateTodo(todo)
+			return TDMServiceOffline.updateTodo(todo, ToDoManagerApp.data)
 		}
 	};
 
@@ -230,7 +243,7 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 		if(ToDoManagerApp.isOnLine()){
 			return TDMServiceOnline.updateTodos(data)
 		}else{
-			return TDMServiceOffline.updateTodos(data)
+			return TDMServiceOffline.updateTodos(data, ToDoManagerApp.data)
 		}
 	}
 
