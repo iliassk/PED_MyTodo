@@ -26,7 +26,7 @@ angular.module('ToDoManagerApp').config(function($urlRouterProvider, $stateProvi
 		})
 		.state('viewToDoList', {
 			url: '/todolist/:id',
-			templateUrl: '/views/ViewToDoList.html',
+			templateUrl: '/views/viewToDoList.html',
 			controller: 'ViewToDoList'
 		})
 		.state('viewSharedToDoList', {
