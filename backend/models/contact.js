@@ -62,7 +62,6 @@ exports.addgroup_post = function(req, res, next, connection, auth, jwt){
 	});
 }
 
-
 exports.listgroupe_get = function(req, res, next, connection, auth, jwt){
    // retourne le non et le nombre de votre
    	var _id = auth.checkAuthorization(req, res, jwt);
@@ -86,10 +85,15 @@ exports.listgroupe_get = function(req, res, next, connection, auth, jwt){
 				result[index].contact = contacts;
 				cpt ++;
 				//pour gérer l'asynchrone on ne sait pas quand les requetes sont finies
-				if(cpt == result.length)
-					return res.status(200).json(result);
+				if(cpt == result.length){
+					console.log("success fetching groups")
+					return res.status(200).json(result)
+				}
 			});
 		})
+
+		if(rows.length < 1)
+			return res.status(200).json(rows)
 
 	});
 }

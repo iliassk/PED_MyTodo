@@ -15,10 +15,10 @@ angular.module('ToDoManagerApp').controller('CalendarCtrl', function($scope, $wi
     var regExp = new RegExp("IEMobile", "i");
 
     $rootScope.$watch('accessData', function(accessData) {
-        console.log("accessData  calendar.js")
-
+       
             if(accessData){
-               TDMService.refresh(function(){
+            	console.log("refreshing calendar.js")
+               	TDMService.refresh(function(){
 			    	var data = TDMService.getAllToDo()
 			    	for(var i = 0; i < data.length; i++){
 						//todo[i] = {title: data[0].title ,start: new Date(y, m, 1), editable: true};
@@ -78,7 +78,11 @@ angular.module('ToDoManagerApp').controller('CalendarCtrl', function($scope, $wi
 			data.push(ev);
 		};
 		
-		TDMService.updateTodos(data)
+		TDMService.updateTodos(data, function(){
+			//success
+		}, function(){
+			//fail
+		})
 	};																																																																																																																																																																																																																																																																																																																																																																																																																																						
 			
 	$scope.eventSources = [$scope.events, $scope.eventSource];

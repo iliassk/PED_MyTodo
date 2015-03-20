@@ -27,8 +27,8 @@
                 <tbody>
                     <tr>
                         <td width="30%"> <li ui-sref-active="active"><a onclick ="toggle('listTodo')" ng-click="todoList()" style="cursor: pointer"><B>Your Todos</B></a></li></td>
-                        <td width="30%" ><li ui-sref-active="active"><a onclick ="toggle('groupe')" style="cursor: pointer"><B>Contacts</B></a></li></td>
-                        <td width="30%" ><li ui-sref-active="active"><a onclick ="toggle('sharedToDo')" style="cursor: pointer"><B>Shared Todos</B></a></li></td>
+                        <td width="30%" ng-show="online"><li ui-sref-active="active"><a onclick ="toggle('groupe')" style="cursor: pointer"><B>Contacts</B></a></li></td>
+                        <td width="30%" ng-show="online"><li ui-sref-active="active"><a onclick ="toggle('sharedToDo')" style="cursor: pointer"><B>Shared Todos</B></a></li></td>
                     </tr>
                 </tbody>
             </table>

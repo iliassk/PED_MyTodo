@@ -21,12 +21,10 @@ angular.module('ToDoManagerApp').controller('ListTodoListCtrl', function($scope,
 		todo.completed = !todo.completed
 		todo.completed = (todo.completed ? 1 : 0)
 
-		TDMService.updateTodo(todo)
-		.success(function(data) {
-			console.log("[updateTodo] success");
-		})
-		.error(function(data) {
-			console.log("[updateTodo] failure");
+		TDMService.updateTodo(todo, function(data) {
+			//success
+		}, function(data) {
+			//fail
 		});
 	}
 
@@ -45,27 +43,21 @@ angular.module('ToDoManagerApp').controller('ListTodoListCtrl', function($scope,
 
 	};
 
-
 	$scope.deleteTodoList = function(obj){
 		
-
- 		TDMService.deletetodolist(obj)
- 		.success(function(data) {
+ 		TDMService.deletetodolist(obj, function(data) {
 			alert('success', 'OK!', 'delete success');
-		})
-		.error(function() {
+		}, function() {
 			alert('warning', 'Oops!', 'delete failed');
 		});
 	};
 	
 	$scope.submitgroup = function(name){
 
-		TDMService.addgroup(name)
-		.success(function() {
-			alert('success', 'OK!', 'add group success');
-		})
-		.error(function() {
-			alert('warning', 'Oops!', 'add group failed');
+		TDMService.addgroup(name, function() {
+			//success
+		}, function() {
+			//fail
 		})
 	};
 

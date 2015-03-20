@@ -41,22 +41,20 @@ angular.module('ToDoManagerApp').controller('SharedViewToDoList', function($scop
 
 	$scope.shareTodo = function(todo){
 		console.log("Share todo")
-		TDMService.generateShareToDoLink(todo.id_todo)
-		.success(function(result){
+		TDMService.generateShareToDoLink(todo.id_todo, function(result){
 			$scope.openShareInfo(APP_URL + 'share/' + result.url + '/' + "todo")
-		}).error(function(){
-			alert("Impossible de générer un lien !");
+		}, function(){
+			//fail
 		})
 		
 	}
 
 	$scope.shareList = function(list){
 		console.log("Share list")
-		TDMService.generateShareListLink(list.id_list)
-		.success(function(result){
+		TDMService.generateShareListLink(list.id_list, function(result){
 			$scope.openShareInfo(APP_URL + 'share/' + result.url + '/' + "todolist")
-		}).error(function(){
-			alert("Impossible de générer un lien !");
+		}, function(){
+			//fail
 		})
 	}
 
@@ -77,14 +75,12 @@ angular.module('ToDoManagerApp').controller('SharedViewToDoList', function($scop
 	$scope.deleteTodo = function(todo_id, row){
 		console.log("[deleteTodo]");
 
-		TDMService.deleteToDo(todo_id)
-		.success(function(data) {
+		TDMService.deleteToDo(todo_id, function(data) {
 			console.log("[deleteTodo] success");
-			
-		})
-		
-		.error(function(data) {
+			//success
+		}, function(data) {
 			console.log("[deleteTodo] failure");
+			//fail
 		});
 	}
 
@@ -119,12 +115,10 @@ angular.module('ToDoManagerApp').controller('SharedViewToDoList', function($scop
 		todo.completed = !todo.completed
 		todo.completed = (todo.completed ? 1 : 0)
 
-		TDMService.updateTodo(todo)
-		.success(function(data) {
-			console.log("[updateTodo] success");
-		})
-		.error(function(data) {
-			console.log("[updateTodo] failure");
+		TDMService.updateTodo(todo, function(data) {
+			//success
+		}, function(data) {
+			//fail
 		});
 	}
 

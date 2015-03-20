@@ -18,18 +18,23 @@ angular.module('ToDoManagerApp', ['ui.router','ui.calendar', 'ngAnimate','ui.boo
       console.log("[online] => " + text)
     }
 
-  $rootScope.mustRefresh = false
-	$rootScope.isWorking = false
+    $rootScope.mustRefresh = false
+  	$rootScope.isWorking = false
+  	$rootScope.online = false;
 
-  	$rootScope.online = true;
-    //$rootScope.online = navigator.onLine;
-  	$window.addEventListener("offline", function () {
-      $rootScope.online = false;
+    if($rootScope.online == false){
       TDMService.markAsOffLine()
-  	}, false);
-  	$window.addEventListener("online", function () {
-      $rootScope.online = true;
-
+      $modal.open({
+        templateUrl: 'modalOffLine.html',
+        controller: 'OffLineCtrl',
+        size: 'sm',
+         resolve: {
+          offline: function () {
+            return true;
+          }
+        }
+      });
+    }else{
       if(TDMService.hasBeenOffLine()){
         $modal.open({
           templateUrl: 'modalOffLine.html',
@@ -43,7 +48,17 @@ angular.module('ToDoManagerApp', ['ui.router','ui.calendar', 'ngAnimate','ui.boo
         });
       }
       TDMService.markAsOnLine()
+    }
+    //$rootScope.online = navigator.onLine;
+  	/*$window.addEventListener("offline", function () {
+      $rootScope.online = false;
+      TDMService.markAsOffLine()
   	}, false);
+  	$window.addEventListener("online", function () {
+      $rootScope.online = true;
+
+      
+  	}, false);*/
 
     $rootScope.closeMenu = true
 
@@ -55,19 +70,8 @@ angular.module('ToDoManagerApp', ['ui.router','ui.calendar', 'ngAnimate','ui.boo
         }
     });
     
-    $rootScope.canFetchData = ($auth.isAuthenticated() && $rootScope.online) ? true : false; //$rootScope.online
-
-    if(!$rootScope.online)
-    $modal.open({
-      templateUrl: 'modalOffLine.html',
-      controller: 'OffLineCtrl',
-      size: 'sm',
-       resolve: {
-        offline: function () {
-          return true;
-        }
-      }
-    });
+    $rootScope.canFetchData = ($auth.isAuthenticated() && $rootScope.online) ? true : false;
+    
 })
 .controller('OffLineCtrl', function ($scope, $modalInstance, offline, $state, TDMService, $rootScope) {
 
@@ -76,11 +80,13 @@ angular.module('ToDoManagerApp', ['ui.router','ui.calendar', 'ngAnimate','ui.boo
     $scope.synchronisation = function(){
         $rootScope.canFetchData = false
         TDMService.sync()
+        $modalInstance.close()
     }
 
     $scope.abandonMyData = function(){
         $rootScope.canFetchData = true
         TDMService.forgaveData()
+        $modalInstance.close()
     }
 
     $scope.continue = function () {

@@ -5,7 +5,6 @@ angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($http, AP
 	var ToDoManagerApp = this;
 
 	this.fetchAll = function(f) {
-		console.online("fetchAll")
 		var data = {
 			listsWithToDo: [],
 			group: '',
@@ -15,14 +14,11 @@ angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($http, AP
 		$rootScope.isWorking = true
 		$http.get(API_URL + 'listtodolistwithtodos')
 		.success(function(_data){
-			console.log("Success fetching all data !!!")
 			data.listsWithToDo = _data;
 			TDMServiceOffline.save(data)
-
 			$http.get(API_URL + 'listgroupe')
 			.success(function(_groupe){
 				data.group = _groupe;
-
 				$http.get(API_URL + 'listcontact')
 				.success(function(_contact){
 					data.contact = _contact;

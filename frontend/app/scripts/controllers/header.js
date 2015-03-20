@@ -22,9 +22,8 @@ angular.module('ToDoManagerApp').controller('HeaderCtrl', function($scope, $auth
     }
   });
 
-   $rootScope.$watch('canFetchData', function(canFetchData) {
-        
-    if(canFetchData){
+    $rootScope.$watch('canFetchData', function(canFetchData) {
+      if(canFetchData){
 
         //get user avatar
       //var idUser = $auth.getPayload().sub;
@@ -32,15 +31,13 @@ angular.module('ToDoManagerApp').controller('HeaderCtrl', function($scope, $auth
        .success(function(data) {
          $scope.user_avatar = data[0].avatar_path;
        });*/
-      console.log("Je suis coupable !!")
-      TDMService.refresh(function(){
-        console.log("====================================refresh header.js")
+        TDMService.refresh(function(){
+          console.log("==== refresh header.js ====")
 
           $rootScope.accessData = true
           $scope.data = TDMService.data;
       });
-
-    }
+      }
     });
 
     $scope.data = TDMService.data;
@@ -75,27 +72,27 @@ angular.module('ToDoManagerApp').controller('HeaderCtrl', function($scope, $auth
   angular.element('#input-file').fileinput({showCaption: false,showUpload: false, maxFileSize:2000}); 
   
     $scope.onFileSelect = function($files) {
-    //$files: an array of files selected, each file has name, size, and type. 
-    for (var i = 0; i < $files.length; i++) {
-      var file = $files[i];
-      $scope.upload = $upload.upload({
-        url: API_URL + 'upload', //upload.php script, node.js route, or servlet url 
-        data: {myObj: $scope.file},
-        file: file, 
-      }).progress(function(evt) {
-        console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
-      }).success(function(data, status, headers, config) {
-        // file is uploaded successfully 
-        console.log("File : ")
-        console.log(data['file']['path']);
-       
-        file : data['file']['path'];
-        TDMService.avatar_path(data['file']['path'],idUser);
-        $scope.file = data['file']['path'];
-        console.log("End of file");
-      
-      });
-    }
+      //$files: an array of files selected, each file has name, size, and type. 
+      for (var i = 0; i < $files.length; i++) {
+        var file = $files[i];
+        $scope.upload = $upload.upload({
+          url: API_URL + 'upload', //upload.php script, node.js route, or servlet url 
+          data: {myObj: $scope.file},
+          file: file, 
+        }).progress(function(evt) {
+          console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
+        }).success(function(data, status, headers, config) {
+          // file is uploaded successfully 
+          console.log("File : ")
+          console.log(data['file']['path']);
+         
+          file : data['file']['path'];
+          TDMService.avatar_path(data['file']['path'],idUser);
+          $scope.file = data['file']['path'];
+          console.log("End of file");
+        
+        });
+      }
     
   };
 
