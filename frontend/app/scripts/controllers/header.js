@@ -8,7 +8,6 @@
  * Controller of the ToDoManagerApp
  */
 angular.module('ToDoManagerApp').controller('HeaderCtrl', function($scope, $auth, TDMService, $rootScope, $modal, $log,  API_URL, $upload) {
-    console.log("Header.js");
 	// Satellizer auth service instead of authToken
 	$scope.isAuthenticated = $auth.isAuthenticated;
    
@@ -24,7 +23,7 @@ angular.module('ToDoManagerApp').controller('HeaderCtrl', function($scope, $auth
 
     $rootScope.$watch('canFetchData', function(canFetchData) {
       if(canFetchData){
-
+        console.log("Je lance le refresh !! header.js")
         //get user avatar
       //var idUser = $auth.getPayload().sub;
       /*TDMService.userAvatar(idUser)

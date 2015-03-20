@@ -491,3 +491,24 @@ exports.listsharedtodolistwithtodos_get = function(req, res, next, connection, a
 		}
 	});
 }
+
+exports.sync = function(req, res, next, connection, auth, jwt){
+	
+	var _id = auth.checkAuthorization(req, res, jwt);
+	var data = req.body
+
+	console.log("synching ...")
+	console.log(data)
+
+	/*var data = {
+		listsWithToDo: [],
+		group: '',
+		contact: '',
+		shareListsWithToDo: []
+	}*/
+
+	return res.status(200);
+
+
+
+}

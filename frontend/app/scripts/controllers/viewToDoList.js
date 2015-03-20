@@ -14,12 +14,11 @@ angular.module('ToDoManagerApp').controller('ViewToDoList', function($scope, $st
 	$scope.displayedCollection = {};
 
 	$rootScope.$watch('accessData', function(accessData) {
-        console.log("accessData  ViewToDoList")
+        console.log("accessData  ViewToDoList : " + accessData)
 
             if(accessData){
 
                TDMService.refresh(function(){
-			    	console.log("accessing shared data")
 					$scope.list = TDMService.getAList($stateParams.id)
 					console.log($scope.list)
 					$scope.displayedCollection = [].concat($scope.list.todos);

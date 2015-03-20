@@ -107,6 +107,10 @@ app.get('/auth/twitter', function(req, res, next) {
 	auth.authTwitter(req, res, next, connection, jwt, request);
 });
 
+app.post('/sync', function(req, res, next) {
+	todo.sync(req, res, next, connection, auth, jwt)
+});
+
 app.post('/todolist', function(req, res, next) {
 	todo.todolist_post(req, res, next, connection, auth, jwt)
 });

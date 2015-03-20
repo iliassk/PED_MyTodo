@@ -61,10 +61,8 @@ angular.module('ToDoManagerApp').controller('ListTodoListCtrl', function($scope,
 		})
 	};
 
-	//$scope.group = TDMService.getGroups()
-
 	$rootScope.$watch('accessData', function(accessData) {
-        console.log("accessData  listtodolist.js")
+        console.log("accessData  listtodolist.js : " + accessData)
 
         if(accessData){
 

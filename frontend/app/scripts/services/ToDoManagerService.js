@@ -37,15 +37,14 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 	}
 
 	this.sync = function(){
-		console.log("[Master] => sync data to server")
-
+		$rootScope.isWorking = true
+		TDMServiceOnline.sync(function(){
+        	$rootScope.canFetchData = true
+		})
 	}
 
 	this.forgaveData = function(){
 		console.log("[Master] => forgaveData")
-		/*TDMServiceOnline.fetchAll(function(_data){
-			ToDoManagerApp.data = _data
-		})*/
 	}
 
 	this.refresh = function(callback){

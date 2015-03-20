@@ -37,6 +37,22 @@ angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($http, AP
 		})*/
 	};
 
+	this.sync = function(callback){
+		console.online("Synchronisation en cours ...")
+		return $http.post(
+					API_URL + 'sync', 
+					JSON.parse(localStorage.ToDoManagerAppData_XYZ)
+				).success(function(){
+			console.online("Synchronisation en terminé")
+			$rootScope.isWorking = false
+			callback()
+		}).error(function(){
+			console.online("Synchronisation échec")
+			$rootScope.isWorking = false
+			callback()
+		})
+	}
+
 	///////////////////////////////////////////////////
 	/**
 	* Manage ADD method
