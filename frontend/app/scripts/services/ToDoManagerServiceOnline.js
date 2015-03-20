@@ -1,17 +1,18 @@
 'use strict';
 
-angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($http, API_URL, $state, $rootScope, TDMServiceOffline) {
+angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($auth, $http, API_URL, $state, $rootScope, TDMServiceOffline) {
 
 	var ToDoManagerApp = this;
+	var data = {
+			listsWithToDo: [],
+			group: '',
+			usersNocontact: '',
+			shareListsWithToDo: []
+		}
 
 	this.fetchAll = function(f) {
 		console.online("fetchAll")
-		var data = {
-			listsWithToDo: [],
-			group: '',
-			contact: '',
-			shareListsWithToDo: []
-		}
+		
 		$rootScope.isWorking = true
 		$http.get(API_URL + 'listtodolistwithtodos')
 		.success(function(_data){
@@ -21,11 +22,13 @@ angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($http, AP
 
 			$http.get(API_URL + 'listgroupe')
 			.success(function(_groupe){
-				data.group = _groupe;
+					console.log("Success fetching  "+_groupe)
 
-				$http.get(API_URL + 'listcontact')
+				data.group = _groupe;
+				console.log("===================="+$auth.getPayload().sub+"=======================")
+				$http.get(API_URL + 'listuserNocontact/'+$auth.getPayload().sub)
 				.success(function(_contact){
-					data.contact = _contact;
+					data.usersNocontact = _contact;
 					$rootScope.isWorking = false;
 					if(f)f(data);
 				})
@@ -82,6 +85,21 @@ angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($http, AP
 		$rootScope.isWorking = true;
 		return $http.post(API_URL + 'addgroup', {
 			name : namegroup
+		})
+		.success(function(){
+			$rootScope.isWorking = false;
+		}).error(function(){
+			$rootScope.isWorking = false;
+		})
+	}
+
+	// delete contact
+
+	this.deletecontact = function(idcontact){
+		console.online("deletecontact")
+		$rootScope.isWorking = true;
+		return $http.post(API_URL + 'deletecontact', {
+			id : idcontact
 		})
 		.success(function(){
 			$rootScope.isWorking = false;

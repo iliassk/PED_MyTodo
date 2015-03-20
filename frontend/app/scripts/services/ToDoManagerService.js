@@ -10,14 +10,14 @@
 angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL, $state, $rootScope, alert, TDMServiceOffline, TDMServiceOnline) {
 
 	var ToDoManagerApp = this
-
 	//Shared data used for synchronisation between controllers
 	ToDoManagerApp.data = {
 		listsWithToDo: [],
 		group: '',
-		contact: '',
+		usersNocontact: '',
 		shareListsWithToDo: []
 	}
+
 
 	this.markAsOffLine = function(){
 
@@ -53,11 +53,13 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 
 	this.refresh = function(callback){
 		console.log("[Master] => refresh")
+
 		if(ToDoManagerApp.data.listsWithToDo == ''){
 			$rootScope.isWorking = true
 			if(ToDoManagerApp.isOnLine()){
 				TDMServiceOnline.fetchAll(function(_data){
-					ToDoManagerApp.data = _data
+
+					 ToDoManagerApp.data = _data;
 					callback()
 				})
 			}else{
@@ -66,11 +68,15 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 					callback()
 				})
 			}
-		}else if(callback)
+		}else if(callback){
 			callback()
+
+		}
+
 	}
 
 	this.forceRefresh = function(callback){
+		console.log("[Master] => forcerefresh")
 		$rootScope.isWorking = true
 		if(ToDoManagerApp.isOnLine()){
 			TDMServiceOnline.fetchAll(function(_data){
@@ -84,6 +90,7 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 			})
 		}
 	}
+		//console.log("TDMService je suis la"+ ToDoManagerApp.data.usersNOcontact);
 
 	/**
 	* Accessors to the shared data
@@ -179,6 +186,21 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 		}else{
 			return TDMServiceOffline.addgroup(namegroup)
 		}
+	}
+	
+	// delete contact
+	this.deletecontact = function(idcontact){
+		$rootScope.isWorking = true;
+		if(ToDoManagerApp.isOnLine()){
+			return TDMServiceOnline.deletecontact(idcontact)
+			.success(function(){
+				$rootScope.mustRefresh = true
+				$rootScope.isWorking = false
+			})
+		}else{
+			return TDMServiceOffline.deletecontact(idcontact)
+		}
+
 	}
 
 	///////////////////////////////////////////////////
@@ -349,6 +371,7 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 		})
 
 	};
+
 
 });
 

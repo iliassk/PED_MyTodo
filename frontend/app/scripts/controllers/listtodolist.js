@@ -7,11 +7,6 @@ angular.module('ToDoManagerApp').controller('ListTodoListCtrl', function($scope,
 	$scope.group;
 	$scope.contact;
 	
-	angular.element('[data-toggle="popover"]').popover()
-	angular.element('i').click(function(e) {
-    	e.stopPropagation();
-	})
-
 	$scope.hideCompleted = function(todo){
 		$scope.hidecompleted = !$scope.hidecompleted;
 	}
@@ -31,49 +26,23 @@ angular.module('ToDoManagerApp').controller('ListTodoListCtrl', function($scope,
 	}
 
 
-	$scope.total = function(group){
-		var obj = group.id_group;
-
-		var total = 0, i = 0;
-		var contact = $scope.contact;
-		for(i=0; i< contact.length; i++){
-			if(contact[i].id_group == obj)
-				total = total+1;
-			
-		}
-		return total;
-
+	$scope.deleteTodoList = function(obj){
+ 		TDMService.deletetodolist(obj);
 	};
 
-
-	$scope.deleteTodoList = function(obj){
-		
-
- 		TDMService.deletetodolist(obj)
- 		.success(function(data) {
-			alert('success', 'OK!', 'delete success');
-		})
-		.error(function() {
-			alert('warning', 'Oops!', 'delete failed');
-		});
+	$scope.deletecontact = function(obj){
+		TDMService.deletecontact(obj);
+		window.location.reload();
 	};
 	
 	$scope.submitgroup = function(name){
-
-		TDMService.addgroup(name)
-		.success(function() {
-			alert('success', 'OK!', 'add group success');
-		})
-		.error(function() {
-			alert('warning', 'Oops!', 'add group failed');
-		})
+		TDMService.addgroup(name);
 	};
 
 	//$scope.group = TDMService.getGroups()
 
 	$rootScope.$watch('accessData', function(accessData) {
-        console.log("accessData  listtodolist.js")
-
+      //  console.log("accessData  listtodolist.js");
         if(accessData){
 
         }

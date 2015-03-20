@@ -98,6 +98,7 @@ exports.authGoogle = function(req, res, next, connection, jwt, request) {
 					return auth.createSendToken(rows[0], connection, req, res, jwt);
 				}
 			//API KEY
+			console.log(profile.sub)
 				var data = {
 					username: profile.name,
 					email: profile.email,

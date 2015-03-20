@@ -132,7 +132,9 @@ app.get('/listsharedtodolistwithtodos', function(req, res, next) {
 });
 
 app.get('/listgroupe', function(req, res, next) {
+	console.log('listgroupe debut')
 	contact.listgroupe_get(req, res, next, connection, auth, jwt)
+	console.log('listgroupe fin')
 });
 
 app.post('/addgroup', function(req, res, next) {
@@ -148,11 +150,17 @@ app.get('/user/:id', function(req, res, next) {
 });
 
 app.post('/addcontact', function(req, res, next) {	
-	contact.addcontact_post(req, res, next, connection, auth)	
+	contact.addcontact_post(req, res, jwt, next, connection, auth)	
 });
 
-app.get('/listcontact', function(req, res, next) {	
-	contact.listcontact_get(req, res, next, connection, auth)
+app.post('/deletecontact', function(req, res, next) {	
+	contact.deletecontact_post(req, res, jwt, next, connection, auth)	
+});
+
+app.get('/listuserNocontact/:id', function(req, res, next) {	
+	console.log('listuserNocontact debut')
+	contact.listuserNocontact_id_get(req, res, jwt, next, connection, auth)
+	console.log('listuserNocontact fin')
 });
 
 app.delete('/listtodolist/:id', function(req, res, next) {
