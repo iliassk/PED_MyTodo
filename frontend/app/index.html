@@ -93,15 +93,23 @@
                         <li ng-show="isAuthenticated()" ui-sref-active="active">
                             <a id='logout' ui-sref="logout" class="btn btn-link"> <span class="glyphicon glyphicon-user" aria-hidden="true"></span>  Logout</a>
                         </li>
-
-                         <!-- glyphicon glyphicon-cloud    -->
+                            
+                        <!-- glyphicon glyphicon-cloud    -->
                         
-                        <li ng-show="online" title="Online Application" style="margin-left:5px;margin-top:3px; color:green">
+                        <!--<li ng-show="online" title="Online Application" style="margin-left:5px;margin-top:3px; color:green">
                             <i class="fa fa-sellsy fa-3x"></i>
                         </li>
                         <li ng-hide="online" title="Offline Application " style="margin-left:5px;margin-top:3px; color:red">
 
                             <i class="fa fa-hdd-o fa-3x"></i>
+                        </li>-->
+                        
+                        <li ng-show="online" title="Online Application" style="margin-left:5px;margin-top:3px; color:green">
+                            <i class="fa fa-sellsy fa-3x"></i>
+                        </li>
+                        
+                        <li ng-hide="online" title="Offline Application " style="margin-left:5px;margin-top:3px; color:red">
+                            <i class="fa fa-sellsy fa-3x" ng-class="{'disconnected': !online}"></i>
                         </li>
                         
                     </ul>
