@@ -42,7 +42,7 @@
 				<th colspan="5">
 					<input st-search="" class="form-control" placeholder="global search ..." type="text"/>
 					<a ng-click="hideCompleted()"class="btn btn-sm btn-primary" data-toggle="button">Hide <span style="color:Chartreuse " class="glyphicon glyphicon-ok"></span></a>
-					<a ng-click="shareList(list)" class="btn btn-sm btn-primary" data-toggle="button">List <span class="glyphicon glyphicon-share"></span></a>
+					<a ng-show="online" ng-click="shareList(list)" class="btn btn-sm btn-primary" data-toggle="button">List <span class="glyphicon glyphicon-share"></span></a>
 				</th>
 			</tr>
 			</thead>
@@ -57,7 +57,7 @@
 				<td>{{row.context}}</td>
 				<td>{{row.date | date:'medium'}}</td>
 				<td>
-					<a ng-show="online" target="_blank" ng-hide="showMapButton(row.localization)" class="btn btn-sm btn-info" href="https://maps.google.com/?q={{row.localization}}"><i class="glyphicon glyphicon-map-marker" ></i></a>
+					<a target="_blank" ng-hide="showMapButton(row.localization)" class="btn btn-sm btn-info" href="https://maps.google.com/?q={{row.localization}}"><i class="glyphicon glyphicon-map-marker" ></i></a>
 
 					<span ng-show="online" class="dropdown" dropdown>
 				      <a href class="btn btn-sm btn-primary" class="dropdown-toggle" dropdown-toggle>
@@ -68,8 +68,8 @@
 						<li><a ng-click="addToCalendar('hotmail', row)">Hotmail</a></li>
 				      </ul>
 				    </span>
-        			<a id="shareOutSiderToDo" ng-show="online" class="btn btn-sm btn-info" ng-click="shareTodo(row)"><i class="glyphicon glyphicon-share" ></i></a>
-					<button type="button" class="btn btn-sm btn-danger" ng-click="deleteTodo(row.id_todo,row)"><i class="glyphicon glyphicon-trash" ></i></button>
+        			<a ng-show="online" id="shareOutSiderToDo" class="btn btn-sm btn-info" ng-click="shareTodo(row)"><i class="glyphicon glyphicon-share" ></i></a>
+					<button type="button" id="deleteToDoButtonList" class="btn btn-sm btn-danger" ng-click="deleteTodo(row.id_todo,row)"><i class="glyphicon glyphicon-trash" ></i></button>
 				</td>
 			</tr>
 			</tbody>

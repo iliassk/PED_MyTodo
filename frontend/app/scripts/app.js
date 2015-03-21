@@ -23,7 +23,7 @@ angular.module('ToDoManagerApp', ['ui.router','ui.calendar', 'ngAnimate','ui.boo
   	$rootScope.isWorking = false
     $rootScope.canFetchData = false
 
-    $rootScope.online = true
+    $rootScope.online = false
 
     if($rootScope.online == false){
       TDMService.markAsOffLine()
