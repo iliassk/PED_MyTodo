@@ -22,7 +22,7 @@ angular.module('ToDoManagerApp').controller('HeaderCtrl', function($scope, $auth
   });
 
     $rootScope.$watch('canFetchData', function(canFetchData) {
-      if(canFetchData){
+      if(canFetchData && $scope.isAuthenticated()){
         console.log("Je lance le refresh !! header.js")
         //get user avatar
       //var idUser = $auth.getPayload().sub;

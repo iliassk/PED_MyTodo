@@ -28,20 +28,20 @@
     <!-- endbuild -->
 
   </head>
-  <body ng-app="ToDoManagerApp">
+  <body ng-app="ToDoManagerApp" class="background">
     <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
-    <div id="wrapper">
+    <div id="wrapper" >
     <div ng-controller = "HeaderCtrl" >
     <div ng-include="'views/sidebar.html'"></div>
     
-    <div id="page-content-wrapper">
+    <div id="page-content-wrapper" >
       <div class="container-fluid">
         <div class="row">
             <div  id="header">
                 <div class="navbar navbar-default" id="header-default"role="navigation" ng-cloak>
-                    <div class="container">
+                    <div class="container-fluid">
                         <div class="navbar-header">
 
                             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#js-navbar-collapse">
@@ -57,22 +57,22 @@
 
                     <div class="collapse navbar-collapse" id="js-navbar-collapse">
 
-                    <ul class="nav navbar-nav">
+                    <ul class="nav navbar-nav navbar-left">
                         <li ui-sref-active="active">
                             <a ui-sref="main">Home</a>
                         </li>
                          <li ng-show="isAuthenticated()" ui-sref-active="active">
                             <a ui-sref="calendar">Calendar</a>
                         </li>
-
+                        
                     </ul>
 
                     <ul class="nav navbar-nav navbar-right" ng-cloak>
 
-                        <li ng-show="isWorking" style="margin-right:15px;margin-top:3px">
+                        <li ng-show="isWorking" >
                             <i class="fa fa-spinner fa-pulse fa-3x"></i>
                         </li>
-                        <li ng-show="isAuthenticated()" style="margin-right:5px">
+                        <li ng-show="isAuthenticated()" >
                             <a ui-sref="add/todo" id="addTodoNav" class="btn btn-primary">Add a ToDo</a>
                         </li>
                         <li ng-show="isAuthenticated()" >
@@ -81,8 +81,8 @@
 
                         <li ng-show="isAuthenticated()" >
                            <a ng-click="changeAvatar()">
-                           <div id="avatar">
-                               <!--<img HEIGHT="35" WIDTH="35"src="{{user_avatar}}">-->
+                           <div ng-show="{{user_avatar}}" id="avatar">
+                               <img  HEIGHT="35" WIDTH="35"src="{{user_avatar}}">
                            </div>
                            </a>
                         </li>
@@ -96,10 +96,10 @@
 
                          <!-- glyphicon glyphicon-cloud    -->
                         
-                        <li ng-show="online" title="Online Application" style="margin-left:5px;margin-top:3px; color:green">
+                        <li ng-show="online" title="Online Application" style=" color:green">
                             <i class="fa fa-sellsy fa-3x"></i>
                         </li>
-                        <li ng-hide="online" title="Offline Application " style="margin-left:5px;margin-top:3px; color:red">
+                        <li ng-hide="online" title="Offline Application " style="color:red">
 
                             <i class="fa fa-hdd-o fa-3x"></i>
                         </li>
@@ -109,8 +109,8 @@
             </div>
         </div>
 
-        <div class="container" ng-cloak>
-            <div class="row">
+        <div class="container-fluid " ng-cloak>
+            <div class="row transbox">
                 <div class="ui-view-container">
                     <div ui-view></div>
                 </div>
@@ -151,7 +151,7 @@
     <!-- build:js(.) scripts/vendor.js -->
     <!-- bower:js -->
     <script src="bower_components/es5-shim/es5-shim.js"></script>
-    <script src="bower_components/jquery/jquery.js"></script>
+    <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>

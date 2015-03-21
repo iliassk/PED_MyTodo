@@ -23,7 +23,8 @@ angular.module('ToDoManagerApp').controller('CalendarCtrl', function($scope, $wi
 			    	for(var i = 0; i < data.length; i++){
 						//todo[i] = {title: data[0].title ,start: new Date(y, m, 1), editable: true};
 						var jour = new Date(data[i].date)
-						$scope.events[i]={title: data[i].title, id:data[i].id_todo ,start: jour, backgroundColor: 'green', durationEditable:false};
+						var list = TDMService.getAList(data[i].id_list)
+						$scope.events[i]={title: data[i].title, id:data[i].id_todo ,start: jour, backgroundColor: list.color, durationEditable:false};
 					}
 
 					$rootScope.isWorking = false;
@@ -85,5 +86,5 @@ angular.module('ToDoManagerApp').controller('CalendarCtrl', function($scope, $wi
 		})
 	};																																																																																																																																																																																																																																																																																																																																																																																																																																						
 			
-	$scope.eventSources = [$scope.events, $scope.eventSource];
+	$scope.eventSources = [$scope.events, $scope.eventSources];
 });

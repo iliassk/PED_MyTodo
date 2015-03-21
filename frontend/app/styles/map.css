@@ -1,8 +1,8 @@
 #map-canvas {
-  /*height: 400px;
-  width: 700px;*/
-  min-height: 300px;
-  min-width: 400px;
+  height: 400px;
+  width: 500px;
+  min-height: 100px;
+  min-width: 100px;
   margin: 0px;
   padding: 0px
 }
@@ -21,7 +21,7 @@
 #input-address {
   background-color: #fff;
   padding: 0 11px 0 13px;
-  width: 400px;
+  width: 300px;
   font-family: Roboto;
   font-size: 15px;
   font-weight: 300;
