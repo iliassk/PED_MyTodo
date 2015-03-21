@@ -80,11 +80,19 @@ angular.module('ToDoManagerApp', ['ui.router','ui.calendar', 'ngAnimate','ui.boo
 .controller('OffLineCtrl', function ($scope, $modalInstance, offline, $state, TDMService, $rootScope) {
 
     $scope.offlineFlag = offline
+    $scope.showProgress = false
+    $scope.percent = 0
 
     $scope.synchronisation = function(){
+        $scope.showProgress = true
         $rootScope.canFetchData = false
-        TDMService.sync()
-        $modalInstance.close()
+        TDMService.sync(function(step){
+          $scope.percent = step
+          if(step == 100){
+            $rootScope.canFetchData = true
+            $modalInstance.close()
+          }
+        })
     }
 
     $scope.abandonMyData = function(){

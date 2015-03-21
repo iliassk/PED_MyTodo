@@ -500,6 +500,7 @@ exports.sync = function(req, res, next, connection, auth, jwt){
 	console.log("synching ...")
 	console.log(data)
 
+
 	/*var data = {
 		listsWithToDo: [],
 		group: '',
@@ -507,8 +508,5 @@ exports.sync = function(req, res, next, connection, auth, jwt){
 		shareListsWithToDo: []
 	}*/
 
-	return res.status(200);
-
-
-
+	return res.status(200)
 }
