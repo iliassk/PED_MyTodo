@@ -30,7 +30,6 @@ angular.module('ToDoManagerApp', ['ui.router','ui.calendar', 'ngAnimate','ui.boo
       $modal.open({
         templateUrl: 'modalOffLine.html',
         controller: 'OffLineCtrl',
-        size: 'sm',
          resolve: {
           offline: function () {
             return true;
@@ -44,7 +43,6 @@ angular.module('ToDoManagerApp', ['ui.router','ui.calendar', 'ngAnimate','ui.boo
         $modal.open({
           templateUrl: 'modalOffLine.html',
           controller: 'OffLineCtrl',
-          size: 'sm',
            resolve: {
             offline: function () {
               return false;
@@ -88,7 +86,8 @@ angular.module('ToDoManagerApp', ['ui.router','ui.calendar', 'ngAnimate','ui.boo
         $rootScope.canFetchData = false
         TDMService.sync(function(step){
           $scope.percent = step
-          if(step == 100){
+          if(step >= 100){
+          $rootScope.isWorking = false;
             $rootScope.canFetchData = true
             $modalInstance.close()
           }
