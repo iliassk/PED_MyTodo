@@ -18,7 +18,7 @@ var model = {
 
 
 // Email sending functionality
-exports.sendEmail = function(email) {
+exports.sendEmail = function(email, res) {
 	var payload = {
 		sub: email
 	};

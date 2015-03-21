@@ -510,3 +510,25 @@ exports.listsharedtodolistwithtodos_get = function(req, res, next, connection, a
 		}
 	});
 }
+<<<<<<< HEAD
+=======
+
+exports.sync = function(req, res, next, connection, auth, jwt){
+	
+	var _id = auth.checkAuthorization(req, res, jwt);
+	var data = req.body
+
+	console.log("synching ...")
+	console.log(data)
+
+
+	/*var data = {
+		listsWithToDo: [],
+		group: '',
+		contact: '',
+		shareListsWithToDo: []
+	}*/
+
+	return res.status(200)
+}
+>>>>>>> cc93b82b28e82a6d0f9f12670797de89e9081373
