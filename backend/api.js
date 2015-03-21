@@ -83,7 +83,7 @@ passport.use('local-register', LocalStrategy.register);
 passport.use('local-login', LocalStrategy.login);
 
 app.post('/register', passport.authenticate('local-register'), function(req, res) {
-	emailVerification.sendEmail(req.user.email);
+	emailVerification.sendEmail(req.user.email, res);
 	auth.createSendToken(req.user, connection, req, res, jwt);
 });
 
@@ -243,6 +243,13 @@ app.post('/uploadAvatar',function(req,res){
 * Permet de récuperer un fichier
 */
 app.get('/upload/:id', function(req, res, next) {
+});
+
+// to check connection status of the server from the client
+app.get('/connected', function(req, res, next) {
+	res.send({
+		status : true
+	});
 });
 
 var server = app.listen(3000, function() {
