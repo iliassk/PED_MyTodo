@@ -53,45 +53,6 @@ angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($auth, $h
 		})*/
 	};
 
-<<<<<<< HEAD
-=======
-	this.sync = function(callback){
-		console.online("Synchronisation en cours ...")
-		$rootScope.isWorking = true;
-
-		var data = JSON.parse(localStorage.ToDoManagerAppData_XYZ)
-		var lists = data.listsWithToDo,
-			todos = []
-
-		var iteration = 0
-
-		if(lists == undefined || !lists || lists.length == 0)
-			return callback(100)
-
-		lists.forEach(function (list_elem, list_index, lists_array) {
-			todos.push.apply(todos, list_elem.todos)
-		})
-
-		var number_of_call = todos.length
-		var step_value = number_of_call/100
-
-		var checkIfFinish = function(){
-			if(iteration == number_of_call)
-				return callback(100)
-		}
-
-		todos.forEach(function (todo_elem, todo_index, todos_array) {
-			iteration += 1
-
-			$http.put(API_URL + 'todo/'+ todo_elem.id_todo, todo_elem)
-			.success(function(){
-				callback(iteration*step_value)
-				checkIfFinish()
-			})
-		})
-	}
-
->>>>>>> cc93b82b28e82a6d0f9f12670797de89e9081373
 	///////////////////////////////////////////////////
 	/**
 	* Manage ADD method

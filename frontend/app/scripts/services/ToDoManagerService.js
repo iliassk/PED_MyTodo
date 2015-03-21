@@ -40,15 +40,9 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 		return $rootScope.online
 	}
 
-<<<<<<< HEAD
 	this.sync = function(){
 		console.log("[Master] => sync data to server")
 
-=======
-	this.sync = function(callback){
-		$rootScope.isWorking = true
-		TDMServiceOnline.sync(callback)
->>>>>>> cc93b82b28e82a6d0f9f12670797de89e9081373
 	}
 
 	this.forgaveData = function(){
