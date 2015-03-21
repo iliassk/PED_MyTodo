@@ -7,7 +7,7 @@
 }
 
 #avatar{
-  /*background-image:url(../images/avatar.png);*/
+  background-image:url(../images/avatar.png);
   background-repeat:no-repeat ;
   background-position: center;
   background-size: 35px 35px;

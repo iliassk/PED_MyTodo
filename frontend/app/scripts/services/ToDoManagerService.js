@@ -15,7 +15,8 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 		listsWithToDo: [],
 		group: '',
 		usersNocontact: '',
-		shareListsWithToDo: []
+		shareListsWithToDo: [],
+		currentUser:''
 	}
 
 

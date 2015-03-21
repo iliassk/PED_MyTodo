@@ -22,7 +22,7 @@ exports.addcontact_post = function(req, res, jwt, next, connection, auth){
 
 exports.userid_get = function(req, res, next, connection, auth){
 var id_user = req.params.id
-connection.query('SELECT u.avatar_path FROM USERS u WHERE u.id_user = ?', id_user, function(err, rows) {
+connection.query('SELECT u.id_user, u.avatar_path, u.username, u.email FROM USERS u WHERE u.id_user = ?', id_user, function(err, rows) {
 		if (err) {
 			console.log(err);
 			return next("Mysql error, check your query");

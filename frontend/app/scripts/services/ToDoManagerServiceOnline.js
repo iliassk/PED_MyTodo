@@ -7,7 +7,8 @@ angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($auth, $h
 			listsWithToDo: [],
 			group: '',
 			usersNocontact: '',
-			shareListsWithToDo: []
+			shareListsWithToDo: [],
+			currentUser:''
 		}
 
 	this.fetchAll = function(f) {
@@ -22,19 +23,27 @@ angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($auth, $h
 
 			$http.get(API_URL + 'listgroupe')
 			.success(function(_groupe){
-					console.log("Success fetching  "+_groupe)
+					
 
 				data.group = _groupe;
 				console.log("===================="+$auth.getPayload().sub+"=======================")
 				$http.get(API_URL + 'listuserNocontact/'+$auth.getPayload().sub)
 				.success(function(_contact){
 					data.usersNocontact = _contact;
+
+
+				$http.get(API_URL + 'user/'+$auth.getPayload().sub)
+				.success(function(_current){
+					console.log("Success fetching  "+_current)
+					data.currentUser = _current;
+					
+					
 					$rootScope.isWorking = false;
 					if(f)f(data);
 				})
 			})
 		})
-
+})
 		/*$http.get(API_URL + 'listsharedtodolistwithtodos')
 		.success(function(_data){
 			console.log("Success fetching all data !!!")
@@ -178,7 +187,7 @@ angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($auth, $h
 		console.online("updateTodos")
 		$rootScope.isWorking = true;
 		
-		return $http.put(API_URL + 'todo/',{
+		return $http.put(API_URL + 'todos/',{
 			data : data
 		}).success(function(){
 			TDMServiceOffline.save()

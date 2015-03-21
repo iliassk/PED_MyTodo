@@ -43,7 +43,7 @@ else{
 
 /*Configure the multer.*/
 
-app.use(multer({ dest: './upload/',
+app.use(multer({ dest: '../frontend/app/upload/',
  rename: function (fieldname, filename) {
     return filename+Date.now();
   },
@@ -179,8 +179,10 @@ app.put('/todo/:id', function(req, res, next) {
 	todo.todo_id_put(req, res, next, connection, auth)
 });
 
-app.put('/todo', function(req, res, next) {
+app.put('/todos', function(req, res, next) {
+	console.log('debut todos')
 	todo.todos_put(req, res, next, connection, auth)
+	console.log('fin todos')
 });
 
 app.get('/todo', function(req, res, next) {
@@ -238,14 +240,6 @@ app.post('/avatarpath', function(req, res, next) {
     console.log('fin')
 })
 
-
-app.post('/uploadAvatar',function(req,res){
-  if(done==true){
-    console.log(req.files);
-    res.status(200).json(req.files);
-    res.end("File uploaded.");
-  }
-});
 
 /**
 * Permet de récuperer un fichier

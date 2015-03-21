@@ -1,6 +1,7 @@
 exports.avatarpath_post = function(req, res, next, connection, auth, jwt){
-console.log(req.body.iduser)
-connection.query('UPDATE USERS SET avatar_path = ? WHERE id_user = ?', [req.body.file, req.body.iduser], function(err, rows) {
+var file = req.body.file.split("/")[3]+"/"+req.body.file.split("/")[4];
+console.log(file)
+connection.query('UPDATE USERS SET avatar_path = ? WHERE id_user = ?', [file, req.body.iduser], function(err, rows) {
 if (err) {
 			console.log(err);
 			return next("Mysql error, check your query");
@@ -155,6 +156,24 @@ exports.todo_id_put = function(req, res, next, connection, auth){
 			return res.status(200).json(rows)
 		}
 	});
+}
+
+exports.todos_put = function(req, res, next, connection, auth){
+
+	var data = req.body.data;
+	var max = data.length;
+	console.log(data[0].nvtime)
+	
+	for(var i = 0; i<max; i++){
+	connection.query('UPDATE TODO SET date = ? WHERE id_todo = ?', [data[i].nvtime, data[i].id], function(err, rows) {
+		if (err) {
+			console.log(err);
+			return next("Mysql error, check your query");
+		}
+		
+	});
+	}
+	
 }
 
 exports.todoadd_post = function(req, res, next, connection, auth, jwt){

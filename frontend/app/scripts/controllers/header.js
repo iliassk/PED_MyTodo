@@ -7,7 +7,7 @@
  * # HeaderCtrl
  * Controller of the ToDoManagerApp
  */
-angular.module('ToDoManagerApp').controller('HeaderCtrl', function($scope, $auth, TDMService, $rootScope, $modal, $log,  API_URL, $upload) {
+angular.module('ToDoManagerApp').controller('HeaderCtrl', function($scope,$window ,$auth, TDMService, $rootScope, $modal, $log,  API_URL, $upload) {
     console.log("Header.js");
 	// Satellizer auth service instead of authToken
 	$scope.isAuthenticated = $auth.isAuthenticated;
@@ -26,16 +26,9 @@ angular.module('ToDoManagerApp').controller('HeaderCtrl', function($scope, $auth
         
     if(canFetchData){
 
-        //get user avatar
-      //var idUser = $auth.getPayload().sub;
-      /*TDMService.userAvatar(idUser)
-       .success(function(data) {
-         $scope.user_avatar = data[0].avatar_path;
-       });*/
       console.log("Je suis coupable !!")
       TDMService.refresh(function(){
         console.log("====================================refresh header.js")
-
           $rootScope.accessData = true
           $scope.data = TDMService.data;
       });
@@ -51,25 +44,6 @@ angular.module('ToDoManagerApp').controller('HeaderCtrl', function($scope, $auth
         $rootScope.closeMenu = true
 
     $scope.loaded = function() { console.log("Loaded"); }
-
-    $scope.changeAvatar = function () {
-
-    var modalInstance = $modal.open({
-      templateUrl: 'modalDelete.html',
-      size: 'sm',
-      controller: 'HeaderCtrl',
-      resolve: {
-        id: function () {
-          return "toto";
-        }
-      }
-    });
-
-    modalInstance.result.then(function () {
-    }, function () {
-      $log.info('Modal dismissed at: ' + new Date());
-    });
-  };
 
   ////////////////Attachment file /////////////////
   angular.element('#input-file').fileinput({showCaption: false,showUpload: false, maxFileSize:2000}); 
@@ -90,8 +64,9 @@ angular.module('ToDoManagerApp').controller('HeaderCtrl', function($scope, $auth
         console.log(data['file']['path']);
        
         file : data['file']['path'];
-        TDMService.avatar_path(data['file']['path'],idUser);
-        $scope.file = data['file']['path'];
+        TDMService.avatar_path(data['file']['path'],$auth.getPayload().sub);
+        $scope.file =data['file']['path'];
+         window.location.reload();
         console.log("End of file");
       
       });
