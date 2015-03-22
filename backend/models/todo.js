@@ -397,6 +397,49 @@ exports.getSharedData = function(req, res, next, connection, share){
 	});
 }
 
+
+exports.shareTodoContact = function(req, res, next, connection, share){
+	//renvoie un todo ou une liste
+
+	var content = {
+		id_todo: req.params.id_todo,
+		id_user: req.params.id_user
+	}
+
+	connection.query('INSERT INTO SHARE_TODO SET ?', content, function(err, rows) {
+		if (err) {
+			console.log(err);
+			return next("Mysql error, check your query");
+		}
+		else{	
+			//console.log(rows);
+			res.sendStatus(200);
+		}
+		
+	})
+}
+
+exports.shareListContact = function(req, res, next, connection, share){
+	//renvoie un todo ou une liste
+
+	var content = {
+		id_list: req.params.id_todolist,
+		id_user: req.params.id_user
+	}
+
+	connection.query('INSERT INTO SHARE_LIST SET ?', content, function(err, rows) {
+		if (err) {
+			console.log(err);
+			return next("Mysql error, check your query");
+		}
+		else{	
+			//console.log(rows);
+			res.sendStatus(200);
+		}
+		
+	})
+}
+
 exports.listtodolistwithtodos_get = function(req, res, next, connection, auth, jwt){
 
 	var result = {};

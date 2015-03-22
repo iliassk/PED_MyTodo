@@ -337,6 +337,26 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 		}
 	}
 
+	this.shareTodoContact = function(_id_todo,_id_user) {
+		$rootScope.isWorking = true;
+		
+		if(ToDoManagerApp.isOnLine()){
+			return TDMServiceOnline.shareTodoContact(_id_todo,_id_user)
+		}else{
+			return TDMServiceOffline.shareTodoContact(_id_todo,_id_user)
+		}
+	}
+
+	this.shareListContact = function(_id_list,_id_user) {
+		$rootScope.isWorking = true;
+		
+		if(ToDoManagerApp.isOnLine()){
+			return TDMServiceOnline.shareListContact(_id_list,_id_user)
+		}else{
+			return TDMServiceOffline.shareListContact(_id_list,_id_user)
+		}
+	}
+
 	//GET all groupe
 	/*this.listGroupe = function() {
 		$rootScope.isWorking = true;
