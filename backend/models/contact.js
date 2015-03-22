@@ -81,7 +81,7 @@ exports.listgroupe_get = function(req, res, next, connection, auth, jwt){
 		
 		rows.forEach(function (elem, index, array) {
 
-				connection.query('SELECT u.id_user, u.username, u.avatar_path, u.email FROM USERS u JOIN CONTACTS ON u.id_user = CONTACTS.id_contact WHERE CONTACTS.id_group = ?', elem.id_group, function(err, contacts) {
+				connection.query('SELECT u.username, u.id_user, u.avatar_path, u.email FROM USERS u JOIN CONTACTS ON u.id_user = CONTACTS.id_user WHERE CONTACTS.id_group = ?', elem.id_group, function(err, contacts) {
 				if (err) {
 					console.log(err);
 					return next("Mysql error on connection, check your query");

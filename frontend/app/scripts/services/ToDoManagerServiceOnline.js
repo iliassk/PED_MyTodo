@@ -236,30 +236,6 @@ angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($auth, $h
 		})
 	}
 
-	this.shareTodoContact = function(_id_todo,_id_user) {
-		console.online("shareTodoContact")
-		$rootScope.isWorking = true;
-		
-		return $http.post(API_URL + 'share/todo/'+ _id_todo + '/' + _id_user)
-		.success(function(){
-			$rootScope.isWorking = false;
-		}).error(function(){
-			$rootScope.isWorking = false;
-		})
-	}
-
-	this.shareListContact = function(_id_list,_id_user) {
-		console.online("shareListContact")
-		$rootScope.isWorking = true;
-		
-		return $http.post(API_URL + 'share/todolist/'+ _id_list + '/' + _id_user)
-		.success(function(){
-			$rootScope.isWorking = false;
-		}).error(function(){
-			$rootScope.isWorking = false;
-		})
-	}
-
 	//GET all groupe
 	/*this.listGroupe = function() {
 		console.online("listGroupe")
