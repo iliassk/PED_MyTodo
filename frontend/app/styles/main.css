@@ -4,15 +4,12 @@
     color: #000;
     padding: 0.2em 0;
 }
-
 body {
     padding: 0;
 }
 /* Everything but the jumbotron gets side spacing for mobile first views */
 
-.header,
-.marketing,
-.footer {
+.header, .marketing, .footer {
     padding-left: 15px;
     padding-right: 15px;
 }
@@ -35,7 +32,6 @@ body {
     padding-top: 19px;
     color: #777;
 }
-
 .container-narrow > hr {
     margin: 30px 0;
 }
@@ -45,7 +41,6 @@ body {
     text-align: center;
     border-bottom: 1px solid #e5e5e5;
 }
-
 .jumbotron .btn {
     font-size: 21px;
     padding: 14px 24px;
@@ -55,7 +50,6 @@ body {
 .marketing {
     margin: 40px 0;
 }
-
 .marketing p + h4 {
     margin-top: 28px;
 }
@@ -67,9 +61,7 @@ body {
   }*/
     /* Remove the padding we set earlier */
     
-    .header,
-    .marketing,
-    .footer {
+    .header, .marketing, .footer {
         padding-left: 0;
         padding-right: 0;
     }
@@ -96,7 +88,6 @@ body {
     background-image: -o-linear-gradient(left, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
     background-image: linear-gradient(to right, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
 }
-
 .main-alert {
     position: absolute;
     /*top: 70px;*/
@@ -107,7 +98,6 @@ body {
     max-width: 400px;
     margin: 0 auto;
 }
-
 .alert-hidden {
     visibility: hidden;
 }
@@ -118,9 +108,7 @@ body {
 .ui-view-container {
     position: relative;
 }
-
-[ui-view].ng-enter,
-[ui-view].ng-leave {
+[ui-view].ng-enter, [ui-view].ng-leave {
     position: absolute;
     left: 0;
     right: 0;
@@ -129,28 +117,24 @@ body {
     -o-transition: all .25s ease-in-out;
     transition: all .25s ease-in-out;
 }
-
 [ui-view].ng-enter {
     opacity: 0;
     -webkit-transform: scale3d(0.96, 0.96, 0.96);
     -moz-transform: scale3d(0.96, 0.96, 0.96);
     transform: scale3d(0.96, 0.96, 0.96);
 }
-
 [ui-view].ng-enter-active {
     opacity: 1;
     -webkit-transform: scale3d(1, 1, 1);
     -moz-transform: scale3d(1, 1, 1);
     transform: scale3d(1, 1, 1);
 }
-
 [ui-view].ng-leave {
     opacity: 1;
     -webkit-transform: scale3d(0, 0, 0);
     -moz-transform: scale3d(0, 0, 0);
     transform: scale3d(0, 0, 0);
 }
-
 [ui-view].ng-leave-active {
     opacity: 0;
 }
@@ -161,7 +145,6 @@ body {
     -moz-transform: scale(1.1);
     -o-transform: scale(1.1);
 }
-
 #social {
     -webkit-transform: scale(0.8);
     /* Browser Variations: */
@@ -179,19 +162,15 @@ body {
 .social-fb:hover {
     color: #3B5998;
 }
-
 .social-tw:hover {
     color: #4099FF;
 }
-
 .social-gp:hover {
     color: #d34836;
 }
-
 .social-em:hover {
     color: #f39c12;
 }
-
 .fc-unthemed .fc-today {
     background: rgba(51, 153, 255, 0.6);
 }

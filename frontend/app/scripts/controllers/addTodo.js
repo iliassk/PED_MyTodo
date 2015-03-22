@@ -33,11 +33,13 @@ angular.module('ToDoManagerApp')
   };
   
   $scope.submit = function() {
-    TDMService.addTodo($scope.mytodo, function() {
+    TDMService.addTodo($scope.mytodo) 
+      .success(function(res) {
+        alert('success', 'Todo created!', 'Your todo has been created !');
         $state.go('calendar');
-        //success
-      }, function() {
-        //fail
+      })
+      .error(function(err) {
+        alert('warning', 'Something went wrong :(', err.message);
       });
   };
 

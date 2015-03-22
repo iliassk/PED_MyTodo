@@ -11,11 +11,7 @@ angular.module('ToDoManagerApp')
   //This function erases the chosen subtodo
   $scope.eraseSubtodo = function(index, id){
     $scope.mytodo.subtodos.splice(index, 1);
-    TDMService.deleteSubToDo(id, function(){
-      //success
-    }, function(){
-      //fail
-    });
+    TDMService.deleteSubToDo(id);
   }
 
   $scope.addSubTodo = function(subtodo) {
@@ -33,10 +29,12 @@ angular.module('ToDoManagerApp')
 
   ////////////////Submit form /////////////////
   $scope.submit = function() {
-     TDMService.updateTodo($scope.mytodo, function(res) {
-        //success
-      }, function(err) {
-        //fail
+     TDMService.updateTodo($scope.mytodo) 
+      .success(function(res) {
+        alert('success', 'Todo edited!', 'Your todo has been edited !');
+      })
+      .error(function(err) {
+        alert('warning', 'Something went wrong :(', err.message);
       });
   };
 
@@ -239,11 +237,12 @@ angular.module('ToDoManagerApp')
   $scope.id = id;
 
   $scope.deleteTodo = function () {
-    TDMService.deleteToDo(id, function(res) {
-        //success
+    TDMService.deleteToDo(id).success(function(res) {
+        console.log('success', 'Todo deleted!', 'Your todo has been deleted !');
         $state.go('calendar');
-      }, function(err) {
-        //fail
+      })
+      .error(function(err) {
+        alert('warning', 'Something went wrong :(', err.message);
       });
     $modalInstance.close();
   };

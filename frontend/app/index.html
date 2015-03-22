@@ -80,10 +80,10 @@
                         </li>
 
                         <li ng-show="isAuthenticated()" >
-                           <a ng-click="changeAvatar()">
-                           <div ng-show="{{user_avatar}}" id="avatar">
-                               <img  HEIGHT="35" WIDTH="35"src="{{user_avatar}}">
-                           </div>
+                           <a ui-sref="profile">
+                               <div id="avatar">
+                                   <img HEIGHT="35" WIDTH="35" ng-src="{{data.currentUser[0].avatar_path}}">
+                               </div>
                            </a>
                         </li>
 
@@ -95,14 +95,13 @@
                         </li>
                             
                         <!-- glyphicon glyphicon-cloud    -->
-                        
-                        
+                                              
                         <li ng-show="online" title="Online Application" style="margin-left:5px;margin-top:3px; color:green">
                             <i class="fa fa-sellsy fa-3x"></i>
                         </li>
-                        
                         <li ng-hide="online" title="Offline Application " style="margin-left:5px;margin-top:3px; color:red">
-                            <i class="fa fa-sellsy fa-3x" ng-class="{'disconnected': !online}"></i>
+
+                            <i class="fa fa-hdd-o fa-3x"></i>
                         </li>
                         
                     </ul>
@@ -223,22 +222,12 @@
             <ul>
                 <li>Utilisation de la carte google</li>
                 <li>Partage de todo</li>
-                <li>Suppression de todo</li>
-                <li>Ajout de todo</li>
-                <li>Accès aux todos partagés</li>
-                <li>Accès aux contacts</li>
             </ul>
 
             <p>IMPORTANT : Si vous modifiez vos données sur cette ordinateur et accédez à votre compte sur un autre PC avant la synchronisation de celui-ci alors vous pourriez perdre une partie de vos données. Pour lancer la synchronisation il vous suffit d'acceder au site avec une connexion internet.</p>
             </div>
             <div ng-hide="offlineFlag">
                 <p>Vous venez de vous reconnecter après avoir utilisé le mode offline. Voulez vous synchroniser vos données avec le serveur ?</p>
-                <div class="progress" ng-show="showProgress">
-                    <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: {{percent}}%">
-                        <span class="sr-only">{{percent}}% Complete</span>
-                    </div>
-                </div>
-                <p ng-show="showProgress">Synchronisation en cours : {{percent}}% </p>
             </div>
         </div>
         <div class="modal-footer">

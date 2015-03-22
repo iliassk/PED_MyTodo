@@ -15,10 +15,11 @@ angular.module('ToDoManagerApp').controller('SharedViewToDoList', function($scop
     
     
 	$rootScope.$watch('accessData', function(accessData) {
-        console.log("accessData SharedViewToDoList : " + accessData)
+        console.log("accessData SharedViewToDoList ")
 
             if(accessData){
                TDMService.refresh(function(){
+			    	console.log("accessing shared data")
 					$scope.list = TDMService.getASharedList($stateParams.id)
 					console.log($scope.list)
 					$scope.displayedCollection = [].concat($scope.list.todos);
@@ -40,20 +41,22 @@ angular.module('ToDoManagerApp').controller('SharedViewToDoList', function($scop
 
 	$scope.shareTodo = function(todo){
 		console.log("Share todo")
-		TDMService.generateShareToDoLink(todo.id_todo, function(result){
+		TDMService.generateShareToDoLink(todo.id_todo)
+		.success(function(result){
 			$scope.openShareInfo(APP_URL + 'share/' + result.url + '/' + "todo")
-		}, function(){
-			//fail
+		}).error(function(){
+			alert("Impossible de générer un lien !");
 		})
 		
 	}
 
 	$scope.shareList = function(list){
 		console.log("Share list")
-		TDMService.generateShareListLink(list.id_list, function(result){
+		TDMService.generateShareListLink(list.id_list)
+		.success(function(result){
 			$scope.openShareInfo(APP_URL + 'share/' + result.url + '/' + "todolist")
-		}, function(){
-			//fail
+		}).error(function(){
+			alert("Impossible de générer un lien !");
 		})
 	}
 
@@ -74,12 +77,14 @@ angular.module('ToDoManagerApp').controller('SharedViewToDoList', function($scop
 	$scope.deleteTodo = function(todo_id, row){
 		console.log("[deleteTodo]");
 
-		TDMService.deleteToDo(todo_id, function(data) {
+		TDMService.deleteToDo(todo_id)
+		.success(function(data) {
 			console.log("[deleteTodo] success");
-			//success
-		}, function(data) {
+			
+		})
+		
+		.error(function(data) {
 			console.log("[deleteTodo] failure");
-			//fail
 		});
 	}
 
@@ -114,10 +119,12 @@ angular.module('ToDoManagerApp').controller('SharedViewToDoList', function($scop
 		todo.completed = !todo.completed
 		todo.completed = (todo.completed ? 1 : 0)
 
-		TDMService.updateTodo(todo, function(data) {
-			//success
-		}, function(data) {
-			//fail
+		TDMService.updateTodo(todo)
+		.success(function(data) {
+			console.log("[updateTodo] success");
+		})
+		.error(function(data) {
+			console.log("[updateTodo] failure");
 		});
 	}
 

@@ -28,15 +28,17 @@ angular.module('ToDoManagerApp').controller('ShareCtrl', function($scope, $state
 
     $scope.init();
 
+
     //fetch the data
-    TDMService.fetchSharedData($stateParams.url, $stateParams.type, function(data){
+    TDMService.fetchSharedData($stateParams.url, $stateParams.type)
+    .success(function(data){
 		$scope.data = data
         if($stateParams.type == "todo"){
             $scope.mytodo = data[0];
             $scope.hasSubtodo = $scope.mytodo.subtodos ? true : false;
         }
-	}, function(){
-		//fail
+	}).error(function(){
+		console.log("erreur")
 	})
 
 });
