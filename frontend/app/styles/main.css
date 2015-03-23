@@ -233,3 +233,24 @@ i.fa.fa-sellsy.disconnected {
     color: #F33;
 }
 
+#accordion_title {
+    display: inline-block;
+    white-space: nowrap;
+    width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.navbar_button {
+    margin-top: 10px;
+    height: 43px;
+}
+
+#addListNav {
+    padding-top: 10px;
+}
+
+#addTodoNav {
+    padding-top: 10px;
+    margin-right: 5px;
+}
