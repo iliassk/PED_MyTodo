@@ -20,6 +20,7 @@ angular.module('ToDoManagerApp')
   $scope.subtodo = {title: '', description: ''}
   $scope.file;
   $scope.isCollapsed = true;
+  $scope.isMapCollapsed = true;
 
   $scope.addSubTodo = function(subtodo) {
     if(subtodo.title != ''){
@@ -152,16 +153,14 @@ angular.module('ToDoManagerApp')
 
   ////////////////Localization /////////////////
 
-  $scope.init = function(){ 
-
+  $scope.showMap = function(){ 
+    $scope.isMapCollapsed = false
+    
     getAdresse(['map-canvas', 'input-address', 'type-selector'], function(position, address){
       $scope.mytodo.localization = address;
     }, function(msg){
       console.log(msg);
     });
   };
-
-  $scope.init();
-
 });
 

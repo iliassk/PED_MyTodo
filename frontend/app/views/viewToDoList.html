@@ -28,58 +28,61 @@
      
 <div class="container-fluid">
 
-		<table st-table="displayedCollection" st-safe-src="list.todos" class="table table-striped table-hover">
-			<thead>
-			<tr>
-				<th style="cursor: pointer" st-sort="completed">Done</th>
-				<th style="cursor: pointer" st-sort="priority">Priority</th>
-				<th style="cursor: pointer" st-sort="title">Title</th>
-				<th style="cursor: pointer" st-sort="description">Description</th>
-				<th style="cursor: pointer" st-sort="context">Context</th>
-				<th style="cursor: pointer" st-sort="date">Date</th>
-			</tr>
-			<tr>
-				<th colspan="5">
-					<input st-search="" class="form-control" placeholder="global search ..." type="text"/>
-					<a ng-click="hideCompleted()"class="btn btn-sm btn-primary" data-toggle="button">Hide <span style="color:Chartreuse " class="glyphicon glyphicon-ok"></span></a>
-					<a ng-show="online" ng-click="shareList(list)" class="btn btn-sm btn-primary" data-toggle="button">List <span class="glyphicon glyphicon-share"></span></a>
-				</th>
-			</tr>
-			</thead>
-			<tbody>
-			<tr ng-repeat="row in displayedCollection" ng-hide="hidecompleted && (row.completed == true)">
-				<td><a><i ng-click="onTodoModified(row)" class="glyphicon glyphicon-ok ng-show" style="color:Chartreuse " ng-show="row.completed"></i></a>
-	    			<a><i ng-click="onTodoModified(row)" style="color:Gainsboro" class="glyphicon glyphicon-ok ng-hide" ng-hide="row.completed"></i></a>
-	    		</td>
-				<td><p ng-class="{ 'text-info': row.priority == 1, 'text-primary': row.priority == 4, 'text-success': row.priority == 2, 'text-warning': row.priority == 3, 'text-danger': row.priority == 5 }">{{row.priority}}</p></td>
-				<td><a ui-sref="todo/({ id: row.id_todo })">{{row.title}}</a></td>
-				<td>{{row.description}}</td>
-				<td>{{row.context}}</td>
-				<td>{{row.date | date:'medium'}}</td>
-				<td>
-					<a target="_blank" ng-hide="showMapButton(row.localization)" class="btn btn-sm btn-info" href="https://maps.google.com/?q={{row.localization}}"><i class="glyphicon glyphicon-map-marker" ></i></a>
+	<form class="form-inline text-center">
+	  	<input ng-model="search.title" class="form-control" placeholder="global search ..." type="text"/>
+		<div class="btn-group" role="group">
+			<button type="button" ng-click="hideCompleted()" class="btn btn-sm btn-info" data-toggle="button">Hide <span style="color:Chartreuse " class="glyphicon glyphicon-ok"></span></button>
+			<button type="button" ng-show="online" ng-click="shareList(list)" class="btn btn-sm btn-info">Share <span class="glyphicon glyphicon-share"></span></button>
+		</div>
+	</form>
 
-					<span ng-show="online" class="dropdown" dropdown>
-				      <a href class="btn btn-sm btn-primary" class="dropdown-toggle" dropdown-toggle>
-				        <i class="glyphicon glyphicon-calendar" ></i><span class="caret"></span>
-				      </a>
-				      <ul class="dropdown-menu">
-				       	<li><a ng-click="addToCalendar('google', row)">Google</a></li>
-						<li><a ng-click="addToCalendar('hotmail', row)">Hotmail</a></li>
-				      </ul>
-				    </span>
-				    <button type="button" class="btn btn-sm btn-warning"><i class="glyphicon glyphicon-user"></i></button>
-        			<a ng-show="online" id="shareOutSiderToDo" class="btn btn-sm btn-info" ng-click="shareTodo(row)"><i class="glyphicon glyphicon-share" ></i></a>
-					<button type="button" id="deleteToDoButtonList" class="btn btn-sm btn-danger" ng-click="deleteTodo(row.id_todo,row)"><i class="glyphicon glyphicon-trash" ></i></button>
-				</td>
-			</tr>
-			</tbody>
-			<tfoot>
-			<tr>
-				<td colspan="5" class="text-center">
-					<div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="7"></div>
-				</td>
-			</tr>
-		</tfoot>
-		</table>
+
+
+	<table st-table="displayedCollection" st-safe-src="list.todos" class="table table-striped table-hover">
+		<thead>
+		<tr>
+			<th style="cursor: pointer" st-sort="completed">Done</th>
+			<th style="cursor: pointer" st-sort="priority">Priority</th>
+			<th style="cursor: pointer" st-sort="title">Title</th>
+			<th style="cursor: pointer" st-sort="description">Description</th>
+			<th style="cursor: pointer" st-sort="context">Context</th>
+			<th style="cursor: pointer" st-sort="date">Dead Line</th>
+		</tr>
+		</thead>
+		<tbody>
+		<tr ng-repeat="row in displayedCollection | filter:search" ng-hide="hidecompleted && (row.completed == true)">
+			<td><a><i ng-click="onTodoModified(row)" class="glyphicon glyphicon-ok ng-show" style="color:Chartreuse " ng-show="row.completed"></i></a>
+    			<a><i ng-click="onTodoModified(row)" style="color:Gainsboro" class="glyphicon glyphicon-ok ng-hide" ng-hide="row.completed"></i></a>
+    		</td>
+			<td><p ng-class="{ 'text-info': row.priority == 1, 'text-primary': row.priority == 4, 'text-success': row.priority == 2, 'text-warning': row.priority == 3, 'text-danger': row.priority == 5 }">{{row.priority}}</p></td>
+			<td><a ui-sref="todo/({ id: row.id_todo })">{{row.title}}</a></td>
+			<td>{{row.description}}</td>
+			<td>{{row.context}}</td>
+			<td><span title="{{row.date | date:'medium'}}">{{showDate(row.date)}}</span></td>
+			<td>
+				<a target="_blank" title="Show on maps" ng-hide="showMapButton(row.localization)" class="btn btn-sm btn-info" href="https://maps.google.com/?q={{row.localization}}"><i class="glyphicon glyphicon-map-marker" ></i></a>
+
+				<span ng-show="online" class="dropdown" dropdown>
+			      <a href title="Add to calendar" class="btn btn-sm btn-primary" class="dropdown-toggle" dropdown-toggle>
+			        <i class="glyphicon glyphicon-calendar" ></i><span class="caret"></span>
+			      </a>
+			      <ul class="dropdown-menu">
+			       	<li><a ng-click="addToCalendar('google', row)">Google</a></li>
+					<li><a ng-click="addToCalendar('hotmail', row)">Hotmail</a></li>
+			      </ul>
+			    </span>
+			    <button type="button" class="btn btn-sm btn-warning"><i class="glyphicon glyphicon-user"></i></button>
+    			<a ng-show="online" title="Share" id="shareOutSiderToDo" class="btn btn-sm btn-info" ng-click="shareTodo(row)"><i class="glyphicon glyphicon-share" ></i></a>
+				<button type="button" title="Delete" id="deleteToDoButtonList" class="btn btn-sm btn-danger" ng-click="deleteTodo(row.id_todo,row)"><i class="glyphicon glyphicon-trash" ></i></button>
+			</td>
+		</tr>
+		</tbody>
+		<tfoot>
+		<tr>
+			<td colspan="5" class="text-center">
+				<div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="7"></div>
+			</td>
+		</tr>
+	</tfoot>
+	</table>
 </div>

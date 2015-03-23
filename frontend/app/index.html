@@ -73,10 +73,12 @@
                             <i class="fa fa-spinner fa-pulse fa-3x"></i>
                         </li>
                         <li ng-show="isAuthenticated()" >
-                            <a ui-sref="add/todo" id="addTodoNav" class="btn btn-success navbar_button">Add a ToDo</a>
+                            <a ui-sref="add/todo" id="addTodoNav" class="btn btn-success navbar_button">
+                                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> ToDo</a>
                         </li>
                         <li ng-show="isAuthenticated()" >
-                            <a ui-sref="todolist" id="addListNav" class="btn btn-info navbar_button">Add a list</a>
+                            <a ui-sref="todolist" id="addListNav" class="btn btn-info navbar_button">
+                                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> List</a>
                         </li>
 
                         <li ng-show="isAuthenticated()" >

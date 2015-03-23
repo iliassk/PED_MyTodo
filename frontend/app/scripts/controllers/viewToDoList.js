@@ -118,6 +118,15 @@ angular.module('ToDoManagerApp').controller('ViewToDoList', function($scope, $st
 		});
 	}
 
+	$scope.showDate = function(date){
+
+		var lastDate = new Date(date)
+		var today=new Date()
+		var one_day=1000*60*60*24
+ 
+		return Math.ceil((lastDate.getTime()-today.getTime())/(one_day)) + " days remainings"
+	}
+
 	$scope.showMapButton = function(place){
 		return place == "" || place == undefined || place == null
 	}
