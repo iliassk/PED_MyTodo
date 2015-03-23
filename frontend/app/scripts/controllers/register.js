@@ -15,7 +15,7 @@ angular.module('ToDoManagerApp').controller('RegisterCtrl', function($state, $sc
 			email: $scope.email,
 			password: $scope.password
 		}).then(function(res) {
-			$rootScope.canFetchData = true
+			$rootScope.mustRefresh = true
 			$rootScope.closeMenu = false
 			$state.go('calendar')
 			alert('success', 'Account Created!', 'Welcome, ' + res.data.user.username + ' ! Please activate your account in the next few days.');

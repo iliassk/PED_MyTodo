@@ -97,6 +97,7 @@ angular.module('ToDoManagerApp').service('TDMServiceOffline', function ($http, A
 	this.deletetodolist = function(obj, data, success, error) {
 		console.offline("deletetodolist")
 		$rootScope.isWorking = true
+		data.offlineDeleteList.push(obj)
 		ToDoManagerApp.save(data)
 		$rootScope.isWorking = false
 		success()

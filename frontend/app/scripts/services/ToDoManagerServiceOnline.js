@@ -10,7 +10,8 @@ angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($http, AP
 			group: '',
 			contact: '',
 			shareListsWithToDo: [],
-			offlineDeleteToDo: []
+			offlineDeleteToDo: [],
+			offlineDeleteList: []
 		}
 		$rootScope.isWorking = true
 		$http.get(API_URL + 'listtodolistwithtodos')
@@ -45,7 +46,8 @@ angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($http, AP
 		var data = JSON.parse(localStorage.ToDoManagerAppData_XYZ)
 		var lists = data.listsWithToDo,
 			todos = [],
-			deletedTodos = data.offlineDeleteToDo
+			deletedTodos = data.offlineDeleteToDo,
+			deletedList = data.offlineDeleteList
 
 		var iteration = 0
 
@@ -56,7 +58,7 @@ angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($http, AP
 			todos.push.apply(todos, list_elem.todos)
 		})
 
-		var number_of_call = (todos.length) + deletedTodos.length + lists.length
+		var number_of_call = (todos.length) + deletedTodos.length + lists.length + deletedList.length
 		var step_value = number_of_call/100
 
 		var checkIfFinish = function(){
@@ -98,6 +100,7 @@ angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($http, AP
 			}
 		})
 
+		//supprime les todos
 		deletedTodos.forEach(function (todo_id, todo_index, todos_array) {
 
 			iteration += 1
@@ -109,6 +112,17 @@ angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($http, AP
 			})
 		})
 
+		//supprime les listes
+		deletedList.forEach(function (list, list_index, lists_array) {
+
+			iteration += 1
+
+			return $http.delete(API_URL + 'listtodolist/'+ list)
+			.success(function(){
+				callback(iteration*step_value)
+				checkIfFinish()
+			})
+		})
 
 	}
 

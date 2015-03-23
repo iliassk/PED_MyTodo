@@ -34,7 +34,7 @@ angular.module('ToDoManagerApp').controller('LoginCtrl', function($state,$scope,
 		$auth.authenticate(provider).then(function(res) {
             angular.element("#wrapper").removeClass("toggled");
 			alert('success', 'Welcome!', 'Thanks for coming back, ' + res.data.user.email + ' !');
-			$rootScope.canFetchData = true
+			$rootScope.mustRefresh = true
 			$state.go('calendar')
 		}, function(err) {
             angular.element("#wrapper").addClass("toggled");

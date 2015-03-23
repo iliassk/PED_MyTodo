@@ -17,7 +17,8 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 		group: '',
 		contact: '',
 		shareListsWithToDo: [],
-		offlineDeleteToDo: []
+		offlineDeleteToDo: [],
+		offlineDeleteList: []
 	}
 
 	this.markAsOffLine = function(){
