@@ -213,8 +213,21 @@ app.get('/share/data/:url/:type', function(req, res, next) {
 })
 
 /**
+ * Partage un todo avec un autre utilisateur
+ */
+app.post('/share/todo/:id_todo/:id_user', function(req, res, next) {
+   	todo.shareTodoContact(req, res, next, connection, utils)
+})
+
+/**
+ * Partage une liste avec un autre utilisateur
+ */
+app.post('/share/todolist/:id_todolist/:id_user', function(req, res, next) {
+   	todo.shareListContact(req, res, next, connection, utils)
+})
+
+/**
 * Permet l'upload de fichier
-*
 */
 app.post('/upload',function(req,res){
   if(done==true){

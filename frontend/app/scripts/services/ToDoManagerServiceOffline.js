@@ -168,6 +168,20 @@ angular.module('ToDoManagerApp').service('TDMServiceOffline', function ($http, A
 		error()
 	}
 
+	this.shareTodoContact = function(_id_todo,_id_user) {
+		console.offline("shareTodoContact")
+		$rootScope.isWorking = true;
+		alert('warning', 'OffLine error', 'Impossible to share a todo in offline mode !!');
+		$rootScope.isWorking = false;
+	}
+
+	this.shareListContact = function(_id_list,_id_user) {
+		console.offline("shareLidtContact")
+		$rootScope.isWorking = true;
+		alert('warning', 'OffLine error', 'Impossible to share a list in Offline Mode !!');
+		$rootScope.isWorking = false;
+	}
+
 	this.fetchSharedData = function(url, type, success, error) {
 		console.offline("generateShareToDoLink")
 		

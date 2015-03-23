@@ -34,6 +34,10 @@ angular.module('ToDoManagerApp').controller('LoginCtrl', function($state,$scope,
 		$auth.authenticate(provider).then(function(res) {
             angular.element("#wrapper").removeClass("toggled");
 			alert('success', 'Welcome!', 'Thanks for coming back, ' + res.data.user.email + ' !');
+<<<<<<< Updated upstream
+=======
+			$rootScope.canFetchData = true
+>>>>>>> Stashed changes
 			$rootScope.mustRefresh = true
 			$state.go('calendar')
 		}, function(err) {
