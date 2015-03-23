@@ -4,76 +4,6 @@
  }
 </style>
 
-<script type="text/ng-template" id="shareTodo.html">
-    <div class="modal-header">
-        <h3 class="modal-title">Share this todo!</h3>
-    </div>
-    <div class="modal-body">
-    Share with :
-	    <p>
-			  	<label class="radio-inline"><input value="0" type="radio" ng-model="type" name="optradio">A whole group</label>
-			  <label class="radio-inline"><input value="1" type="radio" ng-model="type" name="optradio">A contact</label>
-		</p>
-	    <div id="group" ng-show="(type==0)">
-	<label for="sel1">Select list:</label>
-		  <select ng-model="selected_group" class="form-control" id="group">
-		  <option value="-1" ng-disable=true selected>Choose a group</option>
-		    <option value="{{$index}}" ng-repeat="group in contact">{{group.name}}</option>
-		  </select>
-
-  	    </div>
-	    <div id="contact" ng-show="(type==1)">
-	    <select ng-model="selected_group2" class="form-control" id="group">
-		  <option value="-1" ng-disable=true selected>Choose a group</option>
-		    <option value="{{$index}}" ng-repeat="group in contact">{{group.name}}</option>
-		  </select>
-		  <select ng-model="selected_contact" class="form-control" id="group">
-		  <option value="-1" ng-disable=true selected>Choose a contact</option>
-		    <option value="{{subcontact.id_user}}" ng-repeat="subcontact in contact[selected_group2].contact">{{subcontact.username}}</option>
-		  </select>
-	    </div>
-    </div>
-    <div class="modal-footer">
-            <button class="btn btn-primary" ng-click="ok()">OK</button>
-            <button class="btn btn-warning" ng-click="close()">Cancel</button>
-    </div>
-</script>
-
-<script type="text/ng-template" id="shareList.html">
-    <div class="modal-header">
-        <h3 class="modal-title">Share this list!</h3>
-    </div>
-    <div class="modal-body">
-    Share with :
-	    <p>
-			  	<label class="radio-inline"><input value="0" type="radio" ng-model="type" name="optradio">A whole group</label>
-			  <label class="radio-inline"><input value="1" type="radio" ng-model="type" name="optradio">A contact</label>
-		</p>
-	    <div id="group" ng-show="(type==0)">
-	<label for="sel1">Select list:</label>
-		  <select ng-model="selected_group" class="form-control" id="group">
-		  <option value="-1" ng-disable=true selected>Choose a group</option>
-		    <option value="{{$index}}" ng-repeat="group in contact">{{group.name}}</option>
-		  </select>
-
-  	    </div>
-	    <div id="contact" ng-show="(type==1)">
-	    <select ng-model="selected_group2" class="form-control" id="group">
-		  <option value="-1" ng-disable=true selected>Choose a group</option>
-		    <option value="{{$index}}" ng-repeat="group in contact">{{group.name}}</option>
-		  </select>
-		  <select ng-model="selected_contact" class="form-control" id="group">
-		  <option value="-1" ng-disable=true selected>Choose a contact</option>
-		    <option value="{{subcontact.id_user}}" ng-repeat="subcontact in contact[selected_group2].contact">{{subcontact.username}}</option>
-		  </select>
-	    </div>
-    </div>
-    <div class="modal-footer">
-            <button class="btn btn-primary" ng-click="ok()">OK</button>
-            <button class="btn btn-warning" ng-click="close()">Cancel</button>
-    </div>
-</script>
-
 <script type="text/ng-template" id="share_data.html">
     <div class="modal-header">
         <h3 class="modal-title">Share your todos</h3>
@@ -95,8 +25,7 @@
   <h1 ng-style="{color: '{{list.color}}'}">{{list.name}}</h1>
   <p ng-style="{color: '{{list.color}}'}">{{list.description}}</p>
 </div>
- 
-                            
+     
 <div class="container-fluid">
 
 		<table st-table="displayedCollection" st-safe-src="list.todos" class="table table-striped table-hover">
@@ -110,10 +39,10 @@
 				<th style="cursor: pointer" st-sort="date">Date</th>
 			</tr>
 			<tr>
-				<th colspan="5"><input st-search="" class="form-control" placeholder="global search ..." type="text"/>
+				<th colspan="5">
+					<input st-search="" class="form-control" placeholder="global search ..." type="text"/>
 					<a ng-click="hideCompleted()"class="btn btn-sm btn-primary" data-toggle="button">Hide <span style="color:Chartreuse " class="glyphicon glyphicon-ok"></span></a>
-					<a ng-show="online" ng-click="shareList(list)" class="btn btn-sm btn-primary pull-right" data-toggle="button">List <span class="glyphicon glyphicon-share"></span></a>
-					 <button ng-click="openShareListInfo(list)" type="button" class="btn btn-sm btn-warning"><i class="glyphicon glyphicon-user"></i></button>
+					<a ng-show="online" ng-click="shareList(list)" class="btn btn-sm btn-primary" data-toggle="button">List <span class="glyphicon glyphicon-share"></span></a>
 				</th>
 			</tr>
 			</thead>
@@ -130,7 +59,7 @@
 				<td>
 					<a target="_blank" ng-hide="showMapButton(row.localization)" class="btn btn-sm btn-info" href="https://maps.google.com/?q={{row.localization}}"><i class="glyphicon glyphicon-map-marker" ></i></a>
 
-					<span class="dropdown" dropdown>
+					<span ng-show="online" class="dropdown" dropdown>
 				      <a href class="btn btn-sm btn-primary" class="dropdown-toggle" dropdown-toggle>
 				        <i class="glyphicon glyphicon-calendar" ></i><span class="caret"></span>
 				      </a>
@@ -139,7 +68,7 @@
 						<li><a ng-click="addToCalendar('hotmail', row)">Hotmail</a></li>
 				      </ul>
 				    </span>
-				    <button ng-click="openShareTodoInfo(row)" type="button" class="btn btn-sm btn-warning"><i class="glyphicon glyphicon-user"></i></button>
+				    <button type="button" class="btn btn-sm btn-warning"><i class="glyphicon glyphicon-user"></i></button>
         			<a ng-show="online" id="shareOutSiderToDo" class="btn btn-sm btn-info" ng-click="shareTodo(row)"><i class="glyphicon glyphicon-share" ></i></a>
 					<button type="button" id="deleteToDoButtonList" class="btn btn-sm btn-danger" ng-click="deleteTodo(row.id_todo,row)"><i class="glyphicon glyphicon-trash" ></i></button>
 				</td>

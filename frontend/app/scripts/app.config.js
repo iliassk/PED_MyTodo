@@ -19,10 +19,6 @@ angular.module('ToDoManagerApp').config(function($urlRouterProvider, $stateProvi
 			templateUrl: '/views/calendar.html',
 			controller: 'CalendarCtrl'
 		})
-		.state('profile', {
-			url: '/profile',
-			templateUrl: '/views/profil.html'
-		})
 		.state('todolist', {
 			url: '/todolist',
 			templateUrl: '/views/todolist.html',

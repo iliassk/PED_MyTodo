@@ -4,22 +4,12 @@
  * For details, see http://www.apache.org/licenses/LICENSE-2.0.
  */
 
-.pageprofile {
-left: 12em;
-padding-right: 7em;
-}
-.menuprofile {
-background-image:url(../images/avatar.png);
-background-repeat:no-repeat ;
-background-size: 150px 150px;
-
-}
-
 /* viv avatar */
 .photo_equipe{
     background-image:url(../images/avatar.png);
     background-repeat:no-repeat ;
     background-size: 60px 60px;
+    background-position: center;
     height: 60px;
     width: 60px;
     float: left;
@@ -150,21 +140,4 @@ background-size: 150px 150px;
         position: relative;
         margin-right: 0;
     }
-}
-
-.background {
-    background: url(../images/background.jpg);
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-position: center;
-    background-size: cover;
-
-}
-
-.transbox {
-    background-color: rgba(255, 255, 255, 0.8);
-    padding-top: 10px;
-    padding-right: 10px;
-    padding-bottom: 10px;
-    padding-left: 10px;
 }

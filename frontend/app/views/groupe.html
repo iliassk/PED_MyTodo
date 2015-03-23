@@ -1,9 +1,12 @@
 
 <div id="groupe" style="visibility: hidden">
 
-                   
+                    <div class="row"  ng-switch on="data.group.length" ng-cloak id="groupe">
+                <ul ng-switch-when="0">
+                    <a onclick="groupe('show')" class="btn btn-info">You have no group, create one</a>
+                </ul>
 
-                <div id="groupe"  >
+                <div id="groupe" ng-switch-default ng-cloak >
                     <li>
                    <a ui-sref="addcontact"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add a contact </a>
                    </li>
@@ -11,25 +14,24 @@
                     <accordion-group id="groupee">
                     <accordion-heading ng-click="isopen=!isopen" >
                     All contact
-                 
+                    <span class="badge">{{contact.length}}</span>
+                    
                     </accordion-heading>
 
                       <ul>
                       
                     
-                      <div ng-repeat="listgroup in data.group" > 
-                      <div ng-repeat="contact in listgroup.contact">
+                      <div ng-repeat="listcontact in data.contact" > 
                       <table>
                       <tbody>
                         <tr>
-                        <td width="100%">{{contact.username}}</td>  
-                        <td width="100%"><a ng-click="deletecontact(contact.id_user)">
-                        <i class="glyphicon glyphicon-trash" aria-hidden="true"></i>
+                        <td width="100%">{{listcontact.username}}</td>  
+                        <td width="100%"><a data-my-directive data-popover-title="Settings" data-popover-template="settings.html" data-popover-placement="left">
+                        <i class="glyphicon glyphicon-option-vertical" aria-hidden="true"></i>
                         </a></td>
                         </tr>
                         </tbody>
                         </table>
-                      </div>
                       </div>
 
                       </ul>
@@ -44,15 +46,16 @@
                     
                     </accordion-heading>
                     <ul>
-                      <div ng-repeat="contact in listgroup.contact"  >
+                      <div ng-repeat="listcontact in data.contact"  >
+                      <div ng-if="listgroup.id_group == listcontact.id_group">
                        <table>
                       <tbody>
                         <tr>
-                        <td width="100%">{{contact.username}} </td>   
+                        <td width="100%">{{listcontact.username}} </td>   
                        
                         <td width="100%">
-                         <a ng-click="deletecontact(contact.id_user)">
-                        <i class="glyphicon glyphicon-trash" aria-hidden="true"></i>
+                         <a data-my-directive bs-popover rm-popovers data-popover-title="Settings" data-popover-template="settings.html" data-popover-placement="left" >
+                        <i class="glyphicon glyphicon-option-vertical" aria-hidden="true"></i>
                         </a>
 
                         </td>
@@ -60,7 +63,7 @@
                         </tbody>
                         </table>
                       </div>
-                  
+                      </div>
                       </ul>
                       
                     </accordion-group>
@@ -68,7 +71,7 @@
                     <div id="addgroup" style="visibility: hidden; height:0px;" >
                     <form role="form" >
                     <input type="text" class="form-control" ng-model="namegroup" placeholder="Group's name"/>
-                    <button type="submit" class="btn btn-primary" onclick="groupe('hide')" ng-click="submitgroup(namegroup)">Add</button>
+                    <button type="submit" class="btn btn-primary" ng-click="submitgroup(namegroup)">Add</button>
                     <a onclick="groupe('hide')">Cancel {{test}}</a>
                     </form>
                      </div> 
@@ -82,7 +85,7 @@
                 <div id="addgroup" style="visibility: hidden; height:0px;" >
                     <form role="form" >
                     <input type="text" class="form-control" ng-model="namegroup" placeholder="Group's name"/>
-                    <button type="submit" class="btn btn-primary" onclick="groupe('hide')" ng-click="submitgroup(namegroup)">Add</button>
+                    <button type="submit" class="btn btn-primary" ng-click="submitgroup(namegroup)">Add</button>
                     <a onclick="groupe('hide')">Cancel {{test}}</a>
                     </form>
                      </div> 
@@ -90,3 +93,8 @@
                 </div>
 
 <!-- Latest compiled and minified JavaScript -->
+
+<script type="text/ng-template" id="settings.html">
+        <a ui-sref="todolist">supprime</a></br>
+        <span ng-include="mainFormTmpl" onload="loaded()"></span>
+</script>

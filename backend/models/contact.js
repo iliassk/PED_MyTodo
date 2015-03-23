@@ -1,11 +1,8 @@
-exports.addcontact_post = function(req, res, jwt, next, connection, auth){
+exports.addcontact_post = function(req, res, next, connection, auth){
 	//get data from the request
-	var _id = auth.checkAuthorization(req, res, jwt);
-	
 	var data = {
-		id_contact: req.body.id,
-		id_group : req.body.item,
-		id_user: _id
+		id_user: req.body.id,
+		id_group : req.body.item
 	};
 
 	connection.query('INSERT INTO CONTACTS SET ?', data, function(err, rows) {
@@ -22,7 +19,7 @@ exports.addcontact_post = function(req, res, jwt, next, connection, auth){
 
 exports.userid_get = function(req, res, next, connection, auth){
 var id_user = req.params.id
-connection.query('SELECT u.id_user, u.avatar_path, u.username, u.email FROM USERS u WHERE u.id_user = ?', id_user, function(err, rows) {
+connection.query('SELECT u.avatar_path FROM USERS u WHERE u.id_user = ?', id_user, function(err, rows) {
 		if (err) {
 			console.log(err);
 			return next("Mysql error, check your query");
@@ -65,7 +62,6 @@ exports.addgroup_post = function(req, res, next, connection, auth, jwt){
 	});
 }
 
-
 exports.listgroupe_get = function(req, res, next, connection, auth, jwt){
    // retourne le non et le nombre de votre
    	var _id = auth.checkAuthorization(req, res, jwt);
@@ -74,14 +70,13 @@ exports.listgroupe_get = function(req, res, next, connection, auth, jwt){
 		if (err) {
 			console.log(err);
 			return next("Mysql error, check your query");
-		}else{
-			console.log(rows);
+		}
 
 		result = rows;
 		
 		rows.forEach(function (elem, index, array) {
 
-				connection.query('SELECT u.id_user, u.username, u.avatar_path, u.email FROM USERS u JOIN CONTACTS ON u.id_user = CONTACTS.id_contact WHERE CONTACTS.id_group = ?', elem.id_group, function(err, contacts) {
+				connection.query('SELECT * FROM USERS JOIN CONTACTS ON USERS.id_user = CONTACTS.id_user WHERE CONTACTS.id_group = ?', elem.id_group, function(err, contacts) {
 				if (err) {
 					console.log(err);
 					return next("Mysql error on connection, check your query");
@@ -91,42 +86,28 @@ exports.listgroupe_get = function(req, res, next, connection, auth, jwt){
 				cpt ++;
 				//pour gérer l'asynchrone on ne sait pas quand les requetes sont finies
 				if(cpt == result.length){
-
-					return res.status(200).json(result);
+					console.log("success fetching groups")
+					return res.status(200).json(result)
 				}
 			});
 		})
-		}
+
+		if(rows.length < 1)
+			return res.status(200).json(rows)
+
 	});
 }
 
-exports.listuserNocontact_id_get = function(req, res, jwt, next, connection, auth){
+exports.listcontact_get = function(req, res, next, connection, auth){
    // retourne le non et le nombre de votre
-   	//chaine = "SELECT * FROM CONTACTS C, USERS U, GROUPS G WHERE C.id_user=U.id_user AND C.id_group=G.id_group"
-	var _id = auth.checkAuthorization(req, res, jwt);
-   
-   	chaine = "SELECT u.* FROM USERS u WHERE u.id_user !="+req.params.id+" AND u.id_user NOT IN(SELECT c.id_contact FROM CONTACTS c WHERE c.id_user ="+_id+")"
-	//chaine = "SELECT u.* FROM USER u JOIN CONTACTS c on c.id_user = u.id_user WHERE u.id_user = " + _id;
+   	chaine = "SELECT * FROM CONTACTS C, USERS U, GROUPS G WHERE C.id_user=U.id_user AND C.id_group=G.id_group"
 	connection.query(chaine,function(err, rows) {
 		if (err) {
 			console.log(err);
 			return next("Mysql error, check your query");
 		}else{
-			console.info("rows: "+rows);
+			//console.info(rows);
 			res.status(200).json(rows);
 		}
 	});
-}
-
-exports.deletecontact_post = function(req, res, jwt, next, connection, auth){
-	var _id = auth.checkAuthorization(req, res, jwt);
-
-	chaine = "DELETE FROM CONTACTS WHERE id_owner="+req.body.id+" AND id_user="+_id
-	connection.query(chaine,function(err, rows) {
-		if (err) {
-			console.log(err);
-			return next("Mysql error, check your query");
-		}
-	});
-
 }

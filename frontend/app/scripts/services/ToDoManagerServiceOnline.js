@@ -1,49 +1,33 @@
 'use strict';
 
-angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($auth, $http, API_URL, $state, $rootScope, TDMServiceOffline) {
+angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($http, API_URL, $state, $rootScope, TDMServiceOffline) {
 
 	var ToDoManagerApp = this;
-	var data = {
-			listsWithToDo: [],
-			group: '',
-			usersNocontact: '',
-			shareListsWithToDo: [],
-			currentUser:''
-		}
 
 	this.fetchAll = function(f) {
-		console.online("fetchAll")
-		
+		var data = {
+			listsWithToDo: [],
+			group: '',
+			contact: '',
+			shareListsWithToDo: []
+		}
 		$rootScope.isWorking = true
 		$http.get(API_URL + 'listtodolistwithtodos')
 		.success(function(_data){
-			console.log("Success fetching all data !!!")
 			data.listsWithToDo = _data;
 			TDMServiceOffline.save(data)
-
 			$http.get(API_URL + 'listgroupe')
 			.success(function(_groupe){
-					
-
 				data.group = _groupe;
-				console.log("===================="+$auth.getPayload().sub+"=======================")
-				$http.get(API_URL + 'listuserNocontact/'+$auth.getPayload().sub)
+				$http.get(API_URL + 'listcontact')
 				.success(function(_contact){
-					data.usersNocontact = _contact;
-
-
-				$http.get(API_URL + 'user/'+$auth.getPayload().sub)
-				.success(function(_current){
-					console.log("Success fetching  "+_current)
-					data.currentUser = _current;
-					
-					
+					data.contact = _contact;
 					$rootScope.isWorking = false;
 					if(f)f(data);
 				})
 			})
 		})
-})
+
 		/*$http.get(API_URL + 'listsharedtodolistwithtodos')
 		.success(function(_data){
 			console.log("Success fetching all data !!!")
@@ -52,6 +36,42 @@ angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($auth, $h
 			if(f)f();
 		})*/
 	};
+
+	this.sync = function(callback){
+		console.online("Synchronisation en cours ...")
+		$rootScope.isWorking = true;
+
+		var data = JSON.parse(localStorage.ToDoManagerAppData_XYZ)
+		var lists = data.listsWithToDo,
+			todos = []
+
+		var iteration = 0
+
+		if(lists == undefined || !lists || lists.length == 0)
+			return callback(100)
+
+		lists.forEach(function (list_elem, list_index, lists_array) {
+			todos.push.apply(todos, list_elem.todos)
+		})
+
+		var number_of_call = todos.length
+		var step_value = number_of_call/100
+
+		var checkIfFinish = function(){
+			if(iteration == number_of_call)
+				return callback(100)
+		}
+
+		todos.forEach(function (todo_elem, todo_index, todos_array) {
+			iteration += 1
+
+			$http.put(API_URL + 'todo/'+ todo_elem.id_todo, todo_elem)
+			.success(function(){
+				callback(iteration*step_value)
+				checkIfFinish()
+			})
+		})
+	}
 
 	///////////////////////////////////////////////////
 	/**
@@ -94,21 +114,6 @@ angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($auth, $h
 		$rootScope.isWorking = true;
 		return $http.post(API_URL + 'addgroup', {
 			name : namegroup
-		})
-		.success(function(){
-			$rootScope.isWorking = false;
-		}).error(function(){
-			$rootScope.isWorking = false;
-		})
-	}
-
-	// delete contact
-
-	this.deletecontact = function(idcontact){
-		console.online("deletecontact")
-		$rootScope.isWorking = true;
-		return $http.post(API_URL + 'deletecontact', {
-			id : idcontact
 		})
 		.success(function(){
 			$rootScope.isWorking = false;
@@ -187,7 +192,7 @@ angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($auth, $h
 		console.online("updateTodos")
 		$rootScope.isWorking = true;
 		
-		return $http.put(API_URL + 'todos/',{
+		return $http.put(API_URL + 'todo/',{
 			data : data
 		}).success(function(){
 			TDMServiceOffline.save()
@@ -229,30 +234,6 @@ angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($auth, $h
 		console.online("fetchSharedData")
 		$rootScope.isWorking = true;
 		return $http.get(API_URL + 'share/data/'+ url + '/' + type)
-		.success(function(){
-			$rootScope.isWorking = false;
-		}).error(function(){
-			$rootScope.isWorking = false;
-		})
-	}
-
-	this.shareTodoContact = function(_id_todo,_id_user) {
-		console.online("shareTodoContact")
-		$rootScope.isWorking = true;
-		
-		return $http.post(API_URL + 'share/todo/'+ _id_todo + '/' + _id_user)
-		.success(function(){
-			$rootScope.isWorking = false;
-		}).error(function(){
-			$rootScope.isWorking = false;
-		})
-	}
-
-	this.shareListContact = function(_id_list,_id_user) {
-		console.online("shareListContact")
-		$rootScope.isWorking = true;
-		
-		return $http.post(API_URL + 'share/todolist/'+ _id_list + '/' + _id_user)
 		.success(function(){
 			$rootScope.isWorking = false;
 		}).error(function(){

@@ -13,7 +13,11 @@ angular.module('ToDoManagerApp')
   $scope.eraseSubtodo = function(index, id){
     $scope.mytodo.subtodos.splice(index, 1);
     if(id)
-      TDMService.deleteSubToDo(id);
+      TDMService.deleteSubToDo(id, function(){
+        //success
+      }, function(){
+        //fail
+      });
 
   }
 
@@ -33,14 +37,11 @@ angular.module('ToDoManagerApp')
 
   ////////////////Submit form /////////////////
   $scope.submit = function() {
-    console.log("Trololo")
-     TDMService.updateTodo($scope.mytodo) 
-      .success(function(res) {
+     TDMService.updateTodo($scope.mytodo, function(res) {
         $state.go('calendar')
-        alert('success', 'Todo edited!', 'Your todo has been edited !');
-      })
-      .error(function(err) {
-        alert('warning', 'Something went wrong :(', err.message);
+        //success
+      }, function(err) {
+        //fail
       });
   };
 
@@ -223,12 +224,11 @@ angular.module('ToDoManagerApp')
   $scope.id = id;
 
   $scope.deleteTodo = function () {
-    TDMService.deleteToDo(id).success(function(res) {
-        console.log('success', 'Todo deleted!', 'Your todo has been deleted !');
+    TDMService.deleteToDo(id, function(res) {
+        //success
         $state.go('calendar');
-      })
-      .error(function(err) {
-        alert('warning', 'Something went wrong :(', err.message);
+      }, function(err) {
+        //fail
       });
     $modalInstance.close();
   };

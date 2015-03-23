@@ -29,27 +29,30 @@ angular.module('ToDoManagerApp').service('TDMServiceOffline', function ($http, A
 	///////////////////////////////////////////////////
 
 	//ADD a todoList
-	this.todolist = function(name, description, color, callback) {
+	this.todolist = function(name, description, color, callback, success, error) {
 		console.offline("todolist")
 		$rootScope.isWorking = true
 		alert('warning', 'OffLine error', 'You cannot create object while in offline mode !!');
 		$rootScope.isWorking = false
+		error()
 	};
 
 	//ADD a todo
-	this.addTodo = function(_mytodo, callback) {
+	this.addTodo = function(_mytodo, callback, success, error) {
 		console.offline("addTodo")
 		$rootScope.isWorking = true
 		alert('warning', 'OffLine error', 'You cannot create object while in offline mode !!');
 		$rootScope.isWorking = false
+		error()
 	}
 
 	//ADD a todo
-	this.addgroup = function(_mytodo, callback) {
+	this.addgroup = function(_mytodo, callback, success, error) {
 		console.offline("addgroup")
 		$rootScope.isWorking = true
 		alert('warning', 'OffLine error', 'You cannot create object while in offline mode !!');
 		$rootScope.isWorking = false
+		error()
 	}
 
 	///////////////////////////////////////////////////
@@ -58,27 +61,30 @@ angular.module('ToDoManagerApp').service('TDMServiceOffline', function ($http, A
 	*/
 	///////////////////////////////////////////////////
 	//DELETE a todolist
-	this.deletetodolist = function(obj, data) {
+	this.deletetodolist = function(obj, data, success, error) {
 		console.offline("deletetodolist")
 		$rootScope.isWorking = true
 		ToDoManagerApp.save(data)
 		$rootScope.isWorking = false
+		success()
 	}
 
 	//DELETE todo
-	this.deleteToDo = function(_id, data) {
+	this.deleteToDo = function(_id, data, success, error) {
 		console.offline("deleteToDo")
 		$rootScope.isWorking = true
 		ToDoManagerApp.save(data)
 		$rootScope.isWorking = false
+		success()
 	}
 
 	//DELETE subtodo
-	this.deleteSubToDo = function(_id, data) {
+	this.deleteSubToDo = function(_id, data, success, error) {
 		console.offline("deleteSubToDo")
 		$rootScope.isWorking = true
 		ToDoManagerApp.save(data)
 		$rootScope.isWorking = false
+		success()
 	}
 
 	///////////////////////////////////////////////////
@@ -87,19 +93,21 @@ angular.module('ToDoManagerApp').service('TDMServiceOffline', function ($http, A
 	*/
 	///////////////////////////////////////////////////
 	//Update todo
-	this.updateTodo = function(todo, data) {
+	this.updateTodo = function(todo, data, success, error) {
 		console.offline("updateTodo")
 		$rootScope.isWorking = true
 		ToDoManagerApp.save(data)
 		$rootScope.isWorking = false
+		success()
 	}
 
 	//Update all todos
-	this.updateTodos = function(todo, data) {
+	this.updateTodos = function(todo, data, success, error) {
 		console.offline("updateTodos")
 		$rootScope.isWorking = true
 		ToDoManagerApp.save(data)
 		$rootScope.isWorking = false
+		success()
 	}
 	///////////////////////////////////////////////////
 	/**
@@ -107,41 +115,30 @@ angular.module('ToDoManagerApp').service('TDMServiceOffline', function ($http, A
 	*/
 	///////////////////////////////////////////////////
 
-	this.generateShareListLink = function(_id) {
+	this.generateShareListLink = function(_id, success, error) {
 		console.offline("generateShareListLink")
 		
 		$rootScope.isWorking = true
 		alert('warning', 'OffLine error', 'Impossible to generate a share link in OffLine Mode !!');
 		$rootScope.isWorking = false
+		error()
 	}
 
-	this.generateShareToDoLink = function(_id) {
+	this.generateShareToDoLink = function(_id, success, error) {
 		console.offline("generateShareToDoLink")
 		
 		$rootScope.isWorking = true
 		alert('warning', 'OffLine error', 'Impossible to generate a share link in OffLine Mode !!');
 		$rootScope.isWorking = false
+		error()
 	}
 
-	this.shareTodoContact = function(_id_todo,_id_user) {
-		console.offline("shareTodoContact")
-		$rootScope.isWorking = true;
-		alert('warning', 'OffLine error', 'Impossible to share a todo in offline mode !!');
-		$rootScope.isWorking = false;
-	}
-
-	this.shareListContact = function(_id_list,_id_user) {
-		console.offline("shareLidtContact")
-		$rootScope.isWorking = true;
-		alert('warning', 'OffLine error', 'Impossible to share a list in Offline Mode !!');
-		$rootScope.isWorking = false;
-	}
-
-	this.fetchSharedData = function(url, type) {
+	this.fetchSharedData = function(url, type, success, error) {
 		console.offline("generateShareToDoLink")
 		
 		$rootScope.isWorking = true
 		alert('warning', 'OffLine error', 'Impossible to view a share link in OffLine Mode !!');
 		$rootScope.isWorking = false
+		error()
 	}
 });

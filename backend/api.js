@@ -43,7 +43,7 @@ else{
 
 /*Configure the multer.*/
 
-app.use(multer({ dest: '../frontend/app/upload/',
+app.use(multer({ dest: './upload/',
  rename: function (fieldname, filename) {
     return filename+Date.now();
   },
@@ -83,7 +83,7 @@ passport.use('local-register', LocalStrategy.register);
 passport.use('local-login', LocalStrategy.login);
 
 app.post('/register', passport.authenticate('local-register'), function(req, res) {
-	emailVerification.sendEmail(req.user.email);
+	emailVerification.sendEmail(req.user.email, res);
 	auth.createSendToken(req.user, connection, req, res, jwt);
 });
 
@@ -132,9 +132,7 @@ app.get('/listsharedtodolistwithtodos', function(req, res, next) {
 });
 
 app.get('/listgroupe', function(req, res, next) {
-	console.log('listgroupe debut')
 	contact.listgroupe_get(req, res, next, connection, auth, jwt)
-	console.log('listgroupe fin')
 });
 
 app.post('/addgroup', function(req, res, next) {
@@ -150,17 +148,11 @@ app.get('/user/:id', function(req, res, next) {
 });
 
 app.post('/addcontact', function(req, res, next) {	
-	contact.addcontact_post(req, res, jwt, next, connection, auth)	
+	contact.addcontact_post(req, res, next, connection, auth)	
 });
 
-app.post('/deletecontact', function(req, res, next) {	
-	contact.deletecontact_post(req, res, jwt, next, connection, auth)	
-});
-
-app.get('/listuserNocontact/:id', function(req, res, next) {	
-	console.log('listuserNocontact debut')
-	contact.listuserNocontact_id_get(req, res, jwt, next, connection, auth)
-	console.log('listuserNocontact fin')
+app.get('/listcontact', function(req, res, next) {	
+	contact.listcontact_get(req, res, next, connection, auth)
 });
 
 app.delete('/listtodolist/:id', function(req, res, next) {
@@ -179,10 +171,8 @@ app.put('/todo/:id', function(req, res, next) {
 	todo.todo_id_put(req, res, next, connection, auth)
 });
 
-app.put('/todos', function(req, res, next) {
-	console.log('debut todos')
+app.put('/todo', function(req, res, next) {
 	todo.todos_put(req, res, next, connection, auth)
-	console.log('fin todos')
 });
 
 app.get('/todo', function(req, res, next) {
@@ -223,20 +213,6 @@ app.get('/share/data/:url/:type', function(req, res, next) {
 })
 
 /**
- * Partage un todo avec un autre utilisateur
- */
-app.post('/share/todo/:id_todo/:id_user', function(req, res, next) {
-   	todo.shareTodoContact(req, res, next, connection, utils)
-})
-
-/**
- * Partage une liste avec un autre utilisateur
- */
-app.post('/share/todolist/:id_todolist/:id_user', function(req, res, next) {
-   	todo.shareListContact(req, res, next, connection, utils)
-})
-
-/**
 * Permet l'upload de fichier
 *
 */
@@ -255,10 +231,25 @@ app.post('/avatarpath', function(req, res, next) {
 })
 
 
+app.post('/uploadAvatar',function(req,res){
+  if(done==true){
+    console.log(req.files);
+    res.status(200).json(req.files);
+    res.end("File uploaded.");
+  }
+});
+
 /**
 * Permet de récuperer un fichier
 */
 app.get('/upload/:id', function(req, res, next) {
+});
+
+// to check connection status of the server from the client
+app.get('/connected', function(req, res, next) {
+	res.send({
+		status : true
+	});
 });
 
 var server = app.listen(3000, function() {
