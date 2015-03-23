@@ -48,82 +48,35 @@ angular.module('ToDoManagerApp').controller('HeaderCtrl', function($scope, $auth
 
     $scope.loaded = function() { console.log("Loaded"); }
 
-    $scope.changeAvatar = function () {
-
-    var modalInstance = $modal.open({
-      templateUrl: 'modalDelete.html',
-      size: 'sm',
-      controller: 'HeaderCtrl',
-      resolve: {
-        id: function () {
-          return "toto";
-        }
-      }
-    });
-
-    modalInstance.result.then(function () {
-    }, function () {
-      $log.info('Modal dismissed at: ' + new Date());
-    });
-  };
 
   ////////////////Attachment file /////////////////
   angular.element('#input-file').fileinput({showCaption: false,showUpload: false, maxFileSize:2000}); 
   
     $scope.onFileSelect = function($files) {
-      //$files: an array of files selected, each file has name, size, and type. 
-      for (var i = 0; i < $files.length; i++) {
-        var file = $files[i];
-        $scope.upload = $upload.upload({
-          url: API_URL + 'upload', //upload.php script, node.js route, or servlet url 
-          data: {myObj: $scope.file},
-          file: file, 
-        }).progress(function(evt) {
-          console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
-        }).success(function(data, status, headers, config) {
-          // file is uploaded successfully 
-          console.log("File : ")
-          console.log(data['file']['path']);
-         
-          file : data['file']['path'];
-          TDMService.avatar_path(data['file']['path'],idUser);
-          $scope.file = data['file']['path'];
-          console.log("End of file");
-        
-        });
-      }
+    //$files: an array of files selected, each file has name, size, and type. 
+    for (var i = 0; i < $files.length; i++) {
+      var file = $files[i];
+      $scope.upload = $upload.upload({
+        url: API_URL + 'upload', //upload.php script, node.js route, or servlet url 
+        data: {myObj: $scope.file},
+        file: file, 
+      }).progress(function(evt) {
+        console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
+      }).success(function(data, status, headers, config) {
+        // file is uploaded successfully 
+        console.log("File : ")
+        console.log(data['file']['path']);
+       
+        file : data['file']['path'];
+        TDMService.avatar_path(data['file']['path'],$auth.getPayload().sub);
+        $scope.file =data['file']['path'];
+         window.location.reload();
+        console.log("End of file");
+      
+      });
+    }
     
   };
 
 
 })
-.directive("myDirective", ["$templateCache", "$compile", function($templateCache, $compile) {
-        return {
-            scope: true,
-            restrict: "A",
-            controller: function($scope) {
-                $scope.save = function(e) {}
-                $scope.cancel = function(e) {}
-            },
-            link: function(scope, el, attrs) {
-                var tpl = $templateCache.get(attrs.popoverTemplate);
-                el.popover({
-                    trigger: 'click',
-                    html: true,
-                    title: attrs.popoverTitle,
-                    content: $compile(tpl)(scope),
-                    placement: attrs.popoverPlacement
-                });
-              /*  $el.click(function() {
-                    $('.popover').each(function(){
-                        var $this = $(this);
-                        if($this.parent().attr('id') != $element.parent().attr('id'))
-                        {
-                            $this.scope().$hide();
-                        }
-                    }
-                    );
-                });*/
-            }
-        }
-}]);

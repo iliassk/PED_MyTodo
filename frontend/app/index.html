@@ -80,9 +80,9 @@
                         </li>
 
                         <li ng-show="isAuthenticated()" >
-                           <a ng-click="changeAvatar()">
-                           <div ng-show="{{user_avatar}}" id="avatar">
-                               <img  HEIGHT="35" WIDTH="35"src="{{user_avatar}}">
+                           <a ui-sref="profile">
+                           <div id="avatar">
+                               <img HEIGHT="35" WIDTH="35"src="{{data.currentUser[0].avatar_path}}">
                            </div>
                            </a>
                         </li>
@@ -152,7 +152,7 @@
     <!-- build:js(.) scripts/vendor.js -->
     <!-- bower:js -->
     <script src="bower_components/es5-shim/es5-shim.js"></script>
-    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/jquery/jquery.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>

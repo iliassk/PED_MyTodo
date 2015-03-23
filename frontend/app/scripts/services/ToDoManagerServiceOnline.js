@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($http, API_URL, $state, $rootScope, TDMServiceOffline) {
+angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($http, API_URL, $state, $rootScope, TDMServiceOffline, $auth) {
 
 	var ToDoManagerApp = this;
 
@@ -8,7 +8,8 @@ angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($http, AP
 		var data = {
 			listsWithToDo: [],
 			group: '',
-			contact: '',
+			usersNocontact: '',
+			currentUser:'',
 			shareListsWithToDo: [],
 			offlineDeleteToDo: []
 		}
@@ -20,11 +21,16 @@ angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($http, AP
 			$http.get(API_URL + 'listgroupe')
 			.success(function(_groupe){
 				data.group = _groupe;
-				$http.get(API_URL + 'listcontact')
+				$http.get(API_URL + 'listuserNocontact/'+$auth.getPayload().sub)
 				.success(function(_contact){
-					data.contact = _contact;
+					data.usersNocontact = _contact;
+					$http.get(API_URL + 'user/'+$auth.getPayload().sub)
+					.success(function(_current){
+					data.currentUser = _current;
 					$rootScope.isWorking = false;
 					if(f)f(data);
+					})
+
 				})
 			})
 		})
@@ -161,6 +167,21 @@ angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($http, AP
 		})
 	}
 
+	// delete contact
+
+	this.deletecontact = function(idcontact){
+		console.online("deletecontact")
+		$rootScope.isWorking = true;
+		return $http.post(API_URL + 'deletecontact', {
+			id : idcontact
+		})
+		.success(function(){
+			$rootScope.isWorking = false;
+		}).error(function(){
+			$rootScope.isWorking = false;
+		})
+	}
+
 	///////////////////////////////////////////////////
 	/**
 	* Manage DELETE method
@@ -227,11 +248,12 @@ angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($http, AP
 	}
 
 	//updates multiple todos
+	//updates multiple todos
 	this.updateTodos = function(data) {
 		console.online("updateTodos")
 		$rootScope.isWorking = true;
 		
-		return $http.put(API_URL + 'todo/',{
+		return $http.put(API_URL + 'todos/',{
 			data : data
 		}).success(function(){
 			TDMServiceOffline.save()

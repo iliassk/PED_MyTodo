@@ -43,7 +43,7 @@ else{
 
 /*Configure the multer.*/
 
-app.use(multer({ dest: './upload/',
+app.use(multer({ dest: '../frontend/app/upload/',
  rename: function (fieldname, filename) {
     return filename+Date.now();
   },
@@ -147,12 +147,20 @@ app.get('/user/:id', function(req, res, next) {
 	contact.userid_get(req, res, next, connection, auth)
 });
 
-app.post('/addcontact', function(req, res, next) {	
-	contact.addcontact_post(req, res, next, connection, auth)	
+app.post('/addcontact', function(req, res, next) {
+console.log('debut user')	
+	contact.addcontact_post(req, res, jwt, next, connection, auth)		
+console.log('fin user')	
 });
 
-app.get('/listcontact', function(req, res, next) {	
-	contact.listcontact_get(req, res, next, connection, auth)
+app.post('/deletecontact', function(req, res, next) {	
+	contact.deletecontact_post(req, res, jwt, next, connection, auth)	
+});
+
+app.get('/listuserNocontact/:id', function(req, res, next) {	
+	console.log('debut')
+	contact.listuserNocontact_id_get(req, res, jwt, next, connection, auth)
+	console.log('fin')
 });
 
 app.delete('/listtodolist/:id', function(req, res, next) {
@@ -171,9 +179,12 @@ app.put('/todo/:id', function(req, res, next) {
 	todo.todo_id_put(req, res, next, connection, auth)
 });
 
-app.put('/todo', function(req, res, next) {
+app.put('/todos', function(req, res, next) {
+	console.log('debut todos')
 	todo.todos_put(req, res, next, connection, auth)
+	console.log('fin todos')
 });
+
 
 app.get('/todo', function(req, res, next) {
 	todo.todo_get(req, res, next, connection, auth, jwt)
@@ -229,15 +240,6 @@ app.post('/avatarpath', function(req, res, next) {
     todo.avatarpath_post(req, res, next, connection, auth, utils, jwt)
     console.log('fin')
 })
-
-
-app.post('/uploadAvatar',function(req,res){
-  if(done==true){
-    console.log(req.files);
-    res.status(200).json(req.files);
-    res.end("File uploaded.");
-  }
-});
 
 /**
 * Permet de récuperer un fichier
