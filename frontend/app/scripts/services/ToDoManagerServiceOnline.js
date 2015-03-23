@@ -56,7 +56,7 @@ angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($http, AP
 			todos.push.apply(todos, list_elem.todos)
 		})
 
-		var number_of_call = (todos.length) + deletedTodos.length
+		var number_of_call = (todos.length) + deletedTodos.length + lists.length
 		var step_value = number_of_call/100
 
 		var checkIfFinish = function(){
@@ -64,6 +64,19 @@ angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($http, AP
 				return callback(100)
 		}
 
+		//synchronise les listes ajoutées
+		lists.forEach(function (list_elem, list_index, lists_array) {
+			iteration += 1
+			if(isNaN(todo_elem.id_todo)){
+				return $http.post(API_URL + 'todolist', list_elem)
+				.success(function(){
+					callback(iteration*step_value)
+					checkIfFinish()
+				})
+			}
+		})
+
+		//synchronise les todos ajoutés et modifiés
 		todos.forEach(function (todo_elem, todo_index, todos_array) {
 
 			iteration += 1

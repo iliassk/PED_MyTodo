@@ -145,7 +145,7 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 				error()
 			})
 		}else{
-			TDMServiceOffline.todolist(name, description, color, success, error)
+			TDMServiceOffline.todolist(name, description, color, ToDoManagerApp.data, success, error)
 		}
 	}
 

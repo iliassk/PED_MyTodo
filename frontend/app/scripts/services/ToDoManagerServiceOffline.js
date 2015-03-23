@@ -31,12 +31,25 @@ angular.module('ToDoManagerApp').service('TDMServiceOffline', function ($http, A
 	///////////////////////////////////////////////////
 
 	//ADD a todoList
-	this.todolist = function(name, description, color, success, error) {
+	this.todolist = function(name, description, color, data, success, error) {
 		console.offline("todolist")
 		$rootScope.isWorking = true
-		alert('warning', 'OffLine error', 'You cannot create object while in offline mode !!');
+		ToDoManagerApp.uid += 1
+		var list = {
+			id_list : "#" + ToDoManagerApp.uid,
+			name : name, 
+			description : description,
+			color : color
+		}
+		data.listsWithToDo.push(list)
+
+		ToDoManagerApp.save(data)
+
+        $rootScope.accessData = false
+        $rootScope.accessData = true
+		$rootScope.mustRefresh = true
 		$rootScope.isWorking = false
-		error()
+		success()
 	};
 
 	//ADD a todo
