@@ -39,6 +39,41 @@
     </div>
 </script>
 
+<script type="text/ng-template" id="shareList.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Share this list!</h3>
+    </div>
+    <div class="modal-body">
+    Share with :
+	    <p>
+			  	<label class="radio-inline"><input value="0" type="radio" ng-model="type" name="optradio">A whole group</label>
+			  <label class="radio-inline"><input value="1" type="radio" ng-model="type" name="optradio">A contact</label>
+		</p>
+	    <div id="group" ng-show="(type==0)">
+	<label for="sel1">Select list:</label>
+		  <select ng-model="selected_group" class="form-control" id="group">
+		  <option value="-1" ng-disable=true selected>Choose a group</option>
+		    <option value="{{$index}}" ng-repeat="group in contact">{{group.name}}</option>
+		  </select>
+
+  	    </div>
+	    <div id="contact" ng-show="(type==1)">
+	    <select ng-model="selected_group2" class="form-control" id="group">
+		  <option value="-1" ng-disable=true selected>Choose a group</option>
+		    <option value="{{$index}}" ng-repeat="group in contact">{{group.name}}</option>
+		  </select>
+		  <select ng-model="selected_contact" class="form-control" id="group">
+		  <option value="-1" ng-disable=true selected>Choose a contact</option>
+		    <option value="{{subcontact.id_user}}" ng-repeat="subcontact in contact[selected_group2].contact">{{subcontact.username}}</option>
+		  </select>
+	    </div>
+    </div>
+    <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="ok()">OK</button>
+            <button class="btn btn-warning" ng-click="close()">Cancel</button>
+    </div>
+</script>
+
 <script type="text/ng-template" id="share_data.html">
     <div class="modal-header">
         <h3 class="modal-title">Share your todos</h3>
@@ -75,7 +110,11 @@
 				<th style="cursor: pointer" st-sort="date">Date</th>
 			</tr>
 			<tr>
-				<th colspan="5"><input st-search="" class="form-control" placeholder="global search ..." type="text"/><a ng-click="hideCompleted()"class="btn btn-sm btn-primary" data-toggle="button">Hide <span style="color:Chartreuse " class="glyphicon glyphicon-ok"></span></th>
+				<th colspan="5"><input st-search="" class="form-control" placeholder="global search ..." type="text"/>
+					<a ng-click="hideCompleted()"class="btn btn-sm btn-primary" data-toggle="button">Hide <span style="color:Chartreuse " class="glyphicon glyphicon-ok"></span></a>
+					<a ng-show="online" ng-click="shareList(list)" class="btn btn-sm btn-primary pull-right" data-toggle="button">List <span class="glyphicon glyphicon-share"></span></a>
+					 <button ng-click="openShareListInfo(list)" type="button" class="btn btn-sm btn-warning"><i class="glyphicon glyphicon-user"></i></button>
+				</th>
 			</tr>
 			</thead>
 			<tbody>
