@@ -23,9 +23,41 @@ angular.module('ToDoManagerApp', ['ui.router', 'ui.calendar', 'ngAnimate', 'ui.b
     $rootScope.isWorking = false
     $rootScope.canFetchData = false
 
-    //$rootScope.online = true
+    $rootScope.online = true
+    //$rootScope.online = navigator.onLine
 
-    $interval(function() {
+    $rootScope.$watch('online', function() {
+      if ($rootScope.online) {
+        if (TDMService.hasBeenOffLine()) {
+          $rootScope.accessData = false
+          $modal.open({
+            templateUrl: 'modalOffLine.html',
+            controller: 'OffLineCtrl',
+            resolve: {
+              offline: function() {
+                return false;
+              }
+            }
+          });
+        } else {
+          $rootScope.canFetchData = true
+        }
+        TDMService.markAsOnLine()
+      } else {
+        TDMService.markAsOffLine()
+        $modal.open({
+          templateUrl: 'modalOffLine.html',
+          controller: 'OffLineCtrl',
+          resolve: {
+            offline: function() {
+              return true;
+            }
+          }
+        });
+      }
+    });
+
+    /*$interval(function() {
       $http.get(API_URL + 'connected')
 
       .success(function(response) {
@@ -39,37 +71,14 @@ angular.module('ToDoManagerApp', ['ui.router', 'ui.calendar', 'ngAnimate', 'ui.b
         $rootScope.online = false;
         console.log('Offline mode !');
       })
-    }, 1000);
+    }, 1000);*/
 
-    if ($rootScope.online == false) {
-      TDMService.markAsOffLine()
-      $modal.open({
-        templateUrl: 'modalOffLine.html',
-        controller: 'OffLineCtrl',
-        resolve: {
-          offline: function() {
-            return true;
-          }
-        }
-      });
+    /*if ($rootScope.online == false) {
+      
 
     } else {
-      if (TDMService.hasBeenOffLine()) {
-        $rootScope.accessData = false
-        $modal.open({
-          templateUrl: 'modalOffLine.html',
-          controller: 'OffLineCtrl',
-          resolve: {
-            offline: function() {
-              return false;
-            }
-          }
-        });
-      } else {
-        $rootScope.canFetchData = true
-      }
-      TDMService.markAsOnLine()
-    }
+      
+    }*/
     //$rootScope.online = navigator.onLine;
     /*$window.addEventListener("offline", function () {
       $rootScope.online = false;

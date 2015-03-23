@@ -4,6 +4,8 @@ angular.module('ToDoManagerApp').service('TDMServiceOffline', function ($http, A
 
 	var ToDoManagerApp = this;
 
+	ToDoManagerApp.uid = 0;
+
 	//done
 	// A appeler DES que vous voulez faire une modif sur un élément des données : ajout, modif, supression, ...
 	this.save = function(data){
@@ -29,7 +31,7 @@ angular.module('ToDoManagerApp').service('TDMServiceOffline', function ($http, A
 	///////////////////////////////////////////////////
 
 	//ADD a todoList
-	this.todolist = function(name, description, color, callback, success, error) {
+	this.todolist = function(name, description, color, success, error) {
 		console.offline("todolist")
 		$rootScope.isWorking = true
 		alert('warning', 'OffLine error', 'You cannot create object while in offline mode !!');
@@ -38,16 +40,34 @@ angular.module('ToDoManagerApp').service('TDMServiceOffline', function ($http, A
 	};
 
 	//ADD a todo
-	this.addTodo = function(_mytodo, callback, success, error) {
+	this.addTodo = function(_mytodo, data, success, error) {
 		console.offline("addTodo")
 		$rootScope.isWorking = true
-		alert('warning', 'OffLine error', 'You cannot create object while in offline mode !!');
+
+		ToDoManagerApp.uid += 1
+		_mytodo.id_todo = "#" + ToDoManagerApp.uid
+
+		for(var i=0; i < data.listsWithToDo.length; i++){
+			if(data.listsWithToDo[i].id_list == _mytodo.id_list){
+				if(!data.listsWithToDo[i].todos)
+					data.listsWithToDo[i].todos = []
+				data.listsWithToDo[i].todos.push(_mytodo)
+
+				break
+			}
+		}
+
+		ToDoManagerApp.save(data)
+
+        $rootScope.accessData = false
+        $rootScope.accessData = true
+		$rootScope.mustRefresh = true
 		$rootScope.isWorking = false
-		error()
+		success()
 	}
 
 	//ADD a todo
-	this.addgroup = function(_mytodo, callback, success, error) {
+	this.addgroup = function(_mytodo, success, error) {
 		console.offline("addgroup")
 		$rootScope.isWorking = true
 		alert('warning', 'OffLine error', 'You cannot create object while in offline mode !!');
@@ -73,6 +93,7 @@ angular.module('ToDoManagerApp').service('TDMServiceOffline', function ($http, A
 	this.deleteToDo = function(_id, data, success, error) {
 		console.offline("deleteToDo")
 		$rootScope.isWorking = true
+		data.offlineDeleteToDo.push(_id)
 		ToDoManagerApp.save(data)
 		$rootScope.isWorking = false
 		success()

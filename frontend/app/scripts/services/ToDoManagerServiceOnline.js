@@ -9,7 +9,8 @@ angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($http, AP
 			listsWithToDo: [],
 			group: '',
 			contact: '',
-			shareListsWithToDo: []
+			shareListsWithToDo: [],
+			offlineDeleteToDo: []
 		}
 		$rootScope.isWorking = true
 		$http.get(API_URL + 'listtodolistwithtodos')
@@ -43,7 +44,8 @@ angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($http, AP
 
 		var data = JSON.parse(localStorage.ToDoManagerAppData_XYZ)
 		var lists = data.listsWithToDo,
-			todos = []
+			todos = [],
+			deletedTodos = data.offlineDeleteToDo
 
 		var iteration = 0
 
@@ -54,7 +56,7 @@ angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($http, AP
 			todos.push.apply(todos, list_elem.todos)
 		})
 
-		var number_of_call = todos.length
+		var number_of_call = (todos.length) + deletedTodos.length
 		var step_value = number_of_call/100
 
 		var checkIfFinish = function(){
@@ -63,14 +65,38 @@ angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($http, AP
 		}
 
 		todos.forEach(function (todo_elem, todo_index, todos_array) {
+
+			iteration += 1
+			//id généré par le client
+			if(isNaN(todo_elem.id_todo)) {
+				return $http.post(API_URL + 'add/todo', {
+					mytodo : todo_elem
+				}).success(function(){
+					callback(iteration*step_value)
+					checkIfFinish()
+				})
+			}else{
+				//on gére les modifications des todos
+				$http.put(API_URL + 'todo/'+ todo_elem.id_todo, todo_elem)
+				.success(function(){
+					callback(iteration*step_value)
+					checkIfFinish()
+				})
+			}
+		})
+
+		deletedTodos.forEach(function (todo_id, todo_index, todos_array) {
+
 			iteration += 1
 
-			$http.put(API_URL + 'todo/'+ todo_elem.id_todo, todo_elem)
+			return $http.delete(API_URL + 'todo/'+ todo_id)
 			.success(function(){
 				callback(iteration*step_value)
 				checkIfFinish()
 			})
 		})
+
+
 	}
 
 	///////////////////////////////////////////////////

@@ -16,7 +16,7 @@ angular.module('ToDoManagerApp').controller('LoginCtrl', function($state,$scope,
 			password: $scope.password 
 		}).then(function(res) {
 			var message = 'Thanks for coming back, ' + res.data.user.email + ' !';
-			$rootScope.canFetchData = true
+			$rootScope.mustRefresh = true
 			if (!res.data.user.active)
 				message = 'Just a reminder, please activate your account soon !';
 			$state.go('calendar')

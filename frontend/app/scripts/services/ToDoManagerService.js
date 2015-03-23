@@ -16,7 +16,8 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 		listsWithToDo: [],
 		group: '',
 		contact: '',
-		shareListsWithToDo: []
+		shareListsWithToDo: [],
+		offlineDeleteToDo: []
 	}
 
 	this.markAsOffLine = function(){
@@ -163,7 +164,7 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 				error()
 			})
 		}else{
-			TDMServiceOffline.addTodo(_mytodo, success, error)
+			TDMServiceOffline.addTodo(_mytodo, ToDoManagerApp.data, success, error)
 		}	
 	}
 
