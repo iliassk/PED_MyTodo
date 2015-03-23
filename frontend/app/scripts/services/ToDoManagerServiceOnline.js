@@ -5,6 +5,7 @@ angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($http, AP
 	var ToDoManagerApp = this;
 
 	this.fetchAll = function(f) {
+		console.online("fetch all")
 		var data = {
 			listsWithToDo: [],
 			group: '',
@@ -21,11 +22,18 @@ angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($http, AP
 			$http.get(API_URL + 'listgroupe')
 			.success(function(_groupe){
 				data.group = _groupe;
+				TDMServiceOffline.save(data)
 				$http.get(API_URL + 'listcontact')
 				.success(function(_contact){
 					data.contact = _contact;
-					$rootScope.isWorking = false;
-					if(f)f(data);
+					TDMServiceOffline.save(data)
+					$http.get(API_URL + 'listsharedtodolistwithtodos')
+					.success(function(shareList){
+						data.shareListsWithToDo = shareList;
+						$rootScope.isWorking = false;
+
+						if(f)f(data);
+				})
 				})
 			})
 		})
@@ -293,6 +301,31 @@ angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($http, AP
 			$rootScope.isWorking = false;
 		})
 	}
+
+	this.shareTodoContact = function(_id_todo,_id_user) {
+		console.online("shareTodoContact")
+		$rootScope.isWorking = true;
+		
+		return $http.post(API_URL + 'share/todo/'+ _id_todo + '/' + _id_user)
+		.success(function(){
+			$rootScope.isWorking = false;
+		}).error(function(){
+			$rootScope.isWorking = false;
+		})
+	}
+
+	this.shareListContact = function(_id_list,_id_user) {
+		console.online("shareListContact")
+		$rootScope.isWorking = true;
+		
+		return $http.post(API_URL + 'share/todolist/'+ _id_list + '/' + _id_user)
+		.success(function(){
+			$rootScope.isWorking = false;
+		}).error(function(){
+			$rootScope.isWorking = false;
+		})
+	}
+
 
 	//GET all groupe
 	/*this.listGroupe = function() {

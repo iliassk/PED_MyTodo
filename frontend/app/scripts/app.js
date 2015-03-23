@@ -18,7 +18,7 @@ angular.module('ToDoManagerApp', ['ui.router', 'ui.calendar', 'ngAnimate', 'ui.b
       console.log("[online] => " + text)
     }
 
-    $rootScope.mustRefresh = false
+    $rootScope.mustRefresh = true
     $rootScope.accessData = false
     $rootScope.isWorking = false
     $rootScope.canFetchData = false
@@ -28,6 +28,7 @@ angular.module('ToDoManagerApp', ['ui.router', 'ui.calendar', 'ngAnimate', 'ui.b
 
     $rootScope.$watch('online', function() {
       if ($rootScope.online) {
+        console.log("destection online")
         if (TDMService.hasBeenOffLine()) {
           $rootScope.accessData = false
           $modal.open({

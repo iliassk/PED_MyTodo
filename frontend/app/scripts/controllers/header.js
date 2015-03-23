@@ -12,10 +12,11 @@ angular.module('ToDoManagerApp').controller('HeaderCtrl', function($scope, $auth
 	$scope.isAuthenticated = $auth.isAuthenticated;
    
   $rootScope.$watch('mustRefresh', function(mustRefresh) {
+
     console.log("REFRESH SIDE BAR !!! : " + mustRefresh)
     if(mustRefresh == true){
       TDMService.forceRefresh(function(){
-          $scope.data = TDMService.data;
+        $scope.data = TDMService.data;
       });
      $rootScope.mustRefresh = false
     }

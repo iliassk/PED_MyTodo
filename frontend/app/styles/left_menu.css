@@ -1,11 +1,3 @@
-#listcolor{
-  border-radius:50%;
-  width:15px;
-  height:15px;
-  margin-top: 6px;
-  display: inline-block;
-}
-
 #avatar{
   /*background-image:url(../images/avatar.png);*/
   background-repeat:no-repeat ;
