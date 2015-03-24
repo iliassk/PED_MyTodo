@@ -53,9 +53,15 @@
                 <input ng-disabled="isNotEditing" type="text" class="form-control" placeholder="Url" ng-model="mytodo.url">
             </div>
             <div class="col-lg-6">
-                <h3><i class="glyphicon glyphicon-globe"></i>Location</h3><small>Add an address!</small>
-                <input ng-disabled="isNotEditing" ng-model="mytodo.localization" id="input-address" class="controls" type="text" placeholder="Enter a location">
-                <div id="map-canvas"></div>
+
+
+                <h3><i class="glyphicon glyphicon-globe"></i>Location</h3>
+                <a class="btn btn-info" ng-show="isMapCollapsed" ng-click="showMap()">Add a location</a>
+                <div collapse="isMapCollapsed">
+                    <input ng-disabled="isNotEditing" ng-model="mytodo.localization" id="input-address" class="controls" type="text" placeholder="Enter a location">
+                    <div id="map-canvas"></div>
+                </div>
+
                 <h3><i class="glyphicon glyphicon-list"></i> Subtodos</h3>
                 <a class="btn btn-info" ng-disabled="isNotEditing" ng-click="isCollapsed = !isCollapsed">Manage subtodos</a>
                 <fieldset ng-disabled="isNotEditing">

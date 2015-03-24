@@ -8,6 +8,7 @@ angular.module('ToDoManagerApp')
 
   $scope.isCollapsed = true;
   $scope.isNotEditing = true;
+  $scope.isMapCollapsed = true;
 
   //This function erases the chosen subtodo
   $scope.eraseSubtodo = function(index, id){
@@ -202,6 +203,9 @@ angular.module('ToDoManagerApp')
         console.log("=======================================refresh on todo.js")
 
         $scope.mytodo = TDMService.getAToDo($stateParams.id);
+        
+        $scope.isMapCollapsed = $scope.mytodo.localization == "" ? true : false;
+
         $scope.data = TDMService.data;
         $scope.toggleMin();
       })
