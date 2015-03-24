@@ -1,0 +1,31 @@
+<div class="menuprofile">
+ <img class="empty_avatar_profile" HEIGHT="150" WIDTH="150" ng-src="{{data.currentUser[0].avatar_path}}" ><br>
+ <i class="glyphicon glyphicon-paperclip"></i> change your Avatar</h3><small> size is Max 2 MB!</small> <span class="btn btn-default btn-file">
+    Browse <input type="file" ng-file-select="onFileSelect($files)">
+</span>
+</div>
+
+<div class="pageprofile">
+<table class="table table-striped">
+<tr>
+<td> <B>User Name </B></td>
+<td><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp; {{data.currentUser[0].username}}</td>
+ </tr>
+ <tr>
+<td> <B>Email </B></td>
+<td><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>&nbsp; {{data.currentUser[0].email}}</td>
+ </tr>
+ <td> <B>Contact</B></td>
+<td> <li  class="list-unstyled" ng-repeat="listgroup in data.group"><span class="glyphicon glyphicon-indent-right" aria-hidden="true"></span>&nbsp;
+	 {{listgroup.name}}
+	 <ul>
+	 <dd ng-repeat="contact in listgroup.contact">
+	 <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;
+	 	{{contact.username}}
+	 </dd>
+	 </ul>
+</li>
+</td>
+ </tr>
+</table>
+</div>

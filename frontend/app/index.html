@@ -82,9 +82,9 @@
                         </li>
 
                         <li ng-show="isAuthenticated()" >
-                           <a ng-click="changeAvatar()">
-                           <div ng-show="{{user_avatar}}" id="avatar">
-                               <img  HEIGHT="35" WIDTH="35"src="{{user_avatar}}">
+                           <a ui-sref="profile">
+                           <div id="avatar">
+                               <img class="empty_avatar" HEIGHT="35" WIDTH="35" ng-src="{{data.currentUser[0].avatar_path}}">
                            </div>
                            </a>
                         </li>

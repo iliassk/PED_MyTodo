@@ -17,8 +17,8 @@ angular.module('ToDoManagerApp', ['ui.router', 'ui.calendar', 'ngAnimate', 'ui.b
     console.online = function(text) {
       console.log("[online] => " + text)
     }
-
-    $rootScope.mustRefresh = true
+    $auth.isAuthenticated() ? $rootScope.mustRefresh = true : $rootScope.mustRefresh = false;
+    $rootScope.mustRefresh = false
     $rootScope.accessData = false
     $rootScope.isWorking = false
     $rootScope.canFetchData = false

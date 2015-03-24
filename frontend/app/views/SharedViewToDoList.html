@@ -52,7 +52,7 @@
 				<td><a ui-sref="todo/({ id: row.id_todo })">{{row.title}}</a></td>
 				<td>{{row.description}}</td>
 				<td>{{row.context}}</td>
-				<td>{{row.date | date:'medium'}}</td>
+				<td><span title="{{row.date | date:'medium'}}">{{showDate(row.date)}}</span></td>
 				<td>
 					<span class="dropdown" dropdown>
 				      <a href class="btn btn-sm btn-primary" class="dropdown-toggle" dropdown-toggle>

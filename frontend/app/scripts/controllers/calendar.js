@@ -12,19 +12,30 @@ angular.module('ToDoManagerApp').controller('CalendarCtrl', function($scope, $wi
   
     $scope.events = [];
     $scope.eventSources = $scope.events;
-    var regExp = new RegExp("IEMobile", "i");
-
+   // var todolist = TDMService.data.listsWithToDo.length;
+   // var color;
+    //var iscolor=false;
     $rootScope.$watch('accessData', function(accessData) {
        
             if(accessData){
-            	console.log("refreshing calendar.js")
-               	TDMService.refresh(function(){
+            	TDMService.refresh(function(){
 			    	var data = TDMService.getAllToDo()
 			    	for(var i = 0; i < data.length; i++){
-						//todo[i] = {title: data[0].title ,start: new Date(y, m, 1), editable: true};
-						var jour = new Date(data[i].date)
-						var list = TDMService.getAList(data[i].id_list)
-						$scope.events[i]={title: data[i].title, id:data[i].id_todo ,start: jour, backgroundColor: list.color, durationEditable:false};
+			    	/*	iscolor=false;
+			    		for(var i = 0; i < todolist.length; i++){
+			    			if (data.id_list == todolist.id_list) {
+			    				color =todolist.color
+			    				iscolor =true 
+			    			}
+			    		}
+			    			if(iscolor=false) color ='green';
+*/
+						var jour = data[i].date; //new Date(data[i].date)
+							$scope.events[i]={  title: data[i].title, 
+											id:data[i].id_todo,
+											start: jour,
+											backgroundColor: 'green',
+											durationEditable:false};
 					}
 
 					$rootScope.isWorking = false;
@@ -33,10 +44,9 @@ angular.module('ToDoManagerApp').controller('CalendarCtrl', function($scope, $wi
     });
 
 
-    
+     var datas = $scope.events
 
 	/* config object */
-	var isMobile = window.matchMedia("only screen and (max-width: 760px)");
 	var checker = navigator.userAgent.match(/(iPhone|iPod|iPad|BlackBerry|Android)/);
 
 	if(checker){ 
@@ -63,28 +73,33 @@ angular.module('ToDoManagerApp').controller('CalendarCtrl', function($scope, $wi
 		         	left: 'today prev,next',
 		         	center: 'title',
 		         	right: 'month,basicWeek,basicDay'
-		       	},    
+		       	},
+		       	eventDrop: function(event) {
+		       		
+		       		for (var i = 0; i < datas.length; i++){
+		       			if(datas[i].id == event.id )
+		       				datas[i].start = event.start;
+
+		       		}
+    			}    
 			}
 	    };
  	}	
+		
 		   
 	$scope.submit = function(){
-		var data =[];
-		var t = $scope.events;
-		  			
+		var dataEvent =[];
+		var t = datas;
 		for (var i = 0; i < t.length; i++) {
 			var ev = { nvtime: '', id: ''};
-			ev.nvtime = t[i].start.getFullYear()+"-"+parseInt(parseInt(t[i].start.getMonth())+1)+"-"+t[i].start.getDate();
-			ev.id = t[i].id;
-			data.push(ev);
-		};
-		
-		TDMService.updateTodos(data, function(){
-			//success
-		}, function(){
-			//fail
-		})
-	};																																																																																																																																																																																																																																																																																																																																																																																																																																						
+			ev.nvtime = t[i].start;
+			ev.id = t[i].id;	
+			dataEvent.push(ev);
+		}
+	   TDMService.updateTodos(dataEvent)
+      window.location.reload();
+
+	};																																																																																																																																																																																																																																																																																																																																																																																																																																					
 			
 	$scope.eventSources = [$scope.events, $scope.eventSources];
 });

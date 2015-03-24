@@ -16,20 +16,20 @@
 		</p>
 	    <div id="group" ng-show="(type==0)">
 	<label for="sel1">Select list:</label>
-		  <select ng-model="selected_group" class="form-control" id="group">
+		  <select ng-model="selectedGroup" class="form-control" id="group">
 		  <option value="-1" ng-disable=true selected>Choose a group</option>
 		    <option value="{{$index}}" ng-repeat="group in contact">{{group.name}}</option>
 		  </select>
 
   	    </div>
 	    <div id="contact" ng-show="(type==1)">
-	    <select ng-model="selected_group2" class="form-control" id="group">
+	    <select ng-model="selectedGroup2" class="form-control" id="group">
 		  <option value="-1" ng-disable=true selected>Choose a group</option>
 		    <option value="{{$index}}" ng-repeat="group in contact">{{group.name}}</option>
 		  </select>
-		  <select ng-model="selected_contact" class="form-control" id="group">
+		  <select ng-model="selectedContact" class="form-control" id="group">
 		  <option value="-1" ng-disable=true selected>Choose a contact</option>
-		    <option value="{{subcontact.id_user}}" ng-repeat="subcontact in contact[selected_group2].contact">{{subcontact.username}}</option>
+		    <option value="{{subcontact.id_user}}" ng-repeat="subcontact in contact[selectedGroup2].contact">{{subcontact.username}}</option>
 		  </select>
 	    </div>
     </div>
@@ -51,20 +51,20 @@
 		</p>
 	    <div id="group" ng-show="(type==0)">
 	<label for="sel1">Select list:</label>
-		  <select ng-model="selected_group" class="form-control" id="group">
+		  <select ng-model="selectedGroup" class="form-control" id="group">
 		  <option value="-1" ng-disable=true selected>Choose a group</option>
 		    <option value="{{$index}}" ng-repeat="group in contact">{{group.name}}</option>
 		  </select>
 
   	    </div>
 	    <div id="contact" ng-show="(type==1)">
-	    <select ng-model="selected_group2" class="form-control" id="group">
+	    <select ng-model="selectedGroup2" class="form-control" id="group">
 		  <option value="-1" ng-disable=true selected>Choose a group</option>
 		    <option value="{{$index}}" ng-repeat="group in contact">{{group.name}}</option>
 		  </select>
-		  <select ng-model="selected_contact" class="form-control" id="group">
+		  <select ng-model="selectedContact" class="form-control" id="group">
 		  <option value="-1" ng-disable=true selected>Choose a contact</option>
-		    <option value="{{subcontact.id_user}}" ng-repeat="subcontact in contact[selected_group2].contact">{{subcontact.username}}</option>
+		    <option value="{{subcontact.id_user}}" ng-repeat="subcontact in contact[selectedGroup2].contact">{{subcontact.username}}</option>
 		  </select>
 	    </div>
     </div>
@@ -141,7 +141,7 @@
 					<li><a ng-click="addToCalendar('hotmail', row)">Hotmail</a></li>
 			      </ul>
 			    </span>
-
+			    
 				<button ng-click="openShareTodoInfo(row)" type="button" class="btn btn-sm btn-warning"><i class="glyphicon glyphicon-user"></i></button>
     			<a ng-show="online" title="Share" id="shareOutSiderToDo" class="btn btn-sm btn-info" ng-click="shareTodo(row)"><i class="glyphicon glyphicon-share" ></i></a>
 				<button type="button" title="Delete" id="deleteToDoButtonList" class="btn btn-sm btn-danger" ng-click="deleteTodo(row.id_todo,row)"><i class="glyphicon glyphicon-trash" ></i></button>
