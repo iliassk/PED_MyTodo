@@ -508,7 +508,7 @@ exports.listsharedtodolistwithtodos_get = function(req, res, next, connection, a
 	var cpt = 0;
 
 	//Récupère les listes
-	connection.query('SELECT TODOLIST.* FROM TODOLIST JOIN SHARE_LIST ON TODOLIST.id_list = SHARE_LIST.id_list WHERE id_user = ?', _id , function(err, lists) {
+	connection.query('SELECT DISTINCT TODOLIST.* FROM TODOLIST JOIN SHARE_LIST ON TODOLIST.id_list = SHARE_LIST.id_list WHERE id_user = ?', _id , function(err, lists) {
 		if (err) {
 			console.log(err);
 			return next("Mysql error, check your query");

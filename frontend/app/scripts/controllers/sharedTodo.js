@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('ToDoManagerApp')
-.controller('sharedTodoCtrl',  function($scope, $location, $log, $modal, TDMService, alert, $stateParams, $state) {
+.controller('sharedTodoCtrl',  function($scope, $location, $log, $modal, TDMService, alert, $stateParams, $state, $rootScope) {
 
   $scope.mytodo = {};
   $scope.data = {};

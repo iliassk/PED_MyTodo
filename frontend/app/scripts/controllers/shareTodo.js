@@ -5,15 +5,14 @@ angular.module('ToDoManagerApp').controller('ShareCtrl', function($scope, $state
     console.log( 'type : ' + $stateParams.type)
     
     $scope.hasSubtodo;
-    $scope.mytodo = ''
-    $scope.mylist = ''
+    $scope.mytodo = '';
+    $scope.mylist = '';
     $scope.displayedCollection = {};
 
-    $scope.isList = $stateParams.type == "todolist" ? true : false
-    console.log($scope.isList)
-    $scope.data = ''
+    $scope.isList = $stateParams.type == "todolist" ? true : false;
+    $scope.data = '';
     //Ferme le menu
-    $rootScope.closeMenu = true
+    $rootScope.closeMenu = true;
 
     $scope.init();
 
@@ -37,16 +36,15 @@ angular.module('ToDoManagerApp').controller('ShareCtrl', function($scope, $state
                 "&summary=" + encodeURIComponent(todo.title) +
                 "&location="+ encodeURIComponent(todo.localization)+
                 "&description=" + encodeURIComponent(todo.description) +
-                "&uid="
+                "&uid=";
         }
 
         $window.open(url, '_blank');
     }
 
     $scope.onTodoModified = function(todo){
-        console.log(todo);
-        todo.completed = !todo.completed
-        todo.completed = (todo.completed ? 1 : 0)
+        todo.completed = !todo.completed;
+        todo.completed = (todo.completed ? 1 : 0);
 
         TDMService.updateTodo(todo)
         .success(function(data) {
@@ -64,11 +62,8 @@ angular.module('ToDoManagerApp').controller('ShareCtrl', function($scope, $state
     //fetch the data
     TDMService.fetchSharedData($stateParams.url, $stateParams.type)
     .success(function(data){
-        $scope.data = data
-        console.log("TROLOLOLO")
-        console.log($stateParams.type)
+        $scope.data = data;
         if($stateParams.type == "todo"){
-            console.log("todo")
             $scope.mytodo = data[0];
             $scope.hasSubtodo = $scope.mytodo.subtodos ? true : false;
         }

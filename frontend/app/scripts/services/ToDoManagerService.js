@@ -9,7 +9,7 @@
  */
 angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL, $state, $rootScope, alert, TDMServiceOffline, TDMServiceOnline) {
 
-	var ToDoManagerApp = this
+	var ToDoManagerApp = this;
 
 	//Shared data used for synchronisation between controllers
 	ToDoManagerApp.data = {
@@ -19,109 +19,138 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 		shareListsWithToDo: [],
 		offlineDeleteToDo: [],
 		offlineDeleteList: []
-	}
+	};
 
 	this.markAsOffLine = function(){
-		localStorage.hasBeenOffLine = true
-	}
+		localStorage.hasBeenOffLine = true;
+	};
 
 	this.markAsOnLine = function(){
-		localStorage.hasBeenOffLine = false
-	}
+		localStorage.hasBeenOffLine = false;
+	};
 
 	this.hasBeenOffLine = function(){
-		return localStorage.hasBeenOffLine == "true"
-	}
+		return localStorage.hasBeenOffLine == 'true';
+	};
 
 	this.isOnLine = function(){
 
-		return $rootScope.online
-	}
+		return $rootScope.online;
+	};
 
 	this.sync = function(callback){
-		$rootScope.isWorking = true
-		TDMServiceOnline.sync(callback)
-	}
+		$rootScope.isWorking = true;
+		TDMServiceOnline.sync(callback);
+	};
 
 	this.forgaveData = function(){
-		console.log("[Master] => forgaveData")
-	}
+		console.log('[Master] => forgaveData');
+	};
 
 	this.refresh = function(callback){
-		console.log("[Master] => refresh")
+		console.log('[Master] => refresh');
 		if(ToDoManagerApp.data.listsWithToDo == ''){
-			$rootScope.isWorking = true
+			$rootScope.isWorking = true;
 			if(ToDoManagerApp.isOnLine()){
 				TDMServiceOnline.fetchAll(function(_data){
-					ToDoManagerApp.data = _data
-					callback()
-				})
+					ToDoManagerApp.data = _data;
+					callback();
+				});
 			}else{
 				TDMServiceOffline.fetchAll(function(_data){
-					ToDoManagerApp.data = _data
-					callback()
-				})
+					ToDoManagerApp.data = _data;
+					callback();
+				});
 			}
-		}else if(callback)
-			callback()
-	}
+		}else if(callback){
+			callback();
+		}
+	};
 
 	this.forceRefresh = function(callback){
-		$rootScope.isWorking = true
+		$rootScope.isWorking = true;
 		if(ToDoManagerApp.isOnLine()){
 			TDMServiceOnline.fetchAll(function(_data){
-				ToDoManagerApp.data = _data
-				callback()
-			})
+				ToDoManagerApp.data = _data;
+				callback();
+			});
 		}else{
 			TDMServiceOffline.fetchAll(function(_data){
-				ToDoManagerApp.data = _data
-				callback()
-			})
+				ToDoManagerApp.data = _data;
+				callback();
+			});
 		}
-	}
+	};
 
 	/**
 	* Accessors to the shared data
 	**/
 	//Get a list with it's id
 	this.getAList = function(_id) {
-		$rootScope.isWorking = true
+		$rootScope.isWorking = true;
 		for(var i=0; i < ToDoManagerApp.data.listsWithToDo.length; i++){
 			if(ToDoManagerApp.data.listsWithToDo[i].id_list == _id)
-				return ToDoManagerApp.data.listsWithToDo[i]
+				{return ToDoManagerApp.data.listsWithToDo[i];}
 		}
-		$rootScope.isWorking = false
-	}
+		$rootScope.isWorking = false;
+	};
 
 	//get a todo with it's id
 	this.getAToDo = function(_id) {
 		$rootScope.isWorking = true;
 		for(var i=0; i < ToDoManagerApp.data.listsWithToDo.length; i++){
-			if(ToDoManagerApp.data.listsWithToDo[i].todos)
+			if(ToDoManagerApp.data.listsWithToDo[i].todos){
 			for(var j=0; j < ToDoManagerApp.data.listsWithToDo[i].todos.length; j++){
 				if(ToDoManagerApp.data.listsWithToDo[i].todos[j].id_todo == _id){
 					$rootScope.isWorking = false;
-					return ToDoManagerApp.data.listsWithToDo[i].todos[j]
+					return ToDoManagerApp.data.listsWithToDo[i].todos[j];
+				}
+			}
+			}
+		}
+	};
+
+	//Get a shared list with it's id
+	this.getASharedList = function(_id) {
+		$rootScope.isWorking = true;
+		for(var i=0; i < ToDoManagerApp.data.shareListsWithToDo.length; i++){
+			if(ToDoManagerApp.data.shareListsWithToDo[i].id_list == _id)
+				{return ToDoManagerApp.data.shareListsWithToDo[i];}
+		}
+		$rootScope.isWorking = false;
+	};
+
+	//get a shared todo with it's id
+	this.getASharedToDo = function(_id) {
+		$rootScope.isWorking = true;
+		for(var i=0; i < ToDoManagerApp.data.shareListsWithToDo.length; i++){
+			if(ToDoManagerApp.data.shareListsWithToDo[i].todos){
+			for(var j=0; j < ToDoManagerApp.data.shareListsWithToDo[i].todos.length; j++){
+				if(ToDoManagerApp.data.shareListsWithToDo[i].todos[j].id_todo == _id){
+					$rootScope.isWorking = false;
+					return ToDoManagerApp.data.shareListsWithToDo[i].todos[j];
 				}
 			}
 		}
-	}
+		}
+	};
+
 
 	//get all todos
 	this.getAllToDo = function(){
-		$rootScope.isWorking = true
-		var result = []
+		$rootScope.isWorking = true;
+		var result = [];
 		for(var i=0; i < ToDoManagerApp.data.listsWithToDo.length; i++){
-			if(ToDoManagerApp.data.listsWithToDo[i].todos)
+			if(ToDoManagerApp.data.listsWithToDo[i].todos){
 				for(var j=0; j < ToDoManagerApp.data.listsWithToDo[i].todos.length; j++){
-					result.push(ToDoManagerApp.data.listsWithToDo[i].todos[j])
+					result.push(ToDoManagerApp.data.listsWithToDo[i].todos[j]);
 				}
+			}
 		}
 
-		$rootScope.isWorking = false
-		return result
-	}
+		$rootScope.isWorking = false;
+		return result;
+	};
 
 	///////////////////////////////////////////////////
 	/**
@@ -137,18 +166,18 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 		if(ToDoManagerApp.isOnLine()){
 			TDMServiceOnline.todolist(name, description, color)
 			.success(function(){
-		        $rootScope.accessData = false
-		        $rootScope.accessData = true
-				$rootScope.mustRefresh = true
-				$rootScope.isWorking = false
-				success()
+		        $rootScope.accessData = false;
+		        $rootScope.accessData = true;
+				$rootScope.mustRefresh = true;
+				$rootScope.isWorking = false;
+				success();
 			}).error(function(){
-				error()
-			})
+				error();
+			});
 		}else{
-			TDMServiceOffline.todolist(name, description, color, ToDoManagerApp.data, success, error)
+			TDMServiceOffline.todolist(name, description, color, ToDoManagerApp.data, success, error);
 		}
-	}
+	};
 
 	this.addTodo = function(_mytodo, success, error) {
 		$rootScope.isWorking = true;
@@ -156,18 +185,18 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 		if(ToDoManagerApp.isOnLine()){
 			TDMServiceOnline.addTodo(_mytodo)
 			.success(function(){
-		        $rootScope.accessData = false
-		        $rootScope.accessData = true
-				$rootScope.mustRefresh = true
-				$rootScope.isWorking = false
-				success()
+		        $rootScope.accessData = false;
+		        $rootScope.accessData = true;
+				$rootScope.mustRefresh = true;
+				$rootScope.isWorking = false;
+				success();
 			}).error(function(){
-				error()
-			})
+				error();
+			});
 		}else{
-			TDMServiceOffline.addTodo(_mytodo, ToDoManagerApp.data, success, error)
+			TDMServiceOffline.addTodo(_mytodo, ToDoManagerApp.data, success, error);
 		}	
-	}
+	};
 
 	this.addgroup = function(namegroup, success, error) {
 		$rootScope.isWorking = true;
@@ -175,18 +204,18 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 		if(ToDoManagerApp.isOnLine()){
 			TDMServiceOnline.addgroup(namegroup)
 			.success(function(){
-		        $rootScope.accessData = false
-		        $rootScope.accessData = true
-				$rootScope.mustRefresh = true
-				$rootScope.isWorking = false
-				success()
+		        $rootScope.accessData = false;
+		        $rootScope.accessData = true;
+				$rootScope.mustRefresh = true;
+				$rootScope.isWorking = false;
+				success();
 			}).error(function(){
-				error()
-			})
+				error();
+			});
 		}else{
-			TDMServiceOffline.addgroup(namegroup, success, error)
+			TDMServiceOffline.addgroup(namegroup, success, error);
 		}
-	}
+	};
 
 	///////////////////////////////////////////////////
 	/**
@@ -202,25 +231,25 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 		//we fist check the shared list
 		for(var i=0; i < ToDoManagerApp.data.shareListsWithToDo.length; i++){
 			if(ToDoManagerApp.data.shareListsWithToDo[i].id_list == obj.id_list)
-				ToDoManagerApp.data.shareListsWithToDo.splice(i, 1)
+				{ToDoManagerApp.data.shareListsWithToDo.splice(i, 1);}
 		}
 		//then all the remaining list
 		for(var i=0; i < ToDoManagerApp.data.listsWithToDo.length; i++){
 			if(ToDoManagerApp.data.listsWithToDo[i].id_list == obj.id_list)
-				ToDoManagerApp.data.listsWithToDo.splice(i, 1)
+				ToDoManagerApp.data.listsWithToDo.splice(i, 1);
 		}
 
 		if(ToDoManagerApp.isOnLine()){
 			TDMServiceOnline.deletetodolist(obj)
 			.success(function(){
-				success()
+				success();
 			}).error(function(){
-				error()
+				error();
 			})
 		}else{
-			TDMServiceOffline.deletetodolist(obj, ToDoManagerApp.data, success, error)
+			TDMServiceOffline.deletetodolist(obj, ToDoManagerApp.data, success, error);
 		}
-	}
+	};
 
 	//DELETE todo
 	this.deleteToDo = function(_id, success, error) {
@@ -230,21 +259,21 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 			if(ToDoManagerApp.data.listsWithToDo[i].todos)
 				for(var j=0; j < ToDoManagerApp.data.listsWithToDo[i].todos.length; j++){
 					if(ToDoManagerApp.data.listsWithToDo[i].todos[j].id_todo == _id)
-						ToDoManagerApp.data.listsWithToDo[i].todos.splice(j, 1)
+						ToDoManagerApp.data.listsWithToDo[i].todos.splice(j, 1);
 				}
 		}
 
 		if(ToDoManagerApp.isOnLine()){
 			TDMServiceOnline.deleteToDo(_id)
 			.success(function(){
-				success()
+				success();
 			}).error(function(){
-				error()
+				error();
 			})
 		}else{
-			TDMServiceOffline.deleteToDo(_id, ToDoManagerApp.data, success, error)
+			TDMServiceOffline.deleteToDo(_id, ToDoManagerApp.data, success, error);
 		}	
-	}
+	};
 
 	//DELETE subtodo
 	this.deleteSubToDo = function(_id, success, error) {
@@ -256,7 +285,7 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 					if(ToDoManagerApp.data.listsWithToDo[i].todos[j].subtodos)
 						for(var k=0; k < ToDoManagerApp.data.listsWithToDo[i].todos[j].subtodos.length; k++){
 							if(ToDoManagerApp.data.listsWithToDo[i].todos[j].subtodos[k].id_subtodo == _id)
-								ToDoManagerApp.data.listsWithToDo[i].todos[j].subtodos.splice(k, 1)
+								ToDoManagerApp.data.listsWithToDo[i].todos[j].subtodos.splice(k, 1);
 						}
 				}
 		}
@@ -264,14 +293,14 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 		if(ToDoManagerApp.isOnLine()){
 			TDMServiceOnline.deleteSubToDo(_id)
 			.success(function(){
-				success()
+				success();
 			}).error(function(){
-				error()
-			})
+				error();
+			});
 		}else{
-			TDMServiceOffline.deleteSubToDo(_id, ToDoManagerApp.data, success, error)
+			TDMServiceOffline.deleteSubToDo(_id, ToDoManagerApp.data, success, error);
 		}
-	}
+	};
 
 	///////////////////////////////////////////////////
 	/**
@@ -285,12 +314,12 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 		if(ToDoManagerApp.isOnLine()){
 			TDMServiceOnline.updateTodo(todo)
 			.success(function(){
-				success()
+				success();
 			}).error(function(){
-				error()
-			})
+				error();
+			});
 		}else{
-			TDMServiceOffline.updateTodo(todo, ToDoManagerApp.data, success, error)
+			TDMServiceOffline.updateTodo(todo, ToDoManagerApp.data, success, error);
 		}
 	};
 
@@ -301,14 +330,14 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 		if(ToDoManagerApp.isOnLine()){
 			TDMServiceOnline.updateTodos(data)
 			.success(function(){
-				success()
+				success();
 			}).error(function(){
-				error()
-			})
+				error();
+			});
 		}else{
-			TDMServiceOffline.updateTodos(data, ToDoManagerApp.data, success, error)
+			TDMServiceOffline.updateTodos(data, ToDoManagerApp.data, success, error);
 		}
-	}
+	};
 
 	///////////////////////////////////////////////////
 	/**
@@ -322,14 +351,14 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 		if(ToDoManagerApp.isOnLine()){
 			TDMServiceOnline.generateShareListLink(_id)
 			.success(function(result){
-				success(result)
+				success(result);
 			}).error(function(){
-				error()
-			})
+				error();
+			});
 		}else{
-			TDMServiceOffline.generateShareListLink(_id, success, error)
+			TDMServiceOffline.generateShareListLink(_id, success, error);
 		}
-	}
+	};
 
 	this.generateShareToDoLink = function(_id, success, error) {
 		$rootScope.isWorking = true;
@@ -337,14 +366,14 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 		if(ToDoManagerApp.isOnLine()){
 			TDMServiceOnline.generateShareToDoLink(_id)
 			.success(function(result){
-				success(result)
+				success(result);
 			}).error(function(){
-				error()
-			})
+				error();
+			});
 		}else{
-			TDMServiceOffline.generateShareToDoLink(_id, success, error)
+			TDMServiceOffline.generateShareToDoLink(_id, success, error);
 		}
-	}
+	};
 
 	this.fetchSharedData = function(url, type, success, error) {
 		$rootScope.isWorking = true;
@@ -352,34 +381,34 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 		if(ToDoManagerApp.isOnLine()){
 			TDMServiceOnline.fetchSharedData(url, type)
 			.success(function(result){
-				success(result)
+				success(result);
 			}).error(function(){
-				error()
-			})
+				error();
+			});
 		}else{
-			TDMServiceOffline.fetchSharedData(url, type, success, error)
+			TDMServiceOffline.fetchSharedData(url, type, success, error);
 		}
-	}
+	};
 
-	this.shareTodoContact = function(_id_todo,_id_user) {
+	this.shareTodoContact = function(idTodo,idUser) {
 		$rootScope.isWorking = true;
 		
 		if(ToDoManagerApp.isOnLine()){
-			return TDMServiceOnline.shareTodoContact(_id_todo,_id_user)
+			return TDMServiceOnline.shareTodoContact(idTodo,idUser);
 		}else{
-			return TDMServiceOffline.shareTodoContact(_id_todo,_id_user)
+			return TDMServiceOffline.shareTodoContact(idTodo,idUser);
 		}
-	}
+	};
 
-	this.shareListContact = function(_id_list,_id_user) {
+	this.shareListContact = function(idList,idUser) {
 		$rootScope.isWorking = true;
 		
 		if(ToDoManagerApp.isOnLine()){
-			return TDMServiceOnline.shareListContact(_id_list,_id_user)
+			return TDMServiceOnline.shareListContact(idList,idUser);
 		}else{
-			return TDMServiceOffline.shareListContact(_id_list,_id_user)
+			return TDMServiceOffline.shareListContact(idList,idUser);
 		}
-	}
+	};
 
 
 	//GET all groupe
@@ -406,7 +435,7 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 
 	//GET User Avatar
 	this.userAvatar = function(obj_id) {
-		return $http.get(API_URL +'user/'+obj_id)
+		return $http.get(API_URL +'user/'+obj_id);
 	};
 
 
@@ -414,7 +443,7 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 		return $http.post(API_URL + 'avatarpath', {
 			file : obj_file,
 			iduser : obj_id
-		})
+		});
 
 	};
 
