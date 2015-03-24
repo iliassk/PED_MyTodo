@@ -1,8 +1,8 @@
 <div ng-controller="ListTodoListCtrl">
     <div id="sidebar-wrapper">
-        <h3>Your ToDo Lists</h3> 
         <ul class="sidebar-nav">
-            <li class="sidebar-brand"></li>
+        <h3>Your ToDo Lists</h3> 
+            <!--li class="sidebar-brand"></li-->
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <input type="text" class="form-control input-sm" ng-model="query" placeholder="Search ...">
@@ -11,10 +11,10 @@
                             Hide <span style="color:Chartreuse " class="glyphicon glyphicon-ok"></span>
                         </a>
                         <a ui-sref="todolist" id="addListSideMenu" class="btn btn-sm btn-primary">
-                            <span class="glyphicon glyphicon-plus"></span> <span class="glyphicon glyphicon-th-list"></span>
+                            <span class="glyphicon glyphicon-plus"></span> list</span>
                         </a>
                         <a ui-sref="add/todo" id="addToDoSideMenu" class="btn btn-sm btn-primary">
-                            <span class="glyphicon glyphicon-plus"></span> abc <span class="glyphicon glyphicon-check"></span>
+                            <span class="glyphicon glyphicon-plus"></span> todo</span>
                         </a>
                     </div>
                 </div>
