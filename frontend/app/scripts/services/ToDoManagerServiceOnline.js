@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($http, API_URL, $state, $rootScope, TDMServiceOffline) {
+angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($http, API_URL, $state, $rootScope, TDMServiceOffline, $auth) {
 
 	var ToDoManagerApp = this;
 
@@ -9,7 +9,8 @@ angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($http, AP
 		var data = {
 			listsWithToDo: [],
 			group: '',
-			contact: '',
+			usersNocontact: '',
+			currentUser:'',
 			shareListsWithToDo: [],
 			offlineDeleteToDo: [],
 			offlineDeleteList: []
@@ -23,28 +24,26 @@ angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($http, AP
 			.success(function(_groupe){
 				data.group = _groupe;
 				TDMServiceOffline.save(data);
-				$http.get(API_URL + 'listcontact')
+				$http.get(API_URL + 'listuserNocontact/'+$auth.getPayload().sub)
 				.success(function(_contact){
-					data.contact = _contact;
+					data.usersNocontact = _contact;
 					TDMServiceOffline.save(data);
-					$http.get(API_URL + 'listsharedtodolistwithtodos')
-					.success(function(shareList){
-						data.shareListsWithToDo = shareList;
-						$rootScope.isWorking = false;
+					$http.get(API_URL + 'user/'+$auth.getPayload().sub)
+					.success(function(_current){
+						data.currentUser = _current;
+						TDMServiceOffline.save(data);
+						$http.get(API_URL + 'listsharedtodolistwithtodos')
+						.success(function(shareList){
+							data.shareListsWithToDo = shareList;
+							$rootScope.isWorking = false;
 
-						if(f){f(data);}
-				});
+							if(f){f(data);}
+						});
+					});
 				});
 			});
 		});
 
-		/*$http.get(API_URL + 'listsharedtodolistwithtodos')
-		.success(function(_data){
-			console.log("Success fetching all data !!!")
-			ToDoManagerApp.data.shareListsWithToDo = _data;
-			$rootScope.isWorking = false;
-			if(f)f();
-		})*/
 	};
 
 	this.sync = function(callback){
@@ -71,7 +70,7 @@ angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($http, AP
 
 		var checkIfFinish = function(){
 			if(iteration == number_of_call)
-				return callback(100);
+				{return callback(100);}
 		};
 
 		//synchronise les listes ajoutées
@@ -183,6 +182,21 @@ angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($http, AP
 		});
 	};
 
+	// delete contact
+
+	this.deletecontact = function(idcontact){
+		console.online('deletecontact');
+		$rootScope.isWorking = true;
+		return $http.post(API_URL + 'deletecontact', {
+			id : idcontact
+		})
+		.success(function(){
+			$rootScope.isWorking = false;
+		}).error(function(){
+			$rootScope.isWorking = false;
+		});
+	};
+
 	///////////////////////////////////////////////////
 	/**
 	* Manage DELETE method
@@ -249,11 +263,12 @@ angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($http, AP
 	};
 
 	//updates multiple todos
+	//updates multiple todos
 	this.updateTodos = function(data) {
 		console.online('updateTodos');
 		$rootScope.isWorking = true;
 		
-		return $http.put(API_URL + 'todo/',{
+		return $http.put(API_URL + 'todos/',{
 			data : data
 		}).success(function(){
 			TDMServiceOffline.save();
@@ -329,7 +344,7 @@ angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($http, AP
 
 	//GET all groupe
 	/*this.listGroupe = function() {
-		console.online("listGroupe")
+		console.online('listGroupe')
 
 		$rootScope.isWorking = true;
 		return $http.get(API_URL + 'listgroupe')
@@ -342,7 +357,7 @@ angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($http, AP
 
 	//GET all contact
 	/*this.listcontact = function() {
-		console.online("listcontact")
+		console.online('listcontact')
 
 		$rootScope.isWorking = true;
 		return $http.get(API_URL + 'listcontact')

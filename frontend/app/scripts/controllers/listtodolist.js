@@ -29,16 +29,13 @@ angular.module('ToDoManagerApp').controller('ListTodoListCtrl', function($scope,
 	}
 
 
-	$scope.total = function(group){
-		var obj = group.id_group;
+	$scope.total = function(){
 
-		var total = 0, i = 0;
-		var contact = $scope.contact;
-		for(i=0; i< contact.length; i++){
-			if(contact[i].id_group == obj)
-				total = total+1;
-			
-		}
+		var total = 0;
+		$scope.data.group.forEach(function(elem,index,array){
+			total = elem.contact.length + total;
+		})
+
 		return total;
 
 	};
@@ -63,7 +60,6 @@ angular.module('ToDoManagerApp').controller('ListTodoListCtrl', function($scope,
 
 	$rootScope.$watch('accessData', function(accessData) {
         console.log("accessData  listtodolist.js : " + accessData)
-
         if(accessData){
 
         }

@@ -15,7 +15,8 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 	ToDoManagerApp.data = {
 		listsWithToDo: [],
 		group: '',
-		contact: '',
+		usersNocontact: '',
+		currentUser:'',
 		shareListsWithToDo: [],
 		offlineDeleteToDo: [],
 		offlineDeleteList: []
@@ -216,6 +217,23 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 			TDMServiceOffline.addgroup(namegroup, success, error);
 		}
 	};
+
+	// delete contact
+	this.deletecontact = function(idcontact){
+		$rootScope.isWorking = true;
+		if(ToDoManagerApp.isOnLine()){
+			return TDMServiceOnline.deletecontact(idcontact)
+			.success(function(){
+				 $rootScope.accessData = false
+		        $rootScope.accessData = true
+				$rootScope.mustRefresh = true
+				$rootScope.isWorking = false
+			})
+		}else{
+			return TDMServiceOffline.deletecontact(idcontact)
+		}
+
+	}
 
 	///////////////////////////////////////////////////
 	/**
