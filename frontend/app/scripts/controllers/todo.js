@@ -175,7 +175,7 @@ angular.module('ToDoManagerApp')
   ////////////////Delete todo /////////////////
 
 
- $scope.delete = function () {
+  $scope.delete = function () {
 
     var modalInstance = $modal.open({
       templateUrl: 'modalDelete.html',
@@ -202,8 +202,6 @@ angular.module('ToDoManagerApp')
         console.log("=======================================refresh on todo.js")
 
         $scope.mytodo = TDMService.getAToDo($stateParams.id);
-        console.log($scope.mytodo)
-
         $scope.data = TDMService.data;
         $scope.toggleMin();
       })

@@ -46,7 +46,7 @@
                             <accordion-heading ng-click="">
 
                                 <span style="background-color:{{list.color}}" class="badge">{{list.todos.length}}</span>
-                                <a class="accordion-toggle">{{list.name}}</a> 
+                                <a class="accordion-toggle" id="accordion_title">{{list.name}}</a> 
                                 <a ng-click="status.open = !status.open" id="{{list.name}}InfoClick" class="pull-right" ui-sref="viewToDoList({ id: {{list.id_list}} })"> <i class="glyphicon glyphicon-info-sign"></i> </a>
                             </accordion-heading>
                             <li ng-repeat="todo in list.todos | filter:query | orderBy:['-date', 'name'] " ng-hide="hidecompleted && (todo.completed == true) ">
