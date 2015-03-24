@@ -236,7 +236,7 @@ i.fa.fa-sellsy.disconnected {
 #accordion_title {
     display: inline-block;
     white-space: nowrap;
-    width: 200px;
+    width: 180px;
     overflow: hidden;
     text-overflow: ellipsis;
 }
