@@ -29,12 +29,13 @@ angular.module('ToDoManagerApp').controller('CalendarCtrl', function($scope, $wi
 			    			}
 			    		}
 			    			if(iscolor=false) color ='green';
-*/
+*/						
+						var list = TDMService.getAList(data[i].id_list)
 						var jour = data[i].date; //new Date(data[i].date)
 							$scope.events[i]={  title: data[i].title, 
 											id:data[i].id_todo,
 											start: jour,
-											backgroundColor: 'green',
+											backgroundColor: list.color,
 											durationEditable:false};
 					}
 
@@ -101,5 +102,5 @@ angular.module('ToDoManagerApp').controller('CalendarCtrl', function($scope, $wi
 
 	};																																																																																																																																																																																																																																																																																																																																																																																																																																					
 			
-	$scope.eventSources = [$scope.events, $scope.eventSources];
+	$scope.eventSources = [$scope.events];
 });
