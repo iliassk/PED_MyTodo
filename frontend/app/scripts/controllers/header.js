@@ -17,8 +17,10 @@ angular.module('ToDoManagerApp').controller('HeaderCtrl', function($scope, $auth
     if(mustRefresh == true){
       TDMService.forceRefresh(function(){
 
-        $rootScope.accessData = true
         $scope.data = TDMService.data;
+        $rootScope.accessData = false
+        $rootScope.accessData = true
+        $rootScope.refreshCalendar = true
       });
      $rootScope.mustRefresh = false
     }
@@ -36,6 +38,7 @@ angular.module('ToDoManagerApp').controller('HeaderCtrl', function($scope, $auth
         TDMService.refresh(function(){
           console.log("==== refresh header.js ====")
 
+          $rootScope.accessData = false
           $rootScope.accessData = true
           $scope.data = TDMService.data;
       });

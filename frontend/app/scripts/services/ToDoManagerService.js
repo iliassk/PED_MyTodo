@@ -186,10 +186,10 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 		if(ToDoManagerApp.isOnLine()){
 			TDMServiceOnline.addTodo(_mytodo)
 			.success(function(){
-		        $rootScope.accessData = false;
-		        $rootScope.accessData = true;
-				$rootScope.mustRefresh = true;
-				$rootScope.isWorking = false;
+		        //$rootScope.accessData = false;
+		        //$rootScope.accessData = true;
+				$rootScope.mustRefresh = true
+				$rootScope.isWorking = false
 				success();
 			}).error(function(){
 				error();
