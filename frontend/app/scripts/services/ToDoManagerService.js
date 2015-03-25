@@ -344,12 +344,16 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 	//updates multiple todos
 	this.updateTodos = function(data, success, error) {
 		$rootScope.isWorking = true;
+		var todo = ToDoManagerApp.getAToDo(data.id)
+		todo.date = data.nvtime
 
 		if(ToDoManagerApp.isOnLine()){
 			TDMServiceOnline.updateTodos(data)
 			.success(function(){
+				$rootScope.isWorking = false
 				success();
 			}).error(function(){
+				$rootScope.isWorking = false
 				error();
 			});
 		}else{

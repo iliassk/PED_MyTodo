@@ -161,19 +161,14 @@ exports.todo_id_put = function(req, res, next, connection, auth){
 exports.todos_put = function(req, res, next, connection, auth){
 
 	var data = req.body.data;
-	var max = data.length;
-	console.log(data[0].nvtime)
 	
-	for(var i = 0; i<max; i++){
-	connection.query('UPDATE TODO SET date = ? WHERE id_todo = ?', [data[i].nvtime, data[i].id], function(err, rows) {
+	connection.query('UPDATE TODO SET date = ? WHERE id_todo = ?', [data.nvtime, data.id], function(err, rows) {
 		if (err) {
 			console.log(err);
 			return next("Mysql error, check your query");
 		}
-		
+		return res.status(200)
 	});
-	}
-	
 }
 
 exports.todoadd_post = function(req, res, next, connection, auth, jwt){

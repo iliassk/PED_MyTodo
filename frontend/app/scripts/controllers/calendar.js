@@ -76,31 +76,21 @@ angular.module('ToDoManagerApp').controller('CalendarCtrl', function($scope, $wi
 		         	right: 'month,basicWeek,basicDay'
 		       	},
 		       	eventDrop: function(event) {
-		       		
-		       		for (var i = 0; i < datas.length; i++){
-		       			if(datas[i].id == event.id )
-		       				datas[i].start = event.start;
-
-		       		}
+		       		var ev = { nvtime: '', id: ''};
+					ev.nvtime = event.start;
+					ev.id = event.id;	
+					console.log(ev)
+	   				TDMService.updateTodos(ev, function(){
+	   					//success
+	   					console.log("success")
+	   				}, function(){
+	   					console.log("fail")
+	   					//fail
+	   				})
     			}    
 			}
 	    };
- 	}	
-		
-		   
-	$scope.submit = function(){
-		var dataEvent =[];
-		var t = datas;
-		for (var i = 0; i < t.length; i++) {
-			var ev = { nvtime: '', id: ''};
-			ev.nvtime = t[i].start;
-			ev.id = t[i].id;	
-			dataEvent.push(ev);
-		}
-	   TDMService.updateTodos(dataEvent)
-      window.location.reload();
-
-	};																																																																																																																																																																																																																																																																																																																																																																																																																																					
+ 	}																																																																																																																																																																																																																																																																																																																																																																																																																													
 			
 	$scope.eventSources = [$scope.events];
 });

@@ -182,20 +182,7 @@ angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($http, AP
 		});
 	};
 
-	// delete contact
 
-	this.deletecontact = function(idcontact){
-		console.online('deletecontact');
-		$rootScope.isWorking = true;
-		return $http.post(API_URL + 'deletecontact', {
-			id : idcontact
-		})
-		.success(function(){
-			$rootScope.isWorking = false;
-		}).error(function(){
-			$rootScope.isWorking = false;
-		});
-	};
 
 	///////////////////////////////////////////////////
 	/**
@@ -243,6 +230,20 @@ angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($http, AP
 		});
 	};
 
+
+	// delete contact
+	this.deletecontact = function(idcontact){
+		console.online('deletecontact');
+		$rootScope.isWorking = true;
+		return $http.post(API_URL + 'deletecontact', {
+			id : idcontact
+		})
+		.success(function(){
+			$rootScope.isWorking = false;
+		}).error(function(){
+			$rootScope.isWorking = false;
+		});
+	};
 	///////////////////////////////////////////////////
 	/**
 	* Manage PUT method
@@ -263,11 +264,10 @@ angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($http, AP
 	};
 
 	//updates multiple todos
-	//updates multiple todos
 	this.updateTodos = function(data) {
 		console.online('updateTodos');
 		$rootScope.isWorking = true;
-		
+
 		return $http.put(API_URL + 'todos/',{
 			data : data
 		}).success(function(){
