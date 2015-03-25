@@ -176,7 +176,10 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 				error();
 			});
 		}else{
-			TDMServiceOffline.todolist(name, description, color, ToDoManagerApp.data, success, error);
+			TDMServiceOffline.todolist(name, description, color, ToDoManagerApp.data, function(){
+				$rootScope.mustRefresh = true
+				success()
+			}, error);
 		}
 	};
 
@@ -195,7 +198,10 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 				error();
 			});
 		}else{
-			TDMServiceOffline.addTodo(_mytodo, ToDoManagerApp.data, success, error);
+			TDMServiceOffline.addTodo(_mytodo, ToDoManagerApp.data, function(){
+				$rootScope.mustRefresh = true
+				success()
+			}, error);
 		}	
 	};
 
