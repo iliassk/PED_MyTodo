@@ -154,6 +154,7 @@ angular.module('ToDoManagerApp').controller('ViewToDoList', function($scope, $st
 		var lastDate = new Date(date);
 		var today=new Date();
 		var oneDay=1000*60*60*24;
+ 		
  		if(Math.ceil((lastDate.getTime()-today.getTime())/(oneDay)) < 0){
  			if(Math.abs(Math.ceil((lastDate.getTime()-today.getTime())/(oneDay))) == 1)
  				return 'Expired ' + Math.abs(Math.ceil((lastDate.getTime()-today.getTime())/(oneDay))) + ' day ago';
@@ -163,6 +164,8 @@ angular.module('ToDoManagerApp').controller('ViewToDoList', function($scope, $st
  		else{
  			if(Math.abs(Math.ceil((lastDate.getTime()-today.getTime())/(oneDay))) == 1)
 				return Math.ceil((lastDate.getTime()-today.getTime())/(oneDay)) + ' day remaining';
+			else if(Math.abs(Math.ceil((lastDate.getTime()-today.getTime())/(oneDay))) == 0)
+				return "Today"
 			else
 				return Math.ceil((lastDate.getTime()-today.getTime())/(oneDay)) + ' days remaining';
 		}

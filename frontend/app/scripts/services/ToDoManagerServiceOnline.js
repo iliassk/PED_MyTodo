@@ -76,7 +76,7 @@ angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($http, AP
 		//synchronise les listes ajoutées
 		lists.forEach(function (listElem, listIndex, listsArray) {
 			iteration += 1;
-			if(isNaN(todo_elem.id_todo)){
+			if(isNaN(listElem.id_list)){
 				return $http.post(API_URL + 'todolist', listElem)
 				.success(function(){
 					callback(iteration*step_value);

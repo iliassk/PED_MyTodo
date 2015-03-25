@@ -7,7 +7,7 @@
  * # LoginCtrl
  * Controller of the ToDoManagerApp
  */
-angular.module('ToDoManagerApp').controller('LoginCtrl', function($state,$scope, alert, $auth, TDMService, $rootScope) {
+angular.module('ToDoManagerApp').controller('LoginCtrl', function($state,$scope, alert, $location, $auth, TDMService, $rootScope) {
 
 	$scope.submit = function() {
 
@@ -19,7 +19,7 @@ angular.module('ToDoManagerApp').controller('LoginCtrl', function($state,$scope,
 			$rootScope.mustRefresh = true
 			if (!res.data.user.active)
 				message = 'Just a reminder, please activate your account soon !';
-			$state.go('calendar')
+			$location.path('calendar')
 			alert('success', 'Welcome!', message);
 		})
 		.catch(function(err) {

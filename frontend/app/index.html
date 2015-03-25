@@ -69,8 +69,10 @@
 
                     <ul class="nav navbar-nav navbar-right" ng-cloak>
 
-                        <li ng-show="isWorking" >
-                            <i class="fa fa-spinner fa-pulse fa-3x"></i>
+                        <li ng-show="isWorking" title="Loading data" style="color:white;margin-top:5px">
+                            <button class="btn btn-sm btn-link">
+                                <i class="fa fa-spinner fa-pulse fa-3x"></i>
+                            </button>
                         </li>
                         <li ng-show="isAuthenticated()" >
                             <a ui-sref="add/todo" id="addTodoNav" class="btn btn-success navbar_button">
