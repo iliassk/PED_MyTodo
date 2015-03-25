@@ -49,6 +49,8 @@ angular.module('ToDoManagerApp', ['ui.router', 'ui.calendar', 'ngAnimate', 'ui.b
           $modal.open({
             templateUrl: 'modalOffLine.html',
             controller: 'OffLineCtrl',
+            backdrop: 'static',
+            keyboard: false,
             resolve: {
               offline: function() {
                 return false;
@@ -64,6 +66,8 @@ angular.module('ToDoManagerApp', ['ui.router', 'ui.calendar', 'ngAnimate', 'ui.b
         $modal.open({
           templateUrl: 'modalOffLine.html',
           controller: 'OffLineCtrl',
+          backdrop: 'static',
+          keyboard: false,
           resolve: {
             offline: function() {
               return true;
