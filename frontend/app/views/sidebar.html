@@ -62,7 +62,7 @@
             <div id="sharedToDo" style="visibility: hidden">
                 <div class="row" ng-switch on="data.shareListsWithToDo.length" ng-cloak>
                     <ul ng-switch-when="0">
-                        <a class="btn btn-info">You have no shared list</a>
+                        <div class="alert alert-info text-center" role="alert">You have no shared list. Ask a contact to share todos with you!</div>
                     </ul>
                     <accordion close-others="false">
                         <accordion-group is-open="status.open" ng-repeat="list in data.shareListsWithToDo | filter:query ">

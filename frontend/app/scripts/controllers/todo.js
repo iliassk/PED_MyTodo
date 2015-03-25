@@ -5,7 +5,7 @@ angular.module('ToDoManagerApp')
 
 
   $scope.mytodo = {};
-
+  $scope.files = '';
   $scope.isCollapsed = true;
   $scope.isNotEditing = true;
   $scope.isMapCollapsed = true;
@@ -55,44 +55,46 @@ angular.module('ToDoManagerApp')
   }
 
   ////////////////Attachment file /////////////////
-  angular.element('#input-file').fileinput({showCaption: false,showUpload: false, maxFileSize:2000}); 
-  $scope.onFileSelect = function($files) {
-    //$files: an array of files selected, each file has name, size, and type. 
-    for (var i = 0; i < $files.length; i++) {
-      var file = $files[i];
-      $scope.upload = $upload.upload({
-        url: API_URL + 'upload', //upload.php script, node.js route, or servlet url 
+ 
+  $scope.$watch('files', function () {
+        $scope.upload($scope.files);
+    });
+   $scope.myfilepath = ''
+   $scope.upload = function (files) {
+    if (files && files.length ) {
+      if(files[0].size<=2000000){
+        $scope.uploading = true;
+        for (var i = 0; i < files.length; i++) {
+            var file = files[i];
+            $upload.upload({
+                url: API_URL + 'upload',
+                data: {myObj: $scope.file},
+                file: file
+            }).progress(function (evt) {
+                
 
-        //method: 'POST' or 'PUT', 
-        //headers: {'header-key': 'header-value'}, 
-        //withCredentials: true, 
-        data: {myObj: $scope.file},
-        file: file, // or list of files ($files) for html5 only 
-        //fileName: 'doc.jpg' or ['1.jpg', '2.jpg', ...] // to modify the name of the file(s) 
-        // customize file formData name ('Content-Desposition'), server side file variable name.  
-        //fileFormDataName: myFile, //or a list of names for multiple files (html5). Default is 'file'  
-        // customize how data is added to formData. See #40#issuecomment-28612000 for sample code 
-        //formDataAppender: function(formData, key, val){} 
-      }).progress(function(evt) {
-        console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
-      }).success(function(data, status, headers, config) {
-        // file is uploaded successfully 
-        console.log("File : ")
-        console.log(data['file']['path']);
-        $scope.mytodo.attachment_path = data['file']['path'];
-        $scope.file = data['file']['path'];
-        console.log("End of file")
-      });
-      //.error(...) 
-      //.then(success, error, progress);  
-      // access or attach event listeners to the underlying XMLHttpRequest. 
-      //.xhr(function(xhr){xhr.upload.addEventListener(...)}) 
+                $scope.progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+                if ($scope.progressPercentage == 100) {
+                  $scope.type = 'success';
+                } else if ($scope.progressPercentage < 50) {
+                  $scope.type = 'info';
+                }
+                console.log('progress: ' + $scope.progressPercentage + '% ' + evt.config.file.name);
+            }).success(function (data, status, headers, config) {
+               //$scope.mytodo.attachment_path = data['file'].path;
+               var url =  data['file'].path;
+               var file = url.split("/")[3]+"/"+url.split("/")[4];
+               $scope.mytodo.attachment_path =  file;
+              });
+        }
+      }
+      else{
+              alert('warning', 'File size : ', 'The size of your file is too high! 2MB is the maximal size.')
+      }
     }
-    /* alternative way of uploading, send the file binary with the file's content-type.
-       Could be used to upload files to CouchDB, imgur, etc... html5 FileReader is needed. 
-       It could also be used to monitor the progress of a normal http post/put request with large data*/
-    // $scope.upload = $upload.http({...})  see 88#issuecomment-31366487 for sample code. 
-  };  ////////////////Calendar /////////////////
+  };
+
+  ////////////////Calendar /////////////////
 
   $scope.today = function() {
     var today = new Date();
@@ -201,7 +203,7 @@ angular.module('ToDoManagerApp')
     if(accessData){
       TDMService.refresh(function(){
         console.log("=======================================refresh on todo.js")
-
+        $scope.uploading = false;
         $scope.mytodo = TDMService.getAToDo($stateParams.id);
         
         $scope.isMapCollapsed = $scope.mytodo.localization == "" ? true : false;

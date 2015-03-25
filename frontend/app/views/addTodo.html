@@ -34,8 +34,13 @@
 
         <timepicker ng-model="mytodo.date" ng-change="changed()" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></timepicker>
 
-        <h3><i class="glyphicon glyphicon-paperclip"></i> Attachment</h3><small>Maximal file size is 2 MB!</small> <div class='input-group'><input id="input-file" ng-file-select="onFileSelect($files)" ng-model="mytodo.attachment_path" type="file" multiple="false"></div>
-    
+        <h3><i class="glyphicon glyphicon-paperclip"></i> Attachment</h3><small>Maximal file size is 2 MB!</small> <div class='input-group'>
+         <div class="button" ng-file-select ng-model="files" ng-multiple="false"><button type="button" class="btn btn-info">Select File</button></div>
+
+         </div>
+         <progressbar ng-show="uploading" class="progress-striped active" animate="true" max="100" value="progressPercentage" type="{{type}}"><i>{{progressPercentage}}/ 100</i></progressbar>
+          <button class="btn btn-success" type="button"  ng-show="mytodo.attachment_path" ng-click="openAttachmentUrl()"> <i class="glyphicon glyphicon-file"></i> Download attachment</button>
+          
         <h3><i class="glyphicon glyphicon-link"></i> Link</h3><small>Add an optional link!</small>
         <input type="text" class="form-control" placeholder="Url" ng-model="mytodo.url">
         </div>

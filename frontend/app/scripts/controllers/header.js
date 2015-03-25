@@ -53,7 +53,6 @@ angular.module('ToDoManagerApp').controller('HeaderCtrl', function($scope, $auth
 
 
   ////////////////Attachment file /////////////////
-  angular.element('#input-file').fileinput({showCaption: false,showUpload: false, maxFileSize:2000}); 
   
     $scope.onFileSelect = function($files) {
     //$files: an array of files selected, each file has name, size, and type. 
