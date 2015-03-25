@@ -3,9 +3,9 @@ exports.addcontact_post = function(req, res, jwt, next, connection, auth){
 	var _id = auth.checkAuthorization(req, res, jwt);
 	
 	var data = {
-		id_user: req.body.id,
+		id_user: _id,
 		id_group : req.body.item,
-		id_owner: _id
+		id_contact: req.body.id
 	};
 
 	connection.query('INSERT INTO CONTACTS SET ?', data, function(err, rows) {

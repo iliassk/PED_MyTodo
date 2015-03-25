@@ -23,8 +23,9 @@
                       <div ng-repeat="listcontact in listgroup.contact" > 
                       <table>
                       <tbody>
-                        <tr>
-                        <td width="100%">{{listcontact.username}}</td>  
+                        <tr> 
+                        <td><img class="empty_avatar" ng-src="{{listcontact.avatar_path}}"/></td>
+                        <td width="100%"> {{listcontact.username}}</td>  
                         <td width="100%"><a data-my-directive data-popover-title="Settings" data-popover-template="settings.html" data-toggle="popover" data-popover-placement="left">
                         <i class="glyphicon glyphicon-option-vertical" aria-hidden="true"></i>
                         </a></td>
@@ -49,8 +50,8 @@
                        <table>
                       <tbody>
                         <tr>
-                        <td width="100%">{{listcontact.username}} </td>   
-                       
+                          <td><img class="empty_avatar" ng-src="{{listcontact.avatar_path}}"/></td>
+                        <td width="100%">{{listcontact.username}} </td>
                         <td width="100%">
                          <a data-my-directive bs-popover rm-popovers data-popover-title="Settings" data-popover-template="settings.html" data-popover-placement="left" >
                         <i class="glyphicon glyphicon-option-vertical" aria-hidden="true"></i>
