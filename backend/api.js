@@ -157,10 +157,12 @@ app.delete('/deletecontact/:id', function(req, res, next) {
 	contact.deletecontact_delete(req, res, jwt, next, connection, auth)	
 });
 
+app.delete('/deletegroup/:id', function(req, res, next) {	
+	contact.deletegroup_delete(req, res, jwt, next, connection, auth)	
+});
+
 app.get('/listuserNocontact/:id', function(req, res, next) {	
-	console.log('debut')
 	contact.listuserNocontact_id_get(req, res, jwt, next, connection, auth)
-	console.log('fin')
 });
 
 app.delete('/listtodolist/:id', function(req, res, next) {

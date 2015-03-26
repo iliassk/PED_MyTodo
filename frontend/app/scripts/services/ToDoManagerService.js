@@ -208,7 +208,7 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 
 	this.addgroup = function(namegroup, success, error) {
 		$rootScope.isWorking = true;
-
+				
 		if(ToDoManagerApp.isOnLine()){
 			TDMServiceOnline.addgroup(namegroup)
 			.success(function(){
@@ -370,6 +370,36 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 			});
 		}else{
 			TDMServiceOffline.deletecontact(idcontact, ToDoManagerApp.data,success, error)
+		}
+
+	}
+
+	// delete contact
+	this.deletegroup = function(idgroup, success, error){
+		$rootScope.isWorking = true;
+		//then all the remaining list
+		console.log('============='+idgroup)
+	
+		for(var i=0; i < ToDoManagerApp.data.group.length; i++){
+				if(ToDoManagerApp.data.group[i].id_group == idgroup){
+					for (var j=0; j<ToDoManagerApp.data.group[i].contact.length; j++) {
+					ToDoManagerApp.data.usersNocontact.push(ToDoManagerApp.data.group[i].contact[j])
+					}
+					ToDoManagerApp.data.group[i].contact.splice(0, ToDoManagerApp.data.group[i].contact.length);
+					ToDoManagerApp.data.group.splice(i,1)
+					
+				}
+		}
+		
+		if(ToDoManagerApp.isOnLine()){
+			TDMServiceOnline.deletegroup(idgroup)
+			.success(function(){
+				success();
+			}).error(function(){
+				error();
+			});
+		}else{
+			TDMServiceOffline.deletegroup(idgroup, ToDoManagerApp.data,success, error)
 		}
 
 	}

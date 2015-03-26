@@ -256,6 +256,18 @@ angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($http, AP
 		});
 	};
 
+	// delete contact
+	this.deletegroup = function(idgroup){
+		console.online('deletegroup');
+		$rootScope.isWorking = true;
+		return $http.delete(API_URL + 'deletegroup/'+idgroup)
+		.success(function(){
+			$rootScope.isWorking = false;
+		}).error(function(){
+			$rootScope.isWorking = false;
+		});
+	};
+
 	///////////////////////////////////////////////////
 	/**
 	* Manage PUT method
