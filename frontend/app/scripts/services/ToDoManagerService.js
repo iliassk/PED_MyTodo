@@ -220,8 +220,43 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 				error();
 			});
 		}else{
-			TDMServiceOffline.addgroup(namegroup, success, error);
+			TDMServiceOffline.addgroup(namegroup,ToDoManagerApp.data, function(){
+				$rootScope.mustRefresh = true
+				success()
+			}, error);
 		}
+	};
+
+	//add contact to group
+	this.addContact = function(id, item, success, error) {
+		$rootScope.isWorking = true;
+
+
+		for(var i=0; i < ToDoManagerApp.data.usersNocontact.length; i++){
+			if(ToDoManagerApp.data.usersNocontact[i].id_user == id){
+
+				for(var j=0; j < ToDoManagerApp.data.group.length; j++){
+					if(ToDoManagerApp.data.group[j].id_group == item)
+					ToDoManagerApp.data.group[j].contact.push(ToDoManagerApp.data.usersNocontact[i])
+					}
+				ToDoManagerApp.data.usersNocontact.splice(i, 1);
+			}
+		}
+		if(ToDoManagerApp.isOnLine()){
+			TDMServiceOnline.addcontact(id, item)
+			.success(function(){
+				$rootScope.isWorking = false;
+				success();
+			}).error(function(){
+				error();
+			});
+		}else{
+			TDMServiceOffline.addcontact(id, item, function(){
+				$rootScope.mustRefresh = true
+				success()
+			}, error);
+		}
+		
 	};
 
 	
@@ -319,8 +354,10 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 		console.log('============='+idcontact)
 		for(var i=0; i < ToDoManagerApp.data.group.length; i++){
 			for(var j=0; j < ToDoManagerApp.data.group[i].contact.length; j++){
-				if(ToDoManagerApp.data.group[i].contact[j].id_user == idcontact)
+				if(ToDoManagerApp.data.group[i].contact[j].id_user == idcontact){
+					ToDoManagerApp.data.usersNocontact.push(ToDoManagerApp.data.group[i].contact[j])
 					ToDoManagerApp.data.group[i].contact.splice(j, 1);
+					}
 			}
 		}
 		if(ToDoManagerApp.isOnLine()){

@@ -180,9 +180,7 @@ app.put('/todo/:id', function(req, res, next) {
 });
 
 app.put('/todos', function(req, res, next) {
-	console.log('debut todos')
 	todo.todos_put(req, res, next, connection, auth)
-	console.log('fin todos')
 });
 
 

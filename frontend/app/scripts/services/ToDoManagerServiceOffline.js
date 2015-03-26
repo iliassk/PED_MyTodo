@@ -88,15 +88,15 @@ angular.module('ToDoManagerApp').service('TDMServiceOffline', function ($http, A
 		error();
 	};
 
-	// delete contact
-
-	this.deletecontact = function(idcontact){
-		console.offline('delete contact');
+	//ADD contact to group
+	this.addcontact = function(id, item) {
+		console.offline('addcontact');
 		$rootScope.isWorking = true;
 		alert('warning', 'OffLine error', 'You cannot create object while in offline mode !!');
 		$rootScope.isWorking = false;
 		error();
 	};
+	
 
 	///////////////////////////////////////////////////
 	/**
@@ -130,6 +130,16 @@ angular.module('ToDoManagerApp').service('TDMServiceOffline', function ($http, A
 		ToDoManagerApp.save(data);
 		$rootScope.isWorking = false;
 		success();
+	};
+
+	// delete contact
+
+	this.deletecontact = function(idcontact){
+		console.offline('delete contact');
+		$rootScope.isWorking = true;
+		alert('warning', 'OffLine error', 'You cannot create object while in offline mode !!');
+		$rootScope.isWorking = false;
+		error();
 	};
 
 	///////////////////////////////////////////////////
