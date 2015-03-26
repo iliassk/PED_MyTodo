@@ -1,40 +1,66 @@
 # PED_MyTodo
-Web app pour la gestion de to-dos.
+Une application Web qui permet la gestion des Todos. 
 
-Install on Windows.
+Ce logiciel devra permettre :
+
+  1.D’ajouter des Todo
+
+  2.De préciser qu’un Todo est réalisé
+
+  3.De visualiser tous les Todo non réalisé
+
+  4.De visualiser les Todo à faire pour aujourd’hui, pour la semaine, pour le mois.
+
+  5.De synchroniser son agenda (GCal ou autre) avec les échéances des Todo.
+
+  6.Un support off-line.
+
+
+Installation sur Windows.
 
 1. git clone https://github.com/iliassk/PED_MyTodo
 
-2. Créez une base de données
+2. Créez votre base de donnée
+    i. install mysql
+    ii. install wamp
+    iii. ouvrir le server wamp
+    iv. Allez sur http://localhost/phpmyadmin
+    v. cliquer sur mysql
+    vi. puis choisir l’onglet import
+    vii. puis sur parcourir, importer le fichier todoManager_db.sql (se trouvant dans le dossier back-end) et puis cliquer sur execute. La base de donnée todoManager_db est créé.
 
-    Go on http://localhost/phpmyadmin
+3. Allez en suite dans le dossier frontend :
+            i. npm install -g yo
 
-    Se connectez and créez une base de données todoManager_db 
+            ii. npm install -g grunt
 
-    ouvrir  le  terminal:
+            iii. npm install -g grunt-cli
 
-3. Ensuite allez dans le dossier frontend :
-  4. npm install -g yo
+            iv. npm install --global generator-angular
 
-  5. npm install -g grunt
+            v. npm install (Si on a un problème de dépendance : "unmet" supprimez le dossier node_modules & faites un npm cache clean et relancer npm install)
 
-  6. npm install -g grunt-cli
+           vi. npm install (Oui on fait 2 npm install)
 
-  7. npm install --global generator-angular
+           vii. bower install
 
-  8. npm install (Si problème de dépendance : "unmet" supprimer le dossier node_modules faite un npm cache clean et relancer npm install)
+           viii. grunt build
 
-  9. npm install (Oui on fait 2 npm install)
+4. Ensuite allez dans le dossier backend :
+           i. npm install
 
-  10. bower install
+5. grunt serve
 
-  11.grunt build
+6. Ouvrez un autre terminal
+          i. node api.js (lance le server)
 
-12. Ensuite allez dans le dossier backend :
-  13. npm install
 
-14. grunt serve
+Installation sur Linux.
 
-15. node api.js (lance le server)
+  Suivre les même commandes que celle d'installation sur windows sauf qu'il faut ajouter sudo devant tous les commandes "install"(par exemple sudo npm install -g yo).
+
+
+
+
 
 
