@@ -75,7 +75,8 @@ angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($http, AP
 		});
 
 		var number_of_call = (todos.length) + deletedTodos.length + lists.length + deletedList.length;
-		var step_value = number_of_call/100;
+
+		var step_value = 100/number_of_call;
 
 		var checkIfFinish = function(){
 			if(iteration == number_of_call)
@@ -85,7 +86,9 @@ angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($http, AP
 		//synchronise les listes ajoutées
 		lists.forEach(function (listElem, listIndex, listsArray) {
 			iteration += 1;
-			if(isNaN(listElem.id_list)){
+
+			if(listElem.id_list >= 9999999){
+				delete listElem.id_list
 				return $http.post(API_URL + 'todolist', listElem)
 				.success(function(){
 					callback(iteration*step_value);
@@ -98,8 +101,10 @@ angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($http, AP
 		todos.forEach(function (todo_elem, todo_index, todosArray) {
 
 			iteration += 1;
+			
 			//id généré par le client
-			if(isNaN(todo_elem.id_todo)) {
+			if(todo_elem.id_todo >= 9999999) {
+				delete todo_elem.id_todo
 				return $http.post(API_URL + 'add/todo', {
 					mytodo : todo_elem
 				}).success(function(){
@@ -129,11 +134,11 @@ angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($http, AP
 		});
 
 		//supprime les listes
-		deletedList.forEach(function (list, listIndex, listsArray) {
+		deletedList.forEach(function (list_id, listIndex, listsArray) {
 
 			iteration += 1;
 
-			return $http.delete(API_URL + 'listtodolist/'+ list)
+			return $http.delete(API_URL + 'listtodolist/'+ list_id)
 			.success(function(){
 				callback(iteration*step_value);
 				checkIfFinish();

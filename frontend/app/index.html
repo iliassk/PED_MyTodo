@@ -79,7 +79,7 @@
                             <a ui-sref="add/todo" id="addTodoNav" class="btn btn-success navbar_button">
                                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> ToDo</a>
                         </li>
-                        <li ng-show="isAuthenticated()" >
+                        <li ng-show="isAuthenticated() && online == true" >
                             <a ui-sref="todolist" id="addListNav" class="btn btn-info navbar_button">
                                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> List</a>
                         </li>
@@ -233,6 +233,7 @@
                 Certaines fonctionnalitées de l'application sont désactivées lors de ce mode : </p>
                 <ul>
                     <li>Utilisation de la carte google</li>
+                    <li>Création de liste de todo</li>
                     <li>Partage de todo</li>
                     <li>Accès aux todos partagés</li>
                     <li>Accès aux contacts</li>

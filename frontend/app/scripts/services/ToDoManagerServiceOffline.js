@@ -5,7 +5,7 @@ angular.module('ToDoManagerApp').service('TDMServiceOffline', function ($http, A
 	var ToDoManagerApp = this;
 
 	ToDoManagerApp.uid = 0;
-	ToDoManagerApp.SYM = "-";
+	ToDoManagerApp.SYM = 9999999;
 
 	//done
 	// A appeler DES que vous voulez faire une modif sur un élément des données : ajout, modif, supression, ...
@@ -40,7 +40,8 @@ angular.module('ToDoManagerApp').service('TDMServiceOffline', function ($http, A
 			id_list : ToDoManagerApp.SYM + ToDoManagerApp.uid,
 			name : name, 
 			description : description,
-			color : color
+			color : color,
+			todos : []
 		};
 		data.listsWithToDo.push(list);
 
