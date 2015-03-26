@@ -31,10 +31,10 @@ angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($http, AP
 					$http.get(API_URL + 'user/'+$auth.getPayload().sub)
 					.success(function(_current){
 						data.currentUser = _current;
-						//TDMServiceOffline.save(data);
 						$http.get(API_URL + 'listsharedtodolistwithtodos')
 						.success(function(shareList){
 							data.shareListsWithToDo = shareList;
+							TDMServiceOffline.save(data);
 							$rootScope.isWorking = false;
 
 							if(f){f(data);}
