@@ -102,5 +102,39 @@ angular.module('ToDoManagerApp').config(function($urlRouterProvider, $stateProvi
 	//$httpProvider.interceptors.push('authInterceptor');
 })
 
+.run(function($rootScope, $location, $auth) {
+	/*$rootScope.$on('$stateChangeStart', function(ev, to, toParams, from, fromParams) {
+
+		if (!$auth.isAuthenticated()) {
+			console.log('$auth.isAuthenticated()  = ', $auth.isAuthenticated())
+			$location.path('/login');
+		}
+	});*/
+	$rootScope._ = window._;
+
+	var routesThatDontRequireAuth = ['/login', '/register', '/'];
+
+	// check if current location matches route
+	var routeClean = function(route) {
+		return _.find(routesThatDontRequireAuth,
+			function(noAuthRoute) {
+				return _.str.startsWith(route, noAuthRoute);
+			});
+	};
+
+	$rootScope.$on('$stateChangeStart', function(ev, to, toParams, from, fromParams) {
+		// if route requires auth and user is not logged in
+		if (!routeClean($location.url()) && !$auth.isAuthenticated()) {
+			// redirect back to login
+			ev.preventDefault();
+			$location.path('/');
+		}
+
+	});
+})
+
 .constant('API_URL', 'http://localhost:3000/')
 .constant('APP_URL', 'http://localhost:9000/#/')
+
+.constant('_', window._);
+

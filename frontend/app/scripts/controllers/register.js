@@ -7,7 +7,7 @@
  * # RegisterCtrl
  * Controller of the ToDoManagerApp
  */
-angular.module('ToDoManagerApp').controller('RegisterCtrl', function($state, $scope, alert, $auth, $rootScope) {
+angular.module('ToDoManagerApp').controller('RegisterCtrl', function($state, $scope, alert, $auth, $rootScope, $location) {
 	$scope.submit = function() {
 
 		$auth.signup({ 
@@ -16,8 +16,8 @@ angular.module('ToDoManagerApp').controller('RegisterCtrl', function($state, $sc
 			password: $scope.password
 		}).then(function(res) {
 			$rootScope.mustRefresh = true
+			$location.path('calendar')
 			$rootScope.closeMenu = false
-			$state.go('calendar')
 			alert('success', 'Account Created!', 'Welcome, ' + res.data.user.username + ' ! Please activate your account in the next few days.');
 		})
 		.catch(function(err) {

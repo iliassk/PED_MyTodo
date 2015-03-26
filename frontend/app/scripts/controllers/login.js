@@ -33,7 +33,7 @@ angular.module('ToDoManagerApp').controller('LoginCtrl', function($state,$scope,
             angular.element("#wrapper").removeClass("toggled");
 			alert('success', 'Welcome!', 'Thanks for coming back, ' + res.data.user.email + ' !');
 			$rootScope.mustRefresh = true
-			$state.go('calendar')
+			$location.path('calendar')
 		}, function(err) {
             angular.element("#wrapper").addClass("toggled");
 			alert('warning', 'Something went wrong :(', 'Unable to connect you with your ' + provider +' account !');
