@@ -12,6 +12,7 @@ angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($http, AP
 			usersNocontact: '',
 			currentUser:'',
 			shareListsWithToDo: [],
+			sharedTodo: [],
 			offlineDeleteToDo: [],
 			offlineDeleteList: []
 		};
@@ -35,9 +36,19 @@ angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($http, AP
 						$http.get(API_URL + 'listsharedtodolistwithtodos')
 						.success(function(shareList){
 							data.shareListsWithToDo = shareList;
-							$rootScope.isWorking = false;
-
-							if(f){f(data);}
+							$http.get(API_URL + 'todosharedtodolistwithtodos')
+							.success(function(shareTodo){
+								data.shareListsWithToDo.push({
+									name : "Other Shared Todos",
+									description: "",
+									color : "grey",
+									todos : shareTodo
+								})
+								//data.sharedTodo = shareTodo;
+								$rootScope.isWorking = false;
+								if(f){f(data);}
+							});
+							
 						});
 					});
 				});

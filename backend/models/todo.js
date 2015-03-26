@@ -584,6 +584,48 @@ exports.listsharedtodolistwithtodos_get = function(req, res, next, connection, a
 	});
 }
 
+exports.todosharedtodolistwithtodos_get = function(req, res, next, connection, auth, jwt){
+
+	//récupère les listes partagés
+						//récupère les todos de chaque liste
+					//récupère les todos partagés
+
+	var result = {};
+	var _id = auth.checkAuthorization(req, res, jwt);
+	var cpt = 0;
+	//Récupère les listes
+	connection.query('SELECT DISTINCT TODO.* FROM TODO JOIN SHARE_TODO ON TODO.id_todo = SHARE_TODO.id_todo WHERE id_user = ? AND TODO.id_todo NOT IN (SELECT TODO.id_todo FROM TODO JOIN TODOLIST ON TODOLIST.id_list = TODO.id_list JOIN SHARE_LIST on TODOLIST.id_list = SHARE_LIST.id_list WHERE SHARE_LIST.id_user = ?)', [_id, _id] , function(err, lists) {
+		if (err) {
+			console.log(err);
+			return next("Mysql error, check your query");
+		}else{
+			result = lists;
+			//return res.status(200).json(result);
+			//récupère tous les todos de chaque liste
+			lists.forEach(function (elem, index, array) {
+
+  				connection.query('SELECT * FROM SUBTODO WHERE id_todo = ?', elem.id_todo, function(err, rows) {
+					if (err) {
+						console.log(err);
+						return next("Mysql error on connection, check your query");
+					}
+
+					result[index].subtodos = rows;
+					cpt ++;
+					//pour gérer l'asynchrone on ne sait pas quand les requetes sont finies
+					if(cpt == result.length)
+						return res.status(200).json(result);
+				});
+			})
+
+			if(lists.length == 0)
+				return res.status(200).json(result);
+		}
+	});
+}
+
+
+
 exports.sync = function(req, res, next, connection, auth, jwt){
 	
 	var _id = auth.checkAuthorization(req, res, jwt);

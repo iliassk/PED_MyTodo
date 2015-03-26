@@ -216,7 +216,10 @@ $rootScope.$watch('accessData', function(accessData) {
                TDMService.refresh(function(){
 
           $scope.mytodo = TDMService.getASharedToDo($stateParams.id);
-          $scope.sharedList = $scope.list = TDMService.getASharedList($scope.mytodo.id_list)
+          console.log($scope.mytodo)
+          if($scope.mytodo.id_list)
+            $scope.sharedList = $scope.list = TDMService.getASharedList($scope.mytodo.id_list)
+
 
           $scope.data = TDMService.data;
       

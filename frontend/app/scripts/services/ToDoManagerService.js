@@ -73,6 +73,7 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 		if(ToDoManagerApp.isOnLine()){
 			TDMServiceOnline.fetchAll(function(_data){
 				ToDoManagerApp.data = _data;
+				console.log(_data.shareListsWithToDo)
 				callback();
 			});
 		}else{

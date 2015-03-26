@@ -13,11 +13,9 @@ angular.module('ToDoManagerApp').controller('HeaderCtrl', function($scope, $auth
   $scope.isAuthenticated = $auth.isAuthenticated;
    
   $rootScope.$watch('mustRefresh', function(mustRefresh) {
-
     if(mustRefresh == true){
       console.debug("Header.js forcerefresh sidebar")
       TDMService.forceRefresh(function(){
-
         $scope.data = TDMService.data;
         $rootScope.accessData = false
         $rootScope.accessData = true
@@ -31,7 +29,6 @@ angular.module('ToDoManagerApp').controller('HeaderCtrl', function($scope, $auth
   $rootScope.$watch('canFetchData', function(canFetchData) {
     if(canFetchData && $scope.isAuthenticated()){
       console.debug("Header.js refresh canfetchdata sidebar")
-
       TDMService.refresh(function(){
         console.log("==== refresh header.js ====")
 
@@ -45,17 +42,14 @@ angular.module('ToDoManagerApp').controller('HeaderCtrl', function($scope, $auth
   });
 
     $scope.data = TDMService.data;
-
     if($scope.isAuthenticated()){
         $rootScope.closeMenu = false
     }else
         $rootScope.closeMenu = true
-
     $scope.loaded = function() { console.log("Loaded"); }
 
 
   ////////////////Attachment file /////////////////
-  
     $scope.onFileSelect = function($files) {
     //$files: an array of files selected, each file has name, size, and type. 
     for (var i = 0; i < $files.length; i++) {

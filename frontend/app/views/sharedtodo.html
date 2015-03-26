@@ -12,7 +12,6 @@
         </div>
 </script>
 
-
 <div class="form-group">
     <form class="form-signin" role="form" ng-model="mytodo" ng-submit="submit()">
         <h2 class="form-signin-heading">Todo n°{{mytodo.id_todo}}</h2>
@@ -32,9 +31,7 @@
         </select>
         <input type="text" class="form-control" placeholder="Context" ng-model="mytodo.context" ng-disabled="isNotEditing">
 
-         <select class="form-control" id="sel2" ng-model="mytodo.id_list" required ng-disabled="true">
-            <option ng-repeat="list in data.shareListsWithToDo" value="{{list.id_list}}" selected>{{list.name}}</option>
-        </select>
+         <select class="form-control" id="sel2" ng-model="mytodo.id_list" ng-options="list.id_list as list.name for list in data.shareListsWithToDo" required ng-disabled="isNotEditing"></select>
        
         <div class='input-group'>
             <input type="text" class="form-control" placeholder="Date" datepicker-popup="{{format}}" ng-model="mytodo.date" is-open="opened" min-date="minDate" datepicker-options="dateOptions" ng-required="true" close-text="Close" ng-disabled="isNotEditing"/>
@@ -47,30 +44,29 @@
             <timepicker  ng-model="mytodo.date" ng-change="changed()" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></timepicker>
         </fieldset>
 
-        <div class='input-group'>
-        <h4><i class="glyphicon glyphicon-ok ng-show" ng-show="mytodo.completed"></i><i class="glyphicon glyphicon-remove ng-hide" ng-hide="mytodo.completed"></i> Task Done ? <input ng-disabled="isNotEditing" type="checkbox" ng-model="mytodo.completed" ng-checked="mytodo.completed"> </h4>
-        </div>
+         <div class='input-group'>
+                    <h4> <button type="button" class="btn btn-primary" ng-disabled="isNotEditing" ng-click="mytodo.completed = !mytodo.completed" style="cursor: pointer"><div ng-show="mytodo.completed"><i class="glyphicon glyphicon-ok ng-show" ng-show="mytodo.completed"> </i>Done!</div><div ng-hide="mytodo.completed"><i class="glyphicon glyphicon-remove ng-hide" ng-hide="mytodo.completed"> </i>Not Done Yet!</div></button> </h4>
+                </div>
 
-        <!-- Liste vide pour un séprateur purement esthétique -->
-        <div class="list-group">
-            <div class="list-group-item"></div>
-        </div>
-        <!-- ------------------------------------------------ -->
 
-        <h3><i class="glyphicon glyphicon-paperclip"></i> Attachment</h3><small>Maximal file size is 2 MB!</small> <div class='input-group'><input ng-disabled="isNotEditing" id="input-file" type="file" multiple="false"></div>
+        <h3><i class="glyphicon glyphicon-paperclip"></i> Attachment</h3><button class="btn btn-success" type="button"  ng-show="mytodo.attachment_path" ng-click="openAttachmentUrl()"> <i class="glyphicon glyphicon-file"></i> Download attachment</button>
+
+
         <h3><i class="glyphicon glyphicon-link"></i> Link</h3><small>Add an optional link!</small>
         <input ng-disabled="isNotEditing" type="text" class="form-control" placeholder="Url" ng-model="mytodo.url">
          </div>
         <div class="col-lg-6">
 
-       <h3><i class="glyphicon glyphicon-globe"></i>Location</h3><small>Add an address!</small>
-        <input ng-disabled="isNotEditing" ng-model="mytodo.localization" id="input-address" class="controls" type="text" placeholder="Enter a location">
+      <h3><i class="glyphicon glyphicon-globe"></i>Location</h3>
+                <a class="btn btn-info" ng-show="isMapCollapsed" ng-click="showMap()">Show location here</a>
+                <div collapse="isMapCollapsed">
+                    <input ng-disabled="isNotEditing" ng-model="mytodo.localization" id="input-address" class="controls" type="text" placeholder="Enter a location">
+                    <div id="map-canvas"></div>
+                </div>
 
-        <div id="map-canvas"></div>
-
-            <input ng-disabled="isNotEditing" id="address" type="text" class="form-control" placeholder="Address" ng-model="mytodo.localization">
-            {{mytodo.localization}}
-
+                <div class="input-group">
+               <a ng-show="mytodo.localization" target="_blank" title="Show on maps" ng-hide="showMapButton(mytodo.localization)" class="btn btn-sm btn-info" href="https://maps.google.com/?q={{mytodo.localization}}"><i class="glyphicon glyphicon-map-marker" ></i>Go to Google Map</a>
+           </div>
         <h3><i class="glyphicon glyphicon-list"></i> Subtodos</h3>
 
         <a class="btn btn-info" ng-click="isCollapsed = !isCollapsed">Manage subtodos</a>
@@ -95,15 +91,24 @@
                 <tr ng-repeat="mysubtodo in mytodo.subtodos track by $index">
                     <td><input ng-disabled="isNotEditing" type="text" class="form-control" placeholder="Title" ng-model="mysubtodo.title" ></td>
                     <td><input ng-disabled="isNotEditing" type="text" class="form-control" placeholder="Description" ng-model="mysubtodo.description"></td>
-                    <td><a ng-disabled="isNotEditing" class="glyphicon glyphicon-remove" ng-click="eraseSubtodo($index, mysubtodo.id_subtodo);"></a></td>
+                    <td>
+                        <p>
+                                        <button type="button" class="btn btn-link btn-sm" ng-click="mysubtodo.completed = !mysubtodo.completed" ng-show="mysubtodo.completed"><i style="display: inline; color:Chartreuse;" ng-model="mysubtodo.completed" class="glyphicon glyphicon-ok ng-show" ng-show="mysubtodo.completed"></i></button>
+                                        <button type="button" class="btn btn-link btn-sm" ng-click="mysubtodo.completed = !mysubtodo.completed" ng-hide="mysubtodo.completed"><i style="display: inline; color:Gainsboro" class="glyphicon glyphicon-ok ng-hide" ng-hide="mysubtodo.completed"></i></button>
+                                        <button type="button" class="btn btn-link glyphicon glyphicon-remove btn-sm" ng-click="eraseSubtodo($index, mysubtodo.id_subtodo);"></button>
+                                    </p>
+                    </td>
                 </tr>
             </tbody>        
         </table>
         </div>
         </div>
-
-        <button ng-disabled="isNotEditing" type="submit" id="add_todo_button" class="btn btn-lg btn-info btn-block">Update</button>
-        <button ng-disabled="isNotEditing" type="submit" id="add_todo_button" class="btn btn-lg btn-warning btn-block" ng-click="delete()">Delete</button>
+        <p class="text-center">
+        <button ng-disabled="isNotEditing" type="submit" id="add_todo_button" class="btn btn-lg btn-info">Update</button>
+    </p>
+        <p class="text-center">
+        <button ng-disabled="isNotEditing" type="submit" id="add_todo_button" class="btn btn-lg btn-warning" ng-click="delete()">Delete</button>
+        </p>
     </form>
 </div>
 
