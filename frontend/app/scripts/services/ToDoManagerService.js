@@ -221,26 +221,46 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 				error();
 			});
 		}else{
-			TDMServiceOffline.addgroup(namegroup, success, error);
+			TDMServiceOffline.addgroup(namegroup,ToDoManagerApp.data, function(){
+				$rootScope.mustRefresh = true
+				success()
+			}, error);
 		}
 	};
 
-	// delete contact
-	this.deletecontact = function(idcontact){
+	//add contact to group
+	this.addContact = function(id, item, success, error) {
 		$rootScope.isWorking = true;
-		if(ToDoManagerApp.isOnLine()){
-			return TDMServiceOnline.deletecontact(idcontact)
-			.success(function(){
-				 $rootScope.accessData = false
-		        $rootScope.accessData = true
-				$rootScope.mustRefresh = true
-				$rootScope.isWorking = false
-			})
-		}else{
-			return TDMServiceOffline.deletecontact(idcontact)
-		}
 
-	}
+
+		for(var i=0; i < ToDoManagerApp.data.usersNocontact.length; i++){
+			if(ToDoManagerApp.data.usersNocontact[i].id_user == id){
+
+				for(var j=0; j < ToDoManagerApp.data.group.length; j++){
+					if(ToDoManagerApp.data.group[j].id_group == item)
+					ToDoManagerApp.data.group[j].contact.push(ToDoManagerApp.data.usersNocontact[i])
+					}
+				ToDoManagerApp.data.usersNocontact.splice(i, 1);
+			}
+		}
+		if(ToDoManagerApp.isOnLine()){
+			TDMServiceOnline.addcontact(id, item)
+			.success(function(){
+				$rootScope.isWorking = false;
+				success();
+			}).error(function(){
+				error();
+			});
+		}else{
+			TDMServiceOffline.addcontact(id, item, function(){
+				$rootScope.mustRefresh = true
+				success()
+			}, error);
+		}
+		
+	};
+
+	
 
 	///////////////////////////////////////////////////
 	/**
@@ -326,6 +346,33 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 			TDMServiceOffline.deleteSubToDo(_id, ToDoManagerApp.data, success, error);
 		}
 	};
+
+
+	// delete contact
+	this.deletecontact = function(idcontact, success, error){
+		$rootScope.isWorking = true;
+		//then all the remaining list
+		console.log('============='+idcontact)
+		for(var i=0; i < ToDoManagerApp.data.group.length; i++){
+			for(var j=0; j < ToDoManagerApp.data.group[i].contact.length; j++){
+				if(ToDoManagerApp.data.group[i].contact[j].id_user == idcontact){
+					ToDoManagerApp.data.usersNocontact.push(ToDoManagerApp.data.group[i].contact[j])
+					ToDoManagerApp.data.group[i].contact.splice(j, 1);
+					}
+			}
+		}
+		if(ToDoManagerApp.isOnLine()){
+			TDMServiceOnline.deletecontact(idcontact)
+			.success(function(){
+				success();
+			}).error(function(){
+				error();
+			});
+		}else{
+			TDMServiceOffline.deletecontact(idcontact, ToDoManagerApp.data,success, error)
+		}
+
+	}
 
 	///////////////////////////////////////////////////
 	/**

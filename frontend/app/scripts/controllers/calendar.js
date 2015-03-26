@@ -24,6 +24,7 @@ angular.module('ToDoManagerApp').controller('CalendarCtrl', function($scope, $wi
     });
     
     $scope.events = [];
+
     $scope.eventSources = $scope.events;
 
    /* $rootScope.$watch('accessData', function(accessData) {

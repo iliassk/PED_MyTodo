@@ -118,14 +118,18 @@ exports.listuserNocontact_id_get = function(req, res, jwt, next, connection, aut
 	});
 }
 
-exports.deletecontact_post = function(req, res, jwt, next, connection, auth){
-	var _id = auth.checkAuthorization(req, res, jwt);
+exports.deletecontact_delete = function(req, res, jwt, next, connection, auth){
 
-	chaine = "DELETE FROM CONTACTS WHERE id_user="+req.body.id+" AND id_owner="+_id
+			console.log('reusiiiiiiiiii'+req.params.id)	
+
+	chaine = "DELETE FROM CONTACTS WHERE id_contact="+req.params.id
 	connection.query(chaine,function(err, rows) {
 		if (err) {
 			console.log(err);
 			return next("Mysql error, check your query");
+		}else{
+			console.log('reusiiiiiiiiii')	
+				res.status(200).json(rows);
 		}
 	});
 
