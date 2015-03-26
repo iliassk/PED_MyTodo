@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="styles/map.css" />
     <link rel="stylesheet" href="styles/font-awesome/css/font-awesome.min.css" />
     <link rel="stylesheet" href="styles/bootstrap-superhero.css" />
+    <link href="styles/landing-page.css" rel="stylesheet">
     <link href="styles/simple-sidebar.css" rel="stylesheet" />
     <link href="styles/left_menu.css" rel="stylesheet" />
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&signed_in=true&libraries=places"></script>
@@ -40,7 +41,7 @@
       <div class="container-fluid">
         <div class="row">
             <div  id="header">
-                <div class="navbar navbar-default" id="header-default"role="navigation" ng-cloak>
+                <div ng-show="isAuthenticated()" class="navbar navbar-default" id="header-default"role="navigation" ng-cloak>
                     <div class="container-fluid">
                         <div class="navbar-header">
 

@@ -40,10 +40,8 @@
                     <accordion-group ng-repeat="listgroup in data.group | filter:query ">
                     <accordion-heading ng-click="isopen=!isopen" >
                     {{listgroup.name}}
-                    
-                    <!-- {{ total(listgroup) }} -->
                     <span class="badge" >{{ listgroup.contact.length }}</span>
-
+                    <a ng-click="status.open = !status.open"  class="pull-right" > <i class="glyphicon glyphicon-trash" ng-click="deletegroup(listgroup.id_group)"></i> </a>
                     
                     </accordion-heading>
                     <ul>
