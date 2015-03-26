@@ -39,7 +39,7 @@ angular.module('ToDoManagerApp')
   ////////////////Submit form /////////////////
   $scope.submit = function() {
      TDMService.updateTodo($scope.mytodo, function(res) {
-        $state.go('calendar')
+        //$state.go('calendar')
         //success
       }, function(err) {
         //fail
@@ -63,8 +63,8 @@ angular.module('ToDoManagerApp')
   $scope.$watch('files', function () {
         $scope.upload($scope.files);
     });
-   $scope.myfilepath = ''
-   $scope.upload = function (files) {
+    $scope.myfilepath = ''
+    $scope.upload = function (files) {
     if (files && files.length ) {
       if(files[0].size<=2000000){
         $scope.uploading = true;
@@ -238,7 +238,6 @@ angular.module('ToDoManagerApp')
   $scope.deleteTodo = function () {
     TDMService.deleteToDo(id, function(res) {
         //success
-        $state.go('calendar');
       }, function(err) {
         //fail
       });

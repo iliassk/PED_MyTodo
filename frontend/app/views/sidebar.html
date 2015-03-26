@@ -63,16 +63,16 @@
             </div>
             <div ng-include="'views/groupe.html'"></div>
             <div id="sharedToDo" style="visibility: hidden">
-                <div class="row" ng-switch on="data.shareListsWithToDo.length" ng-cloak>
+                <div class="row" ng-switch on="data.shareListsWithToDo.length-1" ng-cloak>
                     <ul ng-switch-when="0">
-                        <div class="alert alert-info text-center" role="alert">You have no shared list. Ask a contact to share todos with you!</div>
+                        <div class="alert alert-info text-center" role="alert">You have no shared list. Ask a contact to share a list of todos with you!</div>
                     </ul>
                     <accordion close-others="false">
                         <accordion-group is-open="status.open" ng-repeat="list in data.shareListsWithToDo | filter:query ">
                             <accordion-heading ng-click="">
                             <span style="background-color:{{list.color}}" class="badge">{{list.todos.length}}</span>
-                            <a class="accordion-toggle" ng-style="{color: '{{list.color}}'}">{{list.name}}</a>
-                                <a ng-click="status.open = !status.open" id="{{list.name}}InfoClick" class="pull-right" ui-sref="viewSharedToDoList({ id: {{list.id_list}} })"> <i class="glyphicon glyphicon-info-sign"></i> </a>
+                            <a class="accordion-toggle">{{list.name}}</a>
+                                <a ng-if="list.id_list" ng-click="status.open = !status.open" id="{{list.name}}InfoClick" class="pull-right" ui-sref="viewSharedToDoList({ id: {{list.id_list}} })"> <i class="glyphicon glyphicon-info-sign"></i> </a>
                             </accordion-heading>
                             <li ng-repeat="todo in list.todos | filter:query | orderBy:['-date', 'name'] " ng-hide="hidecompleted && (todo.completed == true) ">
                                 <a style="display: inline;" ui-sref="sharedtodo/({ id: {{todo.id_todo}} })" popover-trigger="mouseenter" popover-placement="up" popover-title="{{todo.description}}" popover="{{todo.date | date:'short'}}">{{todo.title}}</a>
@@ -80,6 +80,17 @@
                                 <a class="pull-right"><i style="display: inline; color:Gainsboro"  ng-click="onTodoModified(todo)" class="glyphicon glyphicon-ok ng-hide " ng-hide="todo.completed"></i></a>
                             </li>
                         </accordion-group>
+                       <!-- <accordion-group >
+                            <accordion-heading ng-click="">
+                            <span style="background-color:grey" class="badge">{{data.sharedTodo.length}}</span>
+                            <a class="accordion-toggle" >Other shared todos</a>
+                            </accordion-heading>
+                            <li ng-repeat="todo in data.sharedTodo | filter:query | orderBy:['-date', 'name'] " ng-hide="hidecompleted && (todo.completed == true) ">
+                                <a style="display: inline;" ui-sref="sharedtodo/({ id: {{todo.id_todo}} })" popover-trigger="mouseenter" popover-placement="up" popover-title="{{todo.description}}" popover="{{todo.date | date:'short'}}">{{todo.title}}</a>
+                                <a class="pull-right"><i style="display: inline; color:Chartreuse;"  ng-click="onTodoModified(todo)" class="glyphicon glyphicon-ok ng-show" ng-show="todo.completed"></i></a>
+                                <a class="pull-right"><i style="display: inline; color:Gainsboro"  ng-click="onTodoModified(todo)" class="glyphicon glyphicon-ok ng-hide " ng-hide="todo.completed"></i></a>
+                            </li>
+                        </accordion-group>-->
                     </accordion>
                 </div>
             </div>

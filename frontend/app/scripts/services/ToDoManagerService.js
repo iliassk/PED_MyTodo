@@ -73,6 +73,7 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 		if(ToDoManagerApp.isOnLine()){
 			TDMServiceOnline.fetchAll(function(_data){
 				ToDoManagerApp.data = _data;
+				console.log(_data.shareListsWithToDo)
 				callback();
 			});
 		}else{
@@ -192,7 +193,7 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 		        //$rootScope.accessData = false;
 		        //$rootScope.accessData = true;
 				$rootScope.refreshCalendarAfterAddTodo = true
-        		$rootScope.refreshCalendar = true
+        		//$rootScope.refreshCalendar = true
 				$rootScope.mustRefresh = true
 				$rootScope.isWorking = false
 				success();
@@ -314,6 +315,8 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 		if(ToDoManagerApp.isOnLine()){
 			TDMServiceOnline.deleteToDo(_id)
 			.success(function(){
+				$rootScope.refreshCalendarAfterAddTodo = true
+				$rootScope.mustRefresh = true
 				success();
 			}).error(function(){
 				error();
@@ -414,17 +417,53 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 	///////////////////////////////////////////////////
 	//Update todo
 	this.updateTodo = function(todo, success, error) {
-		$rootScope.isWorking = true;
+		$rootScope.isWorking = true
 
 		if(ToDoManagerApp.isOnLine()){
 			TDMServiceOnline.updateTodo(todo)
 			.success(function(){
-				success();
+
+				$rootScope.refreshCalendarAfterAddTodo = true
+				$rootScope.mustRefresh = true
+				$rootScope.isWorking = false
+				success()
 			}).error(function(){
-				error();
-			});
+				error()
+			})
 		}else{
-			TDMServiceOffline.updateTodo(todo, ToDoManagerApp.data, success, error);
+
+			//todo.id
+			//get Todo
+			//parcours tableau pour retrouver dans lequel de liste
+			//supprimer si id_list change
+			//et deplacer sinon rien a faire
+			var finish = false
+			for(var i=0; i < ToDoManagerApp.data.listsWithToDo.length; i++){
+
+				for(var j=0; j < ToDoManagerApp.data.listsWithToDo[i].todos.length; j++){
+					//j'ai trouvé mon todo modifié
+					if(ToDoManagerApp.data.listsWithToDo[i].todos[j].id_todo == todo.id_todo){
+						if(ToDoManagerApp.data.listsWithToDo[i].id_list == todo.id_list)
+							finish = true
+						else{
+							ToDoManagerApp.data.listsWithToDo[i].todos.splice(j, 1)
+							ToDoManagerApp.getAList(todo.id_list).todos.push(todo)
+							finish = true
+						}
+					}
+				}
+				if(finish) break
+			}
+
+
+
+			TDMServiceOffline.updateTodo(todo, ToDoManagerApp.data, function(){
+
+				$rootScope.refreshCalendarAfterAddTodo = true
+				$rootScope.mustRefresh = true
+				$rootScope.isWorking = false
+				success()
+			}, error)
 		}
 	};
 
