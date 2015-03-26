@@ -112,6 +112,18 @@ angular.module('ToDoManagerApp').controller('ViewToDoList', function($scope, $st
 		});
 	};
 
+	$scope.deleteTodoList = function(list, row){
+		console.log('[deleteTodoList]');
+
+		TDMService.deletetodolist(list, function() {
+			//sucess
+			$state.go('calendar');
+
+		}, function() {
+			//fail
+		});
+	};
+
 	$scope.addToCalendar = function(type, todo){
 		var date = '20140510/20150514';
 		var url = '';

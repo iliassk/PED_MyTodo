@@ -48,6 +48,14 @@ angular.module('ToDoManagerApp').controller('ListTodoListCtrl', function($scope,
 			alert('warning', 'Oops!', 'delete failed');
 		});
 	};
+
+	$scope.deletecontact = function(obj){
+		TDMService.deletecontact(obj, function() {
+			//success
+		}, function() {
+			//fail
+		})
+	};
 	
 	$scope.submitgroup = function(name){
 

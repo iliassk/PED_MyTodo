@@ -5,6 +5,7 @@ angular.module('ToDoManagerApp').service('TDMServiceOffline', function ($http, A
 	var ToDoManagerApp = this;
 
 	ToDoManagerApp.uid = 0;
+	ToDoManagerApp.SYM = "-";
 
 	//done
 	// A appeler DES que vous voulez faire une modif sur un élément des données : ajout, modif, supression, ...
@@ -36,7 +37,7 @@ angular.module('ToDoManagerApp').service('TDMServiceOffline', function ($http, A
 		$rootScope.isWorking = true;
 		ToDoManagerApp.uid += 1;
 		var list = {
-			id_list : '#' + ToDoManagerApp.uid,
+			id_list : ToDoManagerApp.SYM + ToDoManagerApp.uid,
 			name : name, 
 			description : description,
 			color : color
@@ -58,7 +59,7 @@ angular.module('ToDoManagerApp').service('TDMServiceOffline', function ($http, A
 		$rootScope.isWorking = true;
 
 		ToDoManagerApp.uid += 1;
-		_mytodo.id_todo = "#" + ToDoManagerApp.uid;
+		_mytodo.id_todo = ToDoManagerApp.SYM + ToDoManagerApp.uid;
 
 		for(var i=0; i < data.listsWithToDo.length; i++){
 			if(data.listsWithToDo[i].id_list == _mytodo.id_list){
@@ -86,6 +87,16 @@ angular.module('ToDoManagerApp').service('TDMServiceOffline', function ($http, A
 		$rootScope.isWorking = false;
 		error();
 	};
+
+	//ADD contact to group
+	this.addcontact = function(id, item) {
+		console.offline('addcontact');
+		$rootScope.isWorking = true;
+		alert('warning', 'OffLine error', 'You cannot create object while in offline mode !!');
+		$rootScope.isWorking = false;
+		error();
+	};
+	
 
 	///////////////////////////////////////////////////
 	/**
@@ -119,6 +130,16 @@ angular.module('ToDoManagerApp').service('TDMServiceOffline', function ($http, A
 		ToDoManagerApp.save(data);
 		$rootScope.isWorking = false;
 		success();
+	};
+
+	// delete contact
+
+	this.deletecontact = function(idcontact){
+		console.offline('delete contact');
+		$rootScope.isWorking = true;
+		alert('warning', 'OffLine error', 'You cannot create object while in offline mode !!');
+		$rootScope.isWorking = false;
+		error();
 	};
 
 	///////////////////////////////////////////////////

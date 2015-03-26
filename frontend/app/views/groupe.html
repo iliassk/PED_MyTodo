@@ -26,8 +26,9 @@
                         <tr> 
                         <td><img class="empty_avatar" ng-src="{{listcontact.avatar_path}}"/></td>
                         <td width="100%"> {{listcontact.username}}</td>  
-                        <td width="100%"><a data-my-directive data-popover-title="Settings" data-popover-template="settings.html" data-toggle="popover" data-popover-placement="left">
-                        <i class="glyphicon glyphicon-option-vertical" aria-hidden="true"></i>
+                        <td width="100%">
+                        <a ng-click="deletecontact(contact.id_user)">
+                        <i class="glyphicon glyphicon-trash" aria-hidden="true"></i>
                         </a></td>
                         </tr>
                         </tbody>
@@ -39,10 +40,8 @@
                     <accordion-group ng-repeat="listgroup in data.group | filter:query ">
                     <accordion-heading ng-click="isopen=!isopen" >
                     {{listgroup.name}}
-                    
-                    <!-- {{ total(listgroup) }} -->
                     <span class="badge" >{{ listgroup.contact.length }}</span>
-
+                    <a ng-click="status.open = !status.open"  class="pull-right" > <i class="glyphicon glyphicon-trash" ng-click="deletegroup(listgroup.id_group)"></i> </a>
                     
                     </accordion-heading>
                     <ul>
@@ -53,8 +52,8 @@
                           <td><img class="empty_avatar" ng-src="{{listcontact.avatar_path}}"/></td>
                         <td width="100%">{{listcontact.username}} </td>
                         <td width="100%">
-                         <a data-my-directive bs-popover rm-popovers data-popover-title="Settings" data-popover-template="settings.html" data-popover-placement="left" >
-                        <i class="glyphicon glyphicon-option-vertical" aria-hidden="true"></i>
+                         <a ng-click="deletecontact(listcontact.id_user)">
+                        <i class="glyphicon glyphicon-trash" aria-hidden="true"></i>
                         </a>
 
                         </td>
@@ -66,13 +65,6 @@
                       
                     </accordion-group>
                     </accordion>
-                    <div id="addgroup" style="visibility: hidden; height:0px;" >
-                    <form role="form" >
-                    <input type="text" class="form-control" ng-model="namegroup" placeholder="Group's name"/>
-                    <button type="submit" class="btn btn-primary" ng-click="submitgroup(namegroup)">Add</button>
-                    <a onclick="groupe('hide')">Cancel {{test}}</a>
-                    </form>
-                     </div> 
                      <li>
                         <a onclick="groupe('show')"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add a group</a>
                     </li>
@@ -83,16 +75,9 @@
                 <div id="addgroup" style="visibility: hidden; height:0px;" >
                     <form role="form" >
                     <input type="text" class="form-control" ng-model="namegroup" placeholder="Group's name"/>
-                    <button type="submit" class="btn btn-primary" ng-click="submitgroup(namegroup)">Add</button>
+                    <button type="submit" class="btn btn-primary" ng-click="submitgroup(namegroup)" onclick="groupe('hide')">Add</button>
                     <a onclick="groupe('hide')">Cancel {{test}}</a>
                     </form>
                      </div> 
 
                 </div>
-
-<!-- Latest compiled and minified JavaScript -->
-
-<script type="text/ng-template" id="settings.html">
-        <a ui-sref="todolist">Delete</a></br>
-        <span ng-include="mainFormTmpl" onload="loaded()"></span>
-</script>

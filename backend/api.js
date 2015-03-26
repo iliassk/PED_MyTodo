@@ -153,8 +153,8 @@ console.log('debut user')
 console.log('fin user')	
 });
 
-app.post('/deletecontact', function(req, res, next) {	
-	contact.deletecontact_post(req, res, jwt, next, connection, auth)	
+app.delete('/deletecontact/:id', function(req, res, next) {	
+	contact.deletecontact_delete(req, res, jwt, next, connection, auth)	
 });
 
 app.get('/listuserNocontact/:id', function(req, res, next) {	
@@ -180,9 +180,7 @@ app.put('/todo/:id', function(req, res, next) {
 });
 
 app.put('/todos', function(req, res, next) {
-	console.log('debut todos')
 	todo.todos_put(req, res, next, connection, auth)
-	console.log('fin todos')
 });
 
 

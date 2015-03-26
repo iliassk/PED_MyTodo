@@ -10,11 +10,6 @@
 
 angular.module('ToDoManagerApp').controller('contactCtrl', function ($scope, CMService, TDMService, $rootScope){
 
-	$scope.data = TDMService.data;
-	
-	//$scope.users => $scope.data.contact
-	 //$scope.groups = $scope.data.group
-	// 
 
 	$rootScope.$watch('accessData', function(accessData) {
         console.log("accessData  ViewToDoList")
@@ -26,9 +21,12 @@ angular.module('ToDoManagerApp').controller('contactCtrl', function ($scope, CMS
     });
 
 	$scope.addContact=function(id, item){
-		CMService.addContact(id, item).success(function() {
-			$rootScope.mustRefresh = true
-		})
+		TDMService.addContact(id, item, function() {
+			//success
+		}, function() {
+			//fail
+		}) 	
+
 	}
  
 

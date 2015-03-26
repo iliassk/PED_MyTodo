@@ -61,7 +61,8 @@ angular.module('ToDoManagerApp', ['ui.router', 'ui.calendar', 'ngAnimate', 'ui.b
         }
         TDMService.markAsOnLine()
       } else if($rootScope.online == false){
-        TDMService.markAsOffLine()
+        if($auth.isAuthenticated())
+          TDMService.markAsOffLine()
         $modal.open({
           templateUrl: 'modalOffLine.html',
           controller: 'OffLineCtrl',
@@ -119,9 +120,9 @@ angular.module('ToDoManagerApp', ['ui.router', 'ui.calendar', 'ngAnimate', 'ui.b
       }
     });
   })
-  .controller('OffLineCtrl', function($scope, $modalInstance, offline, $state, TDMService, $rootScope) {
+  .controller('OffLineCtrl', function($scope, $modalInstance, offline, $state, TDMService, $rootScope, $auth) {
 
-    $scope.offlineFlag = offline
+    $scope.isLogged = $auth.isAuthenticated()
     $scope.showProgress = false
     $scope.percent = 0
 
@@ -148,6 +149,11 @@ angular.module('ToDoManagerApp', ['ui.router', 'ui.calendar', 'ngAnimate', 'ui.b
       $rootScope.canFetchData = true
       $modalInstance.close()
     };
+
+    $scope.logIn = function(){
+      $modalInstance.close()
+      $state.go('login')
+    }
 
     $scope.cancel = function() {
       $rootScope.canFetchData = false
