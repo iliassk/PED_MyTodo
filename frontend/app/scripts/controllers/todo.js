@@ -56,6 +56,10 @@ angular.module('ToDoManagerApp')
 
   ////////////////Attachment file /////////////////
  
+    $scope.openAttachmentUrl = function() {
+     window.open($scope.mytodo.attachment_path,'_blank');
+  }
+
   $scope.$watch('files', function () {
         $scope.upload($scope.files);
     });
@@ -165,7 +169,9 @@ angular.module('ToDoManagerApp')
 
   ////////////////Localization /////////////////
 
-  $scope.init = function(){ 
+   $scope.showMap = function(){ 
+    $scope.isMapCollapsed = false
+    
     getAdresse(['map-canvas', 'input-address', 'type-selector'], function(position, address){
       $scope.mytodo.localization = address;
     }, function(msg){
@@ -173,7 +179,9 @@ angular.module('ToDoManagerApp')
     });
   };
 
-  $scope.init();
+  $scope.showMapButton = function(place){
+        return place == "" || place == undefined || place == null
+    }
 
   ////////////////Delete todo /////////////////
 
@@ -206,7 +214,7 @@ angular.module('ToDoManagerApp')
         $scope.uploading = false;
         $scope.mytodo = TDMService.getAToDo($stateParams.id);
         
-        $scope.isMapCollapsed = $scope.mytodo.localization == "" ? true : false;
+        //$scope.isMapCollapsed = $scope.mytodo.localization == "" ? true : false;
 
         $scope.data = TDMService.data;
         $scope.toggleMin();

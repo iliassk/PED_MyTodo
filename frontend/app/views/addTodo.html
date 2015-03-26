@@ -34,7 +34,7 @@
 
         <timepicker ng-model="mytodo.date" ng-change="changed()" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></timepicker>
 
-        <h3><i class="glyphicon glyphicon-paperclip"></i> Attachment</h3><small>Maximal file size is 2 MB!</small> <div class='input-group'>
+        <h3><i class="glyphicon glyphicon-paperclip"></i> Attachment</h3><small>Maximal of one file of 2 MB!</small> <div class='input-group'>
          <div class="button" ng-file-select ng-model="files" ng-multiple="false"><button type="button" class="btn btn-info">Select File</button></div>
 
          </div>
@@ -47,7 +47,6 @@
     <div class="col-lg-6">
 
         <h3><i class="glyphicon glyphicon-globe"></i>Location</h3><!--small>Add an address!</small-->
-        
         <a class="btn btn-info" ng-show="isMapCollapsed" ng-click="showMap()">Add a location</a>
         <div collapse="isMapCollapsed">
             <input ng-model="mytodo.localization" id="input-address" class="controls" type="text" placeholder="Enter a location">

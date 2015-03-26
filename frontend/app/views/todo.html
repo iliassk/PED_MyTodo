@@ -43,9 +43,9 @@
                     <timepicker ng-model="mytodo.date" ng-change="changed()" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></timepicker>
                 </fieldset>
                 <div class='input-group'>
-                    <h4> <button type="button" class="btn btn-primary" ng-disabled="isNotEditing" ng-click="mytodo.completed = !mytodo.completed" style="cursor: pointer"> <i class="glyphicon glyphicon-ok ng-show" ng-show="mytodo.completed">Done</i><i class="glyphicon glyphicon-remove ng-hide" ng-hide="mytodo.completed">NotDone</i></button> </h4>
+                    <h4> <button type="button" class="btn btn-primary" ng-disabled="isNotEditing" ng-click="mytodo.completed = !mytodo.completed" style="cursor: pointer"><div ng-show="mytodo.completed"><i class="glyphicon glyphicon-ok ng-show" ng-show="mytodo.completed"> </i>Done!</div><div ng-hide="mytodo.completed"><i class="glyphicon glyphicon-remove ng-hide" ng-hide="mytodo.completed"> </i>Not Done Yet!</div></button> </h4>
                 </div>
-                <h3><i class="glyphicon glyphicon-paperclip"></i> Attachment</h3><small>Maximal file size is 2 MB!</small>
+                <h3><i class="glyphicon glyphicon-paperclip"></i> Attachment</h3><small>Maximal of one file of 2 MB!</small>
                 <div class='input-group'>
                      <div ng-disabled="isNotEditing" class="button" ng-file-select ng-model="files" ng-multiple="false"><button  ng-hide="mytodo.attachment_path || isNotEditing" type="button" class="btn btn-info">Select File</button><button  ng-show="mytodo.attachment_path && !isNotEditing" type="button" class="btn btn-info">Change File</button></div>
                      <div ng-show="isNotEditing" class="alert alert-info" role="alert">You can add or change an attachment if you edit the todo.</div>
@@ -64,11 +64,15 @@
 
 
                 <h3><i class="glyphicon glyphicon-globe"></i>Location</h3>
-                <a class="btn btn-info" ng-show="isMapCollapsed" ng-click="showMap()">Add a location</a>
+                <a class="btn btn-info" ng-show="isMapCollapsed" ng-click="showMap()">Show location here</a>
                 <div collapse="isMapCollapsed">
                     <input ng-disabled="isNotEditing" ng-model="mytodo.localization" id="input-address" class="controls" type="text" placeholder="Enter a location">
                     <div id="map-canvas"></div>
                 </div>
+
+                <div class="input-group">
+               <a ng-show="mytodo.localization" target="_blank" title="Show on maps" ng-hide="showMapButton(mytodo.localization)" class="btn btn-sm btn-info" href="https://maps.google.com/?q={{mytodo.localization}}"><i class="glyphicon glyphicon-map-marker" ></i>Go to Google Map</a>
+           </div>
 
                 <h3><i class="glyphicon glyphicon-list"></i> Subtodos</h3>
                 <a class="btn btn-info" ng-disabled="isNotEditing" ng-click="isCollapsed = !isCollapsed">Manage subtodos</a>

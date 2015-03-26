@@ -15,9 +15,6 @@ angular.module('ToDoManagerApp')
             }
     });
   ////////////////Submit form /////////////////
-  $scope.data = TDMService.data;
-
-
 
   $scope.mytodo = {title: '', description: '', priority: '', context: '', date: '', completed: false, id_owner: '', url: '', attachment_path:'', localization: '', id_list:'', id_category:'', subtodos: new Array()};
   $scope.subtodo = {title: '', description: ''}

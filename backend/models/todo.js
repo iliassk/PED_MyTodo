@@ -375,19 +375,37 @@ exports.getSharedData = function(req, res, next, connection, share){
 				}
 			});
 		}else if(content.type == "todo"){
-			connection.query('SELECT * FROM TODO WHERE id_todo = ?', data.id_reference, function(err, rows) {
+			var result = new Array();
+		   	connection.query('SELECT * FROM TODO WHERE id_todo = ?', data.id_reference , function(err, rows) {
 				if (err) {
 					console.log(err);
-					return next("Mysql error on connection, check your query");
+					return next("Mysql error on connection, check your query in todo");
 				}
 
 				if(rows.length == 0){
-					return res.status(401).json({message: "Url non fonctionnelle !!"});
+					return res.status(401).send({message: 'Error todo does not exist !'});
+				}
+				if(rows.length > 1){
+					return res.status(401).send({message: 'Error todo with more than twice this id !'});
 				}
 
-				return res.status(200).send(rows);
-			});
-		}else
+				if(rows.length == 1){
+					result = rows
+					connection.query('SELECT * FROM SUBTODO WHERE id_todo = ?', data.id_reference , function(err, subtodo) {
+							if (err) {
+								console.log(err);
+								return next("Mysql error on connection, check your query in subtodo");
+							}
+
+						result[0].subtodos = subtodo;
+						//pour gérer l'asynchrone on ne sait pas quand les requetes sont finies				
+
+		        	res.status(200).json(result);
+		            //return res.status(200).send(rows);
+		        	});
+				}
+			})
+			}else
 			return res.status(401).json({message: "Url non fonctionnelle !!"});
 	});
 }

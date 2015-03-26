@@ -93,7 +93,7 @@ angular.module('ToDoManagerApp').controller('ViewToDoList', function($scope, $st
 		var modalInstance = $modal.open({
 	      templateUrl: 'share_data.html',
 	      controller: 'ShareModalCtrl',
-	     // size: 'sm',
+	      size: 'lg',
 	      resolve: {
 	        url: function () {
 	          return _url;
