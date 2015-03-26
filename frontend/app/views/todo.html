@@ -47,8 +47,16 @@
                 </div>
                 <h3><i class="glyphicon glyphicon-paperclip"></i> Attachment</h3><small>Maximal file size is 2 MB!</small>
                 <div class='input-group'>
-                    <input ng-disabled="isNotEditing" id="input-file" type="file" multiple="false">
+                     <div ng-disabled="isNotEditing" class="button" ng-file-select ng-model="files" ng-multiple="false"><button  ng-hide="mytodo.attachment_path || isNotEditing" type="button" class="btn btn-info">Select File</button><button  ng-show="mytodo.attachment_path && !isNotEditing" type="button" class="btn btn-info">Change File</button></div>
+                     <div ng-show="isNotEditing" class="alert alert-info" role="alert">You can add or change an attachment if you edit the todo.</div>
+
+
                 </div>
+                <progressbar ng-show="uploading" class="progress-striped active" animate="true" max="100" value="progressPercentage" type="{{type}}"><i>{{progressPercentage}}/ 100</i></progressbar>
+                <button class="btn btn-success" type="button"  ng-show="mytodo.attachment_path" ng-click="openAttachmentUrl()"> <i class="glyphicon glyphicon-file"></i> Download attachment</button>
+
+
+
                 <h3><i class="glyphicon glyphicon-link"></i> Link</h3><small>Add an optional link!</small>
                 <input ng-disabled="isNotEditing" type="text" class="form-control" placeholder="Url" ng-model="mytodo.url">
             </div>

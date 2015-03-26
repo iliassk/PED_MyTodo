@@ -176,7 +176,10 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 				error();
 			});
 		}else{
-			TDMServiceOffline.todolist(name, description, color, ToDoManagerApp.data, success, error);
+			TDMServiceOffline.todolist(name, description, color, ToDoManagerApp.data, function(){
+				$rootScope.mustRefresh = true
+				success()
+			}, error);
 		}
 	};
 
@@ -186,16 +189,19 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 		if(ToDoManagerApp.isOnLine()){
 			TDMServiceOnline.addTodo(_mytodo)
 			.success(function(){
-		        $rootScope.accessData = false;
-		        $rootScope.accessData = true;
-				$rootScope.mustRefresh = true;
-				$rootScope.isWorking = false;
+		        //$rootScope.accessData = false;
+		        //$rootScope.accessData = true;
+				$rootScope.mustRefresh = true
+				$rootScope.isWorking = false
 				success();
 			}).error(function(){
 				error();
 			});
 		}else{
-			TDMServiceOffline.addTodo(_mytodo, ToDoManagerApp.data, success, error);
+			TDMServiceOffline.addTodo(_mytodo, ToDoManagerApp.data, function(){
+				$rootScope.mustRefresh = true
+				success()
+			}, error);
 		}	
 	};
 
@@ -354,12 +360,16 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 	//updates multiple todos
 	this.updateTodos = function(data, success, error) {
 		$rootScope.isWorking = true;
+		var todo = ToDoManagerApp.getAToDo(data.id)
+		todo.date = data.nvtime
 
 		if(ToDoManagerApp.isOnLine()){
 			TDMServiceOnline.updateTodos(data)
 			.success(function(){
+				$rootScope.isWorking = false
 				success();
 			}).error(function(){
+				$rootScope.isWorking = false
 				error();
 			});
 		}else{

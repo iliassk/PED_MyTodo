@@ -23,17 +23,34 @@ angular.module('ToDoManagerApp', ['ui.router', 'ui.calendar', 'ngAnimate', 'ui.b
     $rootScope.isWorking = false
     $rootScope.canFetchData = false
 
-    $rootScope.online = true
+    //$rootScope.online = true
     //$rootScope.online = navigator.onLine
 
+    $http.get(API_URL + 'connected')
+
+      .success(function(response) {
+        if (response.status) {
+          $rootScope.online = true;
+          console.log('Online mode !');
+        }
+      })
+
+      .error(function(error) {
+        $rootScope.online = false;
+        console.log('Offline mode !');
+      })
+
     $rootScope.$watch('online', function() {
-      if ($rootScope.online) {
+      if ($rootScope.online == true) {
         console.log("destection online")
+        
         if (TDMService.hasBeenOffLine()) {
           $rootScope.accessData = false
           $modal.open({
             templateUrl: 'modalOffLine.html',
             controller: 'OffLineCtrl',
+            backdrop: 'static',
+            keyboard: false,
             resolve: {
               offline: function() {
                 return false;
@@ -44,11 +61,14 @@ angular.module('ToDoManagerApp', ['ui.router', 'ui.calendar', 'ngAnimate', 'ui.b
           $rootScope.canFetchData = true
         }
         TDMService.markAsOnLine()
-      } else {
-        TDMService.markAsOffLine()
+      } else if($rootScope.online == false){
+        if($auth.isAuthenticated())
+          TDMService.markAsOffLine()
         $modal.open({
           templateUrl: 'modalOffLine.html',
           controller: 'OffLineCtrl',
+          backdrop: 'static',
+          keyboard: false,
           resolve: {
             offline: function() {
               return true;
@@ -58,7 +78,7 @@ angular.module('ToDoManagerApp', ['ui.router', 'ui.calendar', 'ngAnimate', 'ui.b
       }
     });
 
-    /*$interval(function() {
+    $interval(function() {
       $http.get(API_URL + 'connected')
 
       .success(function(response) {
@@ -72,7 +92,7 @@ angular.module('ToDoManagerApp', ['ui.router', 'ui.calendar', 'ngAnimate', 'ui.b
         $rootScope.online = false;
         console.log('Offline mode !');
       })
-    }, 1000);*/
+    }, 1000);
 
     /*if ($rootScope.online == false) {
       
@@ -101,9 +121,9 @@ angular.module('ToDoManagerApp', ['ui.router', 'ui.calendar', 'ngAnimate', 'ui.b
       }
     });
   })
-  .controller('OffLineCtrl', function($scope, $modalInstance, offline, $state, TDMService, $rootScope) {
+  .controller('OffLineCtrl', function($scope, $modalInstance, offline, $state, TDMService, $rootScope, $auth) {
 
-    $scope.offlineFlag = offline
+    $scope.isLogged = $auth.isAuthenticated()
     $scope.showProgress = false
     $scope.percent = 0
 
@@ -130,6 +150,11 @@ angular.module('ToDoManagerApp', ['ui.router', 'ui.calendar', 'ngAnimate', 'ui.b
       $rootScope.canFetchData = true
       $modalInstance.close()
     };
+
+    $scope.logIn = function(){
+      $modalInstance.close()
+      $state.go('login')
+    }
 
     $scope.cancel = function() {
       $rootScope.canFetchData = false

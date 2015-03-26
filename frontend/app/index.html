@@ -69,8 +69,10 @@
 
                     <ul class="nav navbar-nav navbar-right" ng-cloak>
 
-                        <li ng-show="isWorking" >
-                            <i class="fa fa-spinner fa-pulse fa-3x"></i>
+                        <li ng-show="isWorking" title="Loading data" style="color:white;margin-top:5px">
+                            <button class="btn btn-sm btn-link">
+                                <i class="fa fa-spinner fa-pulse fa-3x"></i>
+                            </button>
                         </li>
                         <li ng-show="isAuthenticated()" >
                             <a ui-sref="add/todo" id="addTodoNav" class="btn btn-success navbar_button">
@@ -89,7 +91,7 @@
                            </a>
                         </li>
 
-                        <li ng-hide="isAuthenticated()" ui-sref-active="active">
+                        <li ng-show="!isAuthenticated() && online == true" ui-sref-active="active">
                             <a ui-sref="login" class="btn btn-link"> <span class="glyphicon glyphicon-user" aria-hidden="true"></span> Login</a>
                         </li>
                         <li ng-show="isAuthenticated()" ui-sref-active="active">
@@ -211,29 +213,37 @@
     <script src="scripts/controllers/calendar.js"></script>
     <script src="scripts/controllers/sharedViewToDoList.js"></script>
 
-
     <!-- endbuild -->
-
-    <script type="text/ng-template" id="modalOffLine.html">
+    <script type="text/ng-template" id="modalOffLine.html" >
         <div class="modal-header">
             <h3 class="modal-title">Mode offline</h3>
         </div>
         <div class="modal-body">
-            <div ng-show="offlineFlag">
-            <p>Vous venez de passer en mode offline. N'étant plus connecté au réseau les modifications que vous réaliserez ne seront synchronisées avec le serveur uniquement à votre prochaine connexion.
-            Certaines fonctionnalitées de l'application sont désactivées lors de ce mode : </p>
-            <ul>
-                <li>Utilisation de la carte google</li>
-                <li>Partage de todo</li>
-                <li>Suppression de todo</li>
-                <li>Ajout de todo</li>
-                <li>Accès aux todos partagés</li>
-                <li>Accès aux contacts</li>
-            </ul>
-
-            <p>IMPORTANT : Si vous modifiez vos données sur cette ordinateur et accédez à votre compte sur un autre PC avant la synchronisation de celui-ci alors vous pourriez perdre une partie de vos données. Pour lancer la synchronisation il vous suffit d'acceder au site avec une connexion internet.</p>
+            <!--Pas connecté -->
+            <div ng-show="!isLogged && !online">
+                <p>Your are not connected! In order to use the offline mode you need to be connected! Please connect yourself again when your connection is back and you will be able to access your data in offline mode. This functionnality prevent you from display your secret data when in offline mode.
+                </p>
             </div>
-            <div ng-hide="offlineFlag">
+            <!--OFFline et connecté-->
+            <div ng-show="!online && isLogged">
+                <p>Vous venez de passer en mode offline. N'étant plus connecté au réseau les modifications que vous réaliserez ne seront synchronisées avec le serveur uniquement à votre prochaine connexion.
+                Certaines fonctionnalitées de l'application sont désactivées lors de ce mode : </p>
+                <ul>
+                    <li>Utilisation de la carte google</li>
+                    <li>Partage de todo</li>
+                    <li>Accès aux todos partagés</li>
+                    <li>Accès aux contacts</li>
+                </ul>
+
+                <p>IMPORTANT : Si vous modifiez vos données sur cette ordinateur et accédez à votre compte sur un autre PC avant la synchronisation de celui-ci alors vous pourriez perdre une partie de vos données. Pour lancer la synchronisation il vous suffit d'acceder au site avec une connexion internet.</p>
+            </div>
+            <!--Pas connecté et en ligne -->
+            <div ng-show="!isLogged && online">
+                <p>Congratulation!! You just reconnect to the network. Feel free to loggin to access your todo manager again!!
+                </p>
+            </div>
+            <!--Online et connecté-->
+            <div ng-show="online && isLogged">
                 <p>Vous venez de vous reconnecter après avoir utilisé le mode offline. Voulez vous synchroniser vos données avec le serveur ?</p>
                 <div class="progress" ng-show="showProgress">
                     <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: {{percent}}%">
@@ -242,12 +252,15 @@
                 </div>
                 <p ng-show="showProgress">Synchronisation en cours : {{percent}}% </p>
             </div>
+
         </div>
         <div class="modal-footer">
-            <button class="btn btn-primary" ng-show="offlineFlag" ng-click="continue()">Continue offline</button>
-            <button class="btn btn-warning" ng-show="offlineFlag" ng-click="cancel()">Leave</button>
-            <button class="btn btn-primary" ng-hide="offlineFlag" ng-click="synchronisation()">Synchroniser</button>
-            <button class="btn btn-warning" ng-hide="offlineFlag" ng-click="abandonMyData()">Abandonner vos données</button>
+            <button class="btn btn-primary" ng-show="!online && isLogged" ng-click="continue()">Continue offline</button>
+            <button class="btn btn-warning" ng-show="!online && isLogged" ng-click="cancel()">Leave</button>
+            <button class="btn btn-primary" ng-show="online && isLogged" ng-click="synchronisation()">Synchroniser</button>
+            <button class="btn btn-warning" ng-show="online && isLogged" ng-click="abandonMyData()">Abandonner vos données</button>
+
+            <button class="btn btn-warning" ng-show="!isLogged && online" ng-click="logIn()">Loggin</button>
         </div>
     </script>
 

@@ -16,7 +16,11 @@ angular.module('ToDoManagerApp').controller('HeaderCtrl', function($scope, $auth
     console.log("REFRESH SIDE BAR !!! : " + mustRefresh)
     if(mustRefresh == true){
       TDMService.forceRefresh(function(){
+
         $scope.data = TDMService.data;
+        $rootScope.accessData = false
+        $rootScope.accessData = true
+        $rootScope.refreshCalendar = true
       });
      $rootScope.mustRefresh = false
     }
@@ -34,6 +38,7 @@ angular.module('ToDoManagerApp').controller('HeaderCtrl', function($scope, $auth
         TDMService.refresh(function(){
           console.log("==== refresh header.js ====")
 
+          $rootScope.accessData = false
           $rootScope.accessData = true
           $scope.data = TDMService.data;
       });
@@ -51,7 +56,6 @@ angular.module('ToDoManagerApp').controller('HeaderCtrl', function($scope, $auth
 
 
   ////////////////Attachment file /////////////////
-  angular.element('#input-file').fileinput({showCaption: false,showUpload: false, maxFileSize:2000}); 
   
     $scope.onFileSelect = function($files) {
     //$files: an array of files selected, each file has name, size, and type. 

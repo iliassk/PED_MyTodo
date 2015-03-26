@@ -102,8 +102,7 @@
 		<div class="btn-group" role="group">
 			<button type="button" ng-click="hideCompleted()" class="btn btn-sm btn-info" data-toggle="button">Hide <span style="color:Chartreuse " class="glyphicon glyphicon-ok"></span></button>
 			<button type="button" ng-show="online" ng-click="shareList(list)" class="btn btn-sm btn-info">Share <span class="glyphicon glyphicon-share"></span></button>
-			<button ng-click="openShareListInfo(list)" type="button" class="btn btn-sm btn-warning"><i class="glyphicon glyphicon-user"></i></button>
-			<button ng-click="deleteTodoList(list)" type="button" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-trash"></i></button>
+			<button ng-click="openShareListInfo(list)" type="button" class="btn btn-sm btn-warning">Share <i class="glyphicon glyphicon-user"></i></button>
 		</div>
 	</form>
 
@@ -131,21 +130,23 @@
 			<td>{{row.context}}</td>
 			<td><span title="{{row.date | date:'medium'}}">{{showDate(row.date)}}</span></td>
 			<td>
-				<a target="_blank" title="Show on maps" ng-hide="showMapButton(row.localization)" class="btn btn-sm btn-info" href="https://maps.google.com/?q={{row.localization}}"><i class="glyphicon glyphicon-map-marker" ></i></a>
+				<div class="pull-right">
+					<a target="_blank" title="Show on maps" ng-hide="showMapButton(row.localization)" class="btn btn-sm btn-info" href="https://maps.google.com/?q={{row.localization}}"><i class="glyphicon glyphicon-map-marker" ></i></a>
 
-				<span ng-show="online" class="dropdown" dropdown>
-			      <a href title="Add to calendar" class="btn btn-sm btn-primary" class="dropdown-toggle" dropdown-toggle>
-			        <i class="glyphicon glyphicon-calendar" ></i><span class="caret"></span>
-			      </a>
-			      <ul class="dropdown-menu">
-			       	<li><a ng-click="addToCalendar('google', row)">Google</a></li>
-					<li><a ng-click="addToCalendar('hotmail', row)">Hotmail</a></li>
-			      </ul>
-			    </span>
-			    
-				<button ng-click="openShareTodoInfo(row)" type="button" class="btn btn-sm btn-warning"><i class="glyphicon glyphicon-user"></i></button>
-    			<a ng-show="online" title="Share" id="shareOutSiderToDo" class="btn btn-sm btn-info" ng-click="shareTodo(row)"><i class="glyphicon glyphicon-share" ></i></a>
-				<button type="button" title="Delete" id="deleteToDoButtonList" class="btn btn-sm btn-danger" ng-click="deleteTodo(row.id_todo,row)"><i class="glyphicon glyphicon-trash" ></i></button>
+					<span ng-show="online" class="dropdown" dropdown>
+				      <a href title="Add to calendar" class="btn btn-sm btn-primary" class="dropdown-toggle" dropdown-toggle>
+				        <i class="glyphicon glyphicon-calendar" ></i><span class="caret"></span>
+				      </a>
+				      <ul class="dropdown-menu">
+				       	<li><a ng-click="addToCalendar('google', row)">Google</a></li>
+						<li><a ng-click="addToCalendar('hotmail', row)">Hotmail</a></li>
+				      </ul>
+				    </span>
+				    
+					<button ng-show="online"  ng-click="openShareTodoInfo(row)" type="button" class="btn btn-sm btn-warning"><i class="glyphicon glyphicon-user"></i></button>
+	    			<a ng-show="online" title="Share" id="shareOutSiderToDo" class="btn btn-sm btn-info" ng-click="shareTodo(row)"><i class="glyphicon glyphicon-share" ></i></a>
+					<button type="button" title="Delete" id="deleteToDoButtonList" class="btn btn-sm btn-danger" ng-click="deleteTodo(row.id_todo,row)"><i class="glyphicon glyphicon-trash" ></i></button>
+				</div>
 			</td>
 		</tr>
 		</tbody>

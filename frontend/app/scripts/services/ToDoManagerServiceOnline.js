@@ -76,7 +76,7 @@ angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($http, AP
 		//synchronise les listes ajoutées
 		lists.forEach(function (listElem, listIndex, listsArray) {
 			iteration += 1;
-			if(isNaN(todo_elem.id_todo)){
+			if(isNaN(listElem.id_list)){
 				return $http.post(API_URL + 'todolist', listElem)
 				.success(function(){
 					callback(iteration*step_value);
@@ -228,12 +228,14 @@ angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($http, AP
 		});
 	};
 
-	// delete contact
 
+	// delete contact
 	this.deletecontact = function(idcontact){
 		console.online('deletecontact');
 		$rootScope.isWorking = true;
-		return $http.delete(API_URL + 'deletecontact/'+idcontact)
+		return $http.post(API_URL + 'deletecontact', {
+			id : idcontact
+		})
 		.success(function(){
 			$rootScope.isWorking = false;
 		}).error(function(){
@@ -264,7 +266,7 @@ angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($http, AP
 	this.updateTodos = function(data) {
 		console.online('updateTodos');
 		$rootScope.isWorking = true;
-		
+
 		return $http.put(API_URL + 'todos/',{
 			data : data
 		}).success(function(){
