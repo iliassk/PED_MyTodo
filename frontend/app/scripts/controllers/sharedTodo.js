@@ -7,6 +7,7 @@ angular.module('ToDoManagerApp')
   $scope.data = {};
   $scope.isCollapsed = true;
   $scope.isNotEditing = true;
+  $scope.isMapCollapsed = true;
 
   //This function erases the chosen subtodo
   $scope.eraseSubtodo = function(index, id){
@@ -48,44 +49,7 @@ angular.module('ToDoManagerApp')
     $scope.mytodo.completed = ($scope.mytodo.completed ? 1 : 0)
   }
 
-  ////////////////Attachment file /////////////////
-  angular.element('#input-file').fileinput({showCaption: false,showUpload: false, maxFileSize:2000}); 
-  $scope.onFileSelect = function($files) {
-    //$files: an array of files selected, each file has name, size, and type. 
-    for (var i = 0; i < $files.length; i++) {
-      var file = $files[i];
-      $scope.upload = $upload.upload({
-        url: API_URL + 'upload', //upload.php script, node.js route, or servlet url 
-        //method: 'POST' or 'PUT', 
-        //headers: {'header-key': 'header-value'}, 
-        //withCredentials: true, 
-        data: {myObj: $scope.file},
-        file: file, // or list of files ($files) for html5 only 
-        //fileName: 'doc.jpg' or ['1.jpg', '2.jpg', ...] // to modify the name of the file(s) 
-        // customize file formData name ('Content-Desposition'), server side file variable name.  
-        //fileFormDataName: myFile, //or a list of names for multiple files (html5). Default is 'file'  
-        // customize how data is added to formData. See #40#issuecomment-28612000 for sample code 
-        //formDataAppender: function(formData, key, val){} 
-      }).progress(function(evt) {
-        console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
-      }).success(function(data, status, headers, config) {
-        // file is uploaded successfully 
-        console.log("File : ")
-        console.log(data['file']['path']);
-        $scope.mytodo.attachment_path = data['file']['path'];
-        $scope.file = data['file']['path'];
-        console.log("End of file")
-      });
-      //.error(...) 
-      //.then(success, error, progress);  
-      // access or attach event listeners to the underlying XMLHttpRequest. 
-      //.xhr(function(xhr){xhr.upload.addEventListener(...)}) 
-    }
-    /* alternative way of uploading, send the file binary with the file's content-type.
-       Could be used to upload files to CouchDB, imgur, etc... html5 FileReader is needed. 
-       It could also be used to monitor the progress of a normal http post/put request with large data*/
-    // $scope.upload = $upload.http({...})  see 88#issuecomment-31366487 for sample code. 
-  };  ////////////////Calendar /////////////////
+   ////////////////Calendar /////////////////
 
   $scope.today = function() {
     var today = new Date();
@@ -157,35 +121,19 @@ angular.module('ToDoManagerApp')
 
   ////////////////Localization /////////////////
 
-  $scope.showLocation = function(size){
-
-    var modalInstance = $modal.open({
-      templateUrl: 'localizaton_map.html',
-      controller: 'MapCtrl',
-      size: size
-    });
-
-    modalInstance.result.then(function (address) {
-      $scope.mytodo.localization = address;
-      console.log('result got : ' + address);
-
-    }, function () {
-      $log.info('Modal dismissed at: ' + new Date());
-    });
-  };
-
-  $scope.address = '';
-  $scope.init = function(){ 
+   $scope.showMap = function(){ 
+    $scope.isMapCollapsed = false
+    
     getAdresse(['map-canvas', 'input-address', 'type-selector'], function(position, address){
-      console.log(position);
-      console.log(address);
-      $scope.address = address;
+      $scope.mytodo.localization = address;
     }, function(msg){
       console.log(msg);
     });
   };
 
-  $scope.init();
+  $scope.showMapButton = function(place){
+        return place == "" || place == undefined || place == null
+    }
 
   ////////////////Delete todo /////////////////
 

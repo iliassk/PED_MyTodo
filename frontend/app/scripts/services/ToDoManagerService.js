@@ -192,7 +192,8 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 			.success(function(){
 		        //$rootScope.accessData = false;
 		        //$rootScope.accessData = true;
-        		$rootScope.refreshCalendar = true
+				$rootScope.refreshCalendarAfterAddTodo = true
+        		//$rootScope.refreshCalendar = true
 				$rootScope.mustRefresh = true
 				$rootScope.isWorking = false
 				success();
@@ -202,6 +203,8 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 		}else{
 			TDMServiceOffline.addTodo(_mytodo, ToDoManagerApp.data, function(){
 				$rootScope.mustRefresh = true
+				$rootScope.refreshCalendarAfterAddTodo = true
+
 				success()
 			}, error);
 		}	
@@ -209,7 +212,7 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 
 	this.addgroup = function(namegroup, success, error) {
 		$rootScope.isWorking = true;
-
+				
 		if(ToDoManagerApp.isOnLine()){
 			TDMServiceOnline.addgroup(namegroup)
 			.success(function(){
@@ -312,6 +315,8 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 		if(ToDoManagerApp.isOnLine()){
 			TDMServiceOnline.deleteToDo(_id)
 			.success(function(){
+				$rootScope.refreshCalendarAfterAddTodo = true
+				$rootScope.mustRefresh = true
 				success();
 			}).error(function(){
 				error();
@@ -375,6 +380,36 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 
 	}
 
+	// delete contact
+	this.deletegroup = function(idgroup, success, error){
+		$rootScope.isWorking = true;
+		//then all the remaining list
+		console.log('============='+idgroup)
+	
+		for(var i=0; i < ToDoManagerApp.data.group.length; i++){
+				if(ToDoManagerApp.data.group[i].id_group == idgroup){
+					for (var j=0; j<ToDoManagerApp.data.group[i].contact.length; j++) {
+					ToDoManagerApp.data.usersNocontact.push(ToDoManagerApp.data.group[i].contact[j])
+					}
+					ToDoManagerApp.data.group[i].contact.splice(0, ToDoManagerApp.data.group[i].contact.length);
+					ToDoManagerApp.data.group.splice(i,1)
+					
+				}
+		}
+		
+		if(ToDoManagerApp.isOnLine()){
+			TDMServiceOnline.deletegroup(idgroup)
+			.success(function(){
+				success();
+			}).error(function(){
+				error();
+			});
+		}else{
+			TDMServiceOffline.deletegroup(idgroup, ToDoManagerApp.data,success, error)
+		}
+
+	}
+
 	///////////////////////////////////////////////////
 	/**
 	* Manage PUT method
@@ -382,17 +417,53 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 	///////////////////////////////////////////////////
 	//Update todo
 	this.updateTodo = function(todo, success, error) {
-		$rootScope.isWorking = true;
+		$rootScope.isWorking = true
 
 		if(ToDoManagerApp.isOnLine()){
 			TDMServiceOnline.updateTodo(todo)
 			.success(function(){
-				success();
+
+				$rootScope.refreshCalendarAfterAddTodo = true
+				$rootScope.mustRefresh = true
+				$rootScope.isWorking = false
+				success()
 			}).error(function(){
-				error();
-			});
+				error()
+			})
 		}else{
-			TDMServiceOffline.updateTodo(todo, ToDoManagerApp.data, success, error);
+
+			//todo.id
+			//get Todo
+			//parcours tableau pour retrouver dans lequel de liste
+			//supprimer si id_list change
+			//et deplacer sinon rien a faire
+			var finish = false
+			for(var i=0; i < ToDoManagerApp.data.listsWithToDo.length; i++){
+
+				for(var j=0; j < ToDoManagerApp.data.listsWithToDo[i].todos.length; j++){
+					//j'ai trouvé mon todo modifié
+					if(ToDoManagerApp.data.listsWithToDo[i].todos[j].id_todo == todo.id_todo){
+						if(ToDoManagerApp.data.listsWithToDo[i].id_list == todo.id_list)
+							finish = true
+						else{
+							ToDoManagerApp.data.listsWithToDo[i].todos.splice(j, 1)
+							ToDoManagerApp.getAList(todo.id_list).todos.push(todo)
+							finish = true
+						}
+					}
+				}
+				if(finish) break
+			}
+
+
+
+			TDMServiceOffline.updateTodo(todo, ToDoManagerApp.data, function(){
+
+				$rootScope.refreshCalendarAfterAddTodo = true
+				$rootScope.mustRefresh = true
+				$rootScope.isWorking = false
+				success()
+			}, error)
 		}
 	};
 
@@ -406,11 +477,12 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 			TDMServiceOnline.updateTodos(data)
 			.success(function(){
 				$rootScope.isWorking = false
-				success();
-			}).error(function(){
+				success()
+			})
+			.error(function(){
 				$rootScope.isWorking = false
-				error();
-			});
+				error()
+			})
 		}else{
 			TDMServiceOffline.updateTodos(data, ToDoManagerApp.data, success, error);
 		}

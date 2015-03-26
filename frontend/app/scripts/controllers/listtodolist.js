@@ -56,6 +56,14 @@ angular.module('ToDoManagerApp').controller('ListTodoListCtrl', function($scope,
 			//fail
 		})
 	};
+
+	$scope.deletegroup = function(obj){
+		TDMService.deletegroup(obj, function() {
+			//success
+		}, function() {
+			//fail
+		})
+	};
 	
 	$scope.submitgroup = function(name){
 

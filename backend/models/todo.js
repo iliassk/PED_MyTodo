@@ -80,26 +80,21 @@ exports.listtodolist_get = function(req, res, next, connection, auth, jwt){
 
 exports.listtodolist_id_delete = function(req, res, next, connection, auth){
    
- connection.query('DELETE FROM TODO WHERE id_list = ?',req.params.id ,function(err, rows) {
+ 	connection.query('DELETE FROM TODO WHERE id_list = ?', req.params.id, function(err, rows) {
 		if (err) {
 			console.log(err);
 			return next("Mysql error, check your query");
 		}
 		else{
 			connection.query('DELETE FROM TODOLIST WHERE id_list = ?',req.params.id ,function(err, rows) {
-			if (err) {
-				console.log(err);
-			return next("Mysql error, check your query");
-			}
-		return res.status(200).json(rows)
-	});
+				if (err) {
+					console.log(err);
+					return next("Mysql error, check your query");
+				}
+				return res.status(200).json(rows)
+			});
 		}
-	
 	});
-
-
-
-    
 }
 
 exports.todo_id_delete = function(req, res, next, connection, auth){
@@ -175,25 +170,22 @@ exports.todo_id_put = function(req, res, next, connection, auth){
 exports.todos_put = function(req, res, next, connection, auth){
 
 	var data = req.body.data;
-	
 	connection.query('UPDATE TODO SET date = ? WHERE id_todo = ?', [data.nvtime, data.id], function(err, rows) {
 		if (err) {
 			console.log(err);
 			return next("Mysql error, check your query");
 		}
-		return res.status(200)
+		return res.status(200).json({success:"true"});
 	});
 }
 
 exports.todoadd_post = function(req, res, next, connection, auth, jwt){
 	req.assert('mytodo', 'mytodo is required').notEmpty();
 	var _id = auth.checkAuthorization(req, res, jwt);
-	console.log("req.body.mytodo")
-	console.log(req.body.mytodo)
-	console.log("req.body.mytodo")
+
 	var errors = req.validationErrors();
 	if (errors) {
-		return res.status(422).json(errors);;
+		return res.status(422).json(errors);
 	}
 	
 	req.body.mytodo.id_owner = _id;
@@ -204,8 +196,6 @@ exports.todoadd_post = function(req, res, next, connection, auth, jwt){
 		subtodos = req.body.mytodo.subtodos
 		delete req.body.mytodo.subtodos
 	}
-	console.log(req.body.mytodo)
-
 
 	connection.query("INSERT INTO TODO SET ?", req.body.mytodo, function(err, rows) {
 		if (err) {
@@ -479,6 +469,8 @@ exports.listtodolistwithtodos_get = function(req, res, next, connection, auth, j
 			return next("Mysql error, check your query");
 		}
 
+		if(lists.length == 0)
+			return res.status(200).json([])
 		//var copy = JSON.parse(JSON.stringify(obj));
 
 		getAllToDoInLists(connection, lists, [], function(err, list_with_todo){

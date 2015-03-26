@@ -31,7 +31,7 @@
         </select>
         <input type="text" class="form-control" placeholder="Context" ng-model="mytodo.context" ng-disabled="isNotEditing">
 
-         <select class="form-control" id="sel2" ng-model="mytodo.id_list" ng-options="list.id_list as list.name for list in data.shareListsWithToDo" required ng-disabled="isNotEditing"></select>
+         <select class="form-control" id="sel2" ng-model="mytodo.id_list" ng-options="list.id_list as list.name for list in data.shareListsWithToDo" required ng-disabled="true"></select>
        
         <div class='input-group'>
             <input type="text" class="form-control" placeholder="Date" datepicker-popup="{{format}}" ng-model="mytodo.date" is-open="opened" min-date="minDate" datepicker-options="dateOptions" ng-required="true" close-text="Close" ng-disabled="isNotEditing"/>

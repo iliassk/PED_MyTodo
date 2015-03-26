@@ -142,6 +142,16 @@ angular.module('ToDoManagerApp').service('TDMServiceOffline', function ($http, A
 		error();
 	};
 
+	// delete group
+
+	this.deletecontact = function(idgroup){
+		console.offline('delete group');
+		$rootScope.isWorking = true;
+		alert('warning', 'OffLine error', 'You cannot create object while in offline mode !!');
+		$rootScope.isWorking = false;
+		error();
+	};
+
 	///////////////////////////////////////////////////
 	/**
 	* Manage PUT method

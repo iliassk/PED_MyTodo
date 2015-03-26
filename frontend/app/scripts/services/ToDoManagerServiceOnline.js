@@ -12,7 +12,6 @@ angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($http, AP
 			usersNocontact: '',
 			currentUser:'',
 			shareListsWithToDo: [],
-			sharedTodo: [],
 			offlineDeleteToDo: [],
 			offlineDeleteList: []
 		};
@@ -32,7 +31,6 @@ angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($http, AP
 					$http.get(API_URL + 'user/'+$auth.getPayload().sub)
 					.success(function(_current){
 						data.currentUser = _current;
-						//TDMServiceOffline.save(data);
 						$http.get(API_URL + 'listsharedtodolistwithtodos')
 						.success(function(shareList){
 							data.shareListsWithToDo = shareList;
@@ -44,7 +42,7 @@ angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($http, AP
 									color : "grey",
 									todos : shareTodo
 								})
-								//data.sharedTodo = shareTodo;
+								TDMServiceOffline.save(data);
 								$rootScope.isWorking = false;
 								if(f){f(data);}
 							});
@@ -260,6 +258,18 @@ angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($http, AP
 		console.online('deletecontact');
 		$rootScope.isWorking = true;
 		return $http.delete(API_URL + 'deletecontact/'+idcontact)
+		.success(function(){
+			$rootScope.isWorking = false;
+		}).error(function(){
+			$rootScope.isWorking = false;
+		});
+	};
+
+	// delete contact
+	this.deletegroup = function(idgroup){
+		console.online('deletegroup');
+		$rootScope.isWorking = true;
+		return $http.delete(API_URL + 'deletegroup/'+idgroup)
 		.success(function(){
 			$rootScope.isWorking = false;
 		}).error(function(){
