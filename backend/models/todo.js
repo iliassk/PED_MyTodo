@@ -28,7 +28,7 @@ exports.todolist_post = function(req, res, next, connection, auth, jwt){
 			console.log(err);
 			return next("Mysql error, check your query");
 		}
-		res.sendStatus(200);
+		return res.sendStatus(200);
 	});
 }
 
@@ -44,7 +44,7 @@ exports.todolist_get = function(req, res, next, connection, auth, jwt){
 			return next("Mysql error, check your query");
 		}else{
 			//console.info(rows);
-			res.status(200).json(rows);
+			 return res.status(200).json(rows);
 		}
 	});
 }
@@ -61,7 +61,7 @@ exports.listtodolist_id_get = function(req, res, next, connection, auth){
 			return next("Mysql error, check your query");
 		}else{
 			//console.info(rows);
-			res.status(200).json(rows);
+			return res.status(200).json(rows);
 		}
 	});  
 }
@@ -73,7 +73,7 @@ exports.listtodolist_get = function(req, res, next, connection, auth, jwt){
 			console.log(err);
 			return next("Mysql error, check your query");
 		}else{
-			res.status(200).json(rows);
+			return res.status(200).json(rows);
 		}
 	});
 }
@@ -140,7 +140,7 @@ exports.todo_id_put = function(req, res, next, connection, auth){
 						connection.query('INSERT INTO SUBTODO SET ?', elem, function(err, rows) {
 							if (err) {
 								console.log(err);
-								res.status(401).json({error: "Une erreur est survenue pendant l'ajout des subtodos", content: err});
+								return res.status(401).json({error: "Une erreur est survenue pendant l'ajout des subtodos", content: err});
 							}
 							cpt++
 							if(cpt == subtodos.length)
@@ -206,7 +206,7 @@ exports.todoadd_post = function(req, res, next, connection, auth, jwt){
 				connection.query('INSERT INTO SUBTODO SET ?', elem, function(err, rows) {
 					if (err) {
 						console.log(err);
-						res.status(401).json({error: "Une erreur est survenue pendant l'ajout des subtodos", content: err});
+						return res.status(401).json({error: "Une erreur est survenue pendant l'ajout des subtodos", content: err});
 					}
 		
 					//res.status(200).json(content);
@@ -226,7 +226,7 @@ exports.todo_get = function(req, res, next, connection, auth, jwt){
 			return next("Mysql error on connection, check your query");
 		}else{
 			console.info(rows);
-			res.status(200).json(rows);
+			return res.status(200).json(rows);
 		}
 	});
 }
@@ -258,7 +258,7 @@ exports.todo_id_get = function(req, res, next, connection, auth, jwt){
 				result[0].subtodos = subtodo;
 				//pour gérer l'asynchrone on ne sait pas quand les requetes sont finies				
 
-        	res.status(200).json(result);
+        	return res.status(200).json(result);
             //return res.status(200).send(rows);
         	});
 		}
@@ -459,7 +459,7 @@ exports.listtodolistwithtodos_get = function(req, res, next, connection, auth, j
 
 					cpt++
 					if(cpt == list_with_todo.length)
-						res.status(200).json(list_with_todo)
+						return res.status(200).json(list_with_todo)
 				})
 			})
 		})

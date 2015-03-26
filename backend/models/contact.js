@@ -15,7 +15,7 @@ exports.addcontact_post = function(req, res, jwt, next, connection, auth){
 			return next("Mysql error, check your query");
 		}else{
 			console.log(data);
-		res.sendStatus(200);
+			return res.sendStatus(200);
 		}
 	});
 }
@@ -28,7 +28,7 @@ connection.query('SELECT u.id_user, u.avatar_path, u.username, u.email FROM USER
 			return next("Mysql error, check your query");
 		}else{
 			//console.info(rows);
-			res.status(200).json(rows);
+			return res.status(200).json(rows);
 		}
 	});
 
@@ -42,7 +42,7 @@ exports.userslist_get = function(req, res, next, connection, auth){
 			console.log(err);
 			return next("Mysql error, check your query");
 		}else{
-			res.status(200).json(rows);
+			return res.status(200).json(rows);
 		}
 	});
 }
@@ -113,7 +113,7 @@ exports.listuserNocontact_id_get = function(req, res, jwt, next, connection, aut
 			return next("Mysql error, check your query");
 		}else{
 			console.info("rows: "+rows);
-			res.status(200).json(rows);
+			return res.status(200).json(rows);
 		}
 	});
 }

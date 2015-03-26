@@ -19,19 +19,19 @@ angular.module('ToDoManagerApp').service('TDMServiceOnline', function ($http, AP
 		$http.get(API_URL + 'listtodolistwithtodos')
 		.success(function(_data){
 			data.listsWithToDo = _data;
-			TDMServiceOffline.save(data);
+			//TDMServiceOffline.save(data);
 			$http.get(API_URL + 'listgroupe')
 			.success(function(_groupe){
 				data.group = _groupe;
-				TDMServiceOffline.save(data);
+				//TDMServiceOffline.save(data);
 				$http.get(API_URL + 'listuserNocontact/'+$auth.getPayload().sub)
 				.success(function(_contact){
 					data.usersNocontact = _contact;
-					TDMServiceOffline.save(data);
+					//TDMServiceOffline.save(data);
 					$http.get(API_URL + 'user/'+$auth.getPayload().sub)
 					.success(function(_current){
 						data.currentUser = _current;
-						TDMServiceOffline.save(data);
+						//TDMServiceOffline.save(data);
 						$http.get(API_URL + 'listsharedtodolistwithtodos')
 						.success(function(shareList){
 							data.shareListsWithToDo = shareList;

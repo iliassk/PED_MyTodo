@@ -21,7 +21,7 @@ describe('ToDoManager e2e add/modify/delete todo and general tests', function() 
 
         expect(element(by.id('logout')).isDisplayed()).toBeTruthy();
 
-        expect(browser.getCurrentUrl()).toBe(browser.baseUrl + '#/');
+        expect(browser.getCurrentUrl()).toBe(browser.baseUrl + '#/calendar');
     }, 50000);
 
     it('should test the add Todo and List button', function() {
