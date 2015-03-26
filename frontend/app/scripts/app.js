@@ -27,6 +27,7 @@ angular.module('ToDoManagerApp', ['ui.router', 'ui.calendar', 'ngAnimate', 'ui.b
     $rootScope.isWorking = false
     $rootScope.canFetchData = false
     $rootScope.refreshCalendar = false
+    $rootScope.refreshCalendarAfterAddTodo = false
 
     //$rootScope.online = true
     //$rootScope.online = navigator.onLine

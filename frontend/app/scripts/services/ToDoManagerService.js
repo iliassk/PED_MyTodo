@@ -191,6 +191,7 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 			.success(function(){
 		        //$rootScope.accessData = false;
 		        //$rootScope.accessData = true;
+				$rootScope.refreshCalendarAfterAddTodo = true
         		$rootScope.refreshCalendar = true
 				$rootScope.mustRefresh = true
 				$rootScope.isWorking = false
@@ -201,6 +202,8 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 		}else{
 			TDMServiceOffline.addTodo(_mytodo, ToDoManagerApp.data, function(){
 				$rootScope.mustRefresh = true
+				$rootScope.refreshCalendarAfterAddTodo = true
+				
 				success()
 			}, error);
 		}	
