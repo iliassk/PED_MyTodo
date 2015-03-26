@@ -153,8 +153,8 @@ console.log('debut user')
 console.log('fin user')	
 });
 
-app.post('/deletecontact', function(req, res, next) {	
-	contact.deletecontact_post(req, res, jwt, next, connection, auth)	
+app.delete('/deletecontact/:id', function(req, res, next) {	
+	contact.deletecontact_delete(req, res, jwt, next, connection, auth)	
 });
 
 app.get('/listuserNocontact/:id', function(req, res, next) {	

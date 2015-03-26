@@ -79,13 +79,27 @@ exports.listtodolist_get = function(req, res, next, connection, auth, jwt){
 }
 
 exports.listtodolist_id_delete = function(req, res, next, connection, auth){
-    connection.query('DELETE FROM TODOLIST WHERE id_list = ?',req.params.id ,function(err, rows) {
+   
+ connection.query('DELETE FROM TODO WHERE id_list = ?',req.params.id ,function(err, rows) {
 		if (err) {
 			console.log(err);
 			return next("Mysql error, check your query");
 		}
+		else{
+			connection.query('DELETE FROM TODOLIST WHERE id_list = ?',req.params.id ,function(err, rows) {
+			if (err) {
+				console.log(err);
+			return next("Mysql error, check your query");
+			}
 		return res.status(200).json(rows)
 	});
+		}
+	
+	});
+
+
+
+    
 }
 
 exports.todo_id_delete = function(req, res, next, connection, auth){

@@ -218,22 +218,7 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 		}
 	};
 
-	// delete contact
-	this.deletecontact = function(idcontact){
-		$rootScope.isWorking = true;
-		if(ToDoManagerApp.isOnLine()){
-			return TDMServiceOnline.deletecontact(idcontact)
-			.success(function(){
-				 $rootScope.accessData = false
-		        $rootScope.accessData = true
-				$rootScope.mustRefresh = true
-				$rootScope.isWorking = false
-			})
-		}else{
-			return TDMServiceOffline.deletecontact(idcontact)
-		}
-
-	}
+	
 
 	///////////////////////////////////////////////////
 	/**
@@ -319,6 +304,31 @@ angular.module('ToDoManagerApp').service('TDMService', function ($http, API_URL,
 			TDMServiceOffline.deleteSubToDo(_id, ToDoManagerApp.data, success, error);
 		}
 	};
+
+
+	// delete contact
+	this.deletecontact = function(idcontact, success, error){
+		$rootScope.isWorking = true;
+		//then all the remaining list
+		console.log('============='+idcontact)
+		for(var i=0; i < ToDoManagerApp.data.group.length; i++){
+			for(var j=0; j < ToDoManagerApp.data.group[i].contact.length; j++){
+				if(ToDoManagerApp.data.group[i].contact[j].id_user == idcontact)
+					ToDoManagerApp.data.group[i].contact.splice(j, 1);
+			}
+		}
+		if(ToDoManagerApp.isOnLine()){
+			TDMServiceOnline.deletecontact(idcontact)
+			.success(function(){
+				success();
+			}).error(function(){
+				error();
+			});
+		}else{
+			TDMServiceOffline.deletecontact(idcontact, ToDoManagerApp.data,success, error)
+		}
+
+	}
 
 	///////////////////////////////////////////////////
 	/**

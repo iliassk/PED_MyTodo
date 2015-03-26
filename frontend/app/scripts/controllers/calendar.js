@@ -11,7 +11,7 @@
 angular.module('ToDoManagerApp').controller('CalendarCtrl', function($scope, $window, uiCalendarConfig, alert, TDMService, $rootScope) {
   
     $scope.events = [];
-    $scope.eventSources = $scope.events;
+    $scope.eventSources = [];
    // var todolist = TDMService.data.listsWithToDo.length;
    // var color;
     //var iscolor=false;
