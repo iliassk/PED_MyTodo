@@ -57,7 +57,7 @@ Installation sur Windows.
 
 Installation sur Linux.
 
-  Suivre les même commandes que celle d'installation sur windows sauf qu'il faut ajouter sudo devant tous les commandes "install"(par exemple sudo npm install -g yo).
+     Suivre les même commandes que celle d'installation sur windows sauf qu'il faut ajouter sudo devant tous les commandes "install"(par exemple sudo npm install -g yo).
 
 
 
