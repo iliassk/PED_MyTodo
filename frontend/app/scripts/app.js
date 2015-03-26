@@ -27,6 +27,7 @@ angular.module('ToDoManagerApp', ['ui.router', 'ui.calendar', 'ngAnimate', 'ui.b
     $rootScope.isWorking = false
     $rootScope.canFetchData = false
     $rootScope.refreshCalendar = false
+    $rootScope.refreshCalendarAfterAddTodo = false
 
     //$rootScope.online = true
     //$rootScope.online = navigator.onLine
@@ -117,8 +118,8 @@ angular.module('ToDoManagerApp', ['ui.router', 'ui.calendar', 'ngAnimate', 'ui.b
 
     $rootScope.closeMenu = true
 
-    $rootScope.$watch('closeMenu', function() {
-      if ($rootScope.closeMenu) {
+    $rootScope.$watch('closeMenu', function(closeMenu) {
+      if (closeMenu) {
         angular.element("#wrapper").addClass("toggled");
       } else {
         angular.element("#wrapper").removeClass("toggled");

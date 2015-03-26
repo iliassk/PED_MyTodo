@@ -95,7 +95,7 @@ exports.listgroupe_get = function(req, res, next, connection, auth, jwt){
 			});
 		})
 		if(rows.length == 0)
-				return res.status(200).json(result);
+			return res.status(200).json(result);
 		}
 	});
 }
@@ -105,7 +105,7 @@ exports.listuserNocontact_id_get = function(req, res, jwt, next, connection, aut
    	//chaine = "SELECT * FROM CONTACTS C, USERS U, GROUPS G WHERE C.id_user=U.id_user AND C.id_group=G.id_group"
 	var _id = auth.checkAuthorization(req, res, jwt);
    
-   	chaine = "SELECT u.id_user, u.username, u.avatar_path, u.email FROM USERS u WHERE u.id_user !="+req.params.id+" AND u.id_user NOT IN(SELECT c.id_contact FROM CONTACTS c WHERE c.id_user ="+_id+")"
+   	var chaine = "SELECT u.id_user, u.username, u.avatar_path, u.email FROM USERS u WHERE u.id_user !="+req.params.id+" AND u.id_user NOT IN(SELECT c.id_contact FROM CONTACTS c WHERE c.id_user ="+_id+")"
 	
 	connection.query(chaine,function(err, rows) {
 		if (err) {
@@ -120,7 +120,8 @@ exports.listuserNocontact_id_get = function(req, res, jwt, next, connection, aut
 
 exports.deletecontact_delete = function(req, res, jwt, next, connection, auth){
 
-	chaine = "DELETE FROM CONTACTS WHERE id_contact="+req.params.id
+
+	var chaine = "DELETE FROM CONTACTS WHERE id_contact="+req.params.id
 	connection.query(chaine,function(err, rows) {
 		if (err) {
 			console.log(err);

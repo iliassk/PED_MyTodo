@@ -7,7 +7,7 @@
  * # HeaderCtrl
  * Controller of the ToDoManagerApp
  */
-angular.module('ToDoManagerApp').controller('HeaderCtrl', function($scope, $auth, TDMService, $rootScope, $modal, $log,  API_URL, $upload) {
+angular.module('ToDoManagerApp').controller('HeaderCtrl', function($scope, $auth, TDMService, $rootScope, $modal, $log,  API_URL, $upload, $state) {
 	// Satellizer auth service instead of authToken
 	console.debug("Header.js init")
   $scope.isAuthenticated = $auth.isAuthenticated;
@@ -21,8 +21,10 @@ angular.module('ToDoManagerApp').controller('HeaderCtrl', function($scope, $auth
         $scope.data = TDMService.data;
         $rootScope.accessData = false
         $rootScope.accessData = true
-        $rootScope.refreshCalendar = true
-        console.debug("J'ai passé refreshCalendar à true ...")
+
+        if($rootScope.refreshCalendarAfterAddTodo)
+          $state.go('calendar')
+
       });
      $rootScope.mustRefresh = false
     }
@@ -46,12 +48,12 @@ angular.module('ToDoManagerApp').controller('HeaderCtrl', function($scope, $auth
 
     $scope.data = TDMService.data;
 
-    if($scope.isAuthenticated()){
-        $rootScope.closeMenu = false
-    }else
-        $rootScope.closeMenu = true
+  if($scope.isAuthenticated()){
+      $rootScope.closeMenu = false
+  }else
+      $rootScope.closeMenu = true
 
-    $scope.loaded = function() { console.log("Loaded"); }
+  $scope.loaded = function() { console.log("Loaded"); }
 
 
   ////////////////Attachment file /////////////////

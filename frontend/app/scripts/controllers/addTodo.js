@@ -36,7 +36,7 @@ angular.module('ToDoManagerApp')
   
   $scope.submit = function() {
     TDMService.addTodo($scope.mytodo, function() {
-        $state.go('calendar');
+        //$state.go('calendar');
         //success
       }, function() {
         //fail
