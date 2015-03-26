@@ -39,7 +39,7 @@
                     </tbody>
                 </table>
             </div>
-            <div id="listTodo" style="visibility: visible" name="listTodo">
+            <div id="listTodo" style="visibility: visible; height:auto;" name="listTodo">
                 <div class="row" ng-switch on="data.listsWithToDo.length" ng-cloak>
                     <ul ng-switch-when="0">
                         <a ui-sref="todolist" class="btn btn-info">You have no Todo list, create one</a>
@@ -61,8 +61,8 @@
                     </accordion>
                 </div>
             </div>
-            <div ng-include="'views/groupe.html'"></div>
-            <div id="sharedToDo" style="visibility: hidden">
+            <div ng-include="'views/groupe.html'" style="visibility: hidden" ></div>
+            <div id="sharedToDo" style="visibility: hidden; display:none;">
                 <div class="row" ng-switch on="data.shareListsWithToDo.length-1" ng-cloak>
                     <ul ng-switch-when="0">
                         <div class="alert alert-info text-center" role="alert">You have no shared list. Ask a contact to share a list of todos with you!</div>

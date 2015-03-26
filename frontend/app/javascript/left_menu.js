@@ -32,6 +32,7 @@ function toggle(anId)
 		$("#groupe").children().show();
 		node.style.visibility = "visible";
 		node.style.height = "auto";
+		node.style.display = "block";
 
 		document.getElementById("listTodo").style.visibility = "hidden"
 		document.getElementById("listTodo").style.height = "0"
@@ -48,6 +49,7 @@ function toggle(anId)
 
 		node.style.visibility = "visible";
 		node.style.height = "auto";
+		node.style.display = "block";
 
 		document.getElementById("listTodo").style.visibility = "hidden"
 		document.getElementById("listTodo").style.height = "0"
@@ -63,9 +65,12 @@ function groupe(obj)
 	if(obj == "show"){
 		document.getElementById("addgroup").style.visibility = "visible";
 		document.getElementById("addgroup").style.height = "auto";
+		document.getElementById("addgroup").style.width = "auto";
 	}
+	
 	if(obj == "hide"){
 		document.getElementById("addgroup").style.visibility = "hidden";
 		document.getElementById("addgroup").style.height = "0";
+		document.getElementById("addgroup").style.width = "0";
 	}
 }
