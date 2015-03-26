@@ -56,7 +56,7 @@ angular.module('ToDoManagerApp').controller('CalendarCtrl', function($scope, $wi
 	}else{
 		$scope.uiConfig = {
 			calendar:{
-		        height: 550,
+		        //height: 550,
 		        width: 400,
 		        editable: true,
 		                                      
@@ -95,6 +95,7 @@ angular.module('ToDoManagerApp').controller('CalendarCtrl', function($scope, $wi
 				title: data[i].title, 
 				id:data[i].id_todo,
 				start: data[i].date,
+				url: '/todo/' + data[i].id_todo,
 				backgroundColor: TDMService.getAList(data[i].id_list).color,
 				durationEditable:false
 			};

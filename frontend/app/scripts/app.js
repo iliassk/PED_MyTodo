@@ -17,11 +17,16 @@ angular.module('ToDoManagerApp', ['ui.router', 'ui.calendar', 'ngAnimate', 'ui.b
     console.online = function(text) {
       console.log("[online] => " + text)
     }
+    console.debug = function(text){
+      console.log("[=======DEBUG========] =>" + text)
+    }
+
     $auth.isAuthenticated() ? $rootScope.mustRefresh = true : $rootScope.mustRefresh = false;
     $rootScope.mustRefresh = false
     $rootScope.accessData = false
     $rootScope.isWorking = false
     $rootScope.canFetchData = false
+    $rootScope.refreshCalendar = false
 
     //$rootScope.online = true
     //$rootScope.online = navigator.onLine
@@ -43,7 +48,6 @@ angular.module('ToDoManagerApp', ['ui.router', 'ui.calendar', 'ngAnimate', 'ui.b
     $rootScope.$watch('online', function() {
       if ($rootScope.online == true) {
         console.log("destection online")
-        
         if (TDMService.hasBeenOffLine()) {
           $rootScope.accessData = false
           $modal.open({

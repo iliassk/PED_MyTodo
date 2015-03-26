@@ -9,41 +9,40 @@
  */
 angular.module('ToDoManagerApp').controller('HeaderCtrl', function($scope, $auth, TDMService, $rootScope, $modal, $log,  API_URL, $upload) {
 	// Satellizer auth service instead of authToken
-	$scope.isAuthenticated = $auth.isAuthenticated;
+	console.debug("Header.js init")
+  $scope.isAuthenticated = $auth.isAuthenticated;
    
   $rootScope.$watch('mustRefresh', function(mustRefresh) {
 
-    console.log("REFRESH SIDE BAR !!! : " + mustRefresh)
     if(mustRefresh == true){
+      console.debug("Header.js forcerefresh sidebar")
       TDMService.forceRefresh(function(){
 
         $scope.data = TDMService.data;
         $rootScope.accessData = false
         $rootScope.accessData = true
         $rootScope.refreshCalendar = true
+        console.debug("J'ai passé refreshCalendar à true ...")
       });
      $rootScope.mustRefresh = false
     }
   });
 
-    $rootScope.$watch('canFetchData', function(canFetchData) {
-      if(canFetchData && $scope.isAuthenticated()){
-        console.log("Je lance le refresh !! header.js")
-        //get user avatar
-      //var idUser = $auth.getPayload().sub;
-      /*TDMService.userAvatar(idUser)
-       .success(function(data) {
-         $scope.user_avatar = data[0].avatar_path;
-       });*/
-        TDMService.refresh(function(){
-          console.log("==== refresh header.js ====")
+  $rootScope.$watch('canFetchData', function(canFetchData) {
+    if(canFetchData && $scope.isAuthenticated()){
+      console.debug("Header.js refresh canfetchdata sidebar")
 
-          $rootScope.accessData = false
-          $rootScope.accessData = true
-          $scope.data = TDMService.data;
-      });
-      }
+      TDMService.refresh(function(){
+        console.log("==== refresh header.js ====")
+
+        $rootScope.accessData = false
+        $rootScope.accessData = true
+        $rootScope.refreshCalendar = true
+        console.debug("J'ai passé refreshCalendar à true ...")
+        $scope.data = TDMService.data;
     });
+    }
+  });
 
     $scope.data = TDMService.data;
 

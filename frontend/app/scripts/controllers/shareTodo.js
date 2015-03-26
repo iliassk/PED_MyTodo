@@ -9,12 +9,34 @@ angular.module('ToDoManagerApp').controller('ShareCtrl', function($scope, $state
     $scope.mylist = '';
     $scope.displayedCollection = {};
 
-    $scope.isList = $stateParams.type == "todolist" ? true : false;
     $scope.data = '';
     //Ferme le menu
     $rootScope.closeMenu = true;
 
-    $scope.init();
+    //$scope.init();
+
+    $scope.hideCompleted = function(todo){
+        $scope.hidecompleted = !$scope.hidecompleted;
+    }
+
+    $scope.showDate = function(date){
+
+        var lastDate = new Date(date);
+        var today=new Date();
+        var oneDay=1000*60*60*24;
+        if(Math.ceil((lastDate.getTime()-today.getTime())/(oneDay)) < 0){
+            if(Math.abs(Math.ceil((lastDate.getTime()-today.getTime())/(oneDay))) == 1)
+                return 'Expired ' + Math.abs(Math.ceil((lastDate.getTime()-today.getTime())/(oneDay))) + ' day ago';
+            else
+                return 'Expired ' + Math.abs(Math.ceil((lastDate.getTime()-today.getTime())/(oneDay))) + ' days ago';
+        }
+        else{
+            if(Math.abs(Math.ceil((lastDate.getTime()-today.getTime())/(oneDay))) == 1)
+                return Math.ceil((lastDate.getTime()-today.getTime())/(oneDay)) + ' day remaining';
+            else
+                return Math.ceil((lastDate.getTime()-today.getTime())/(oneDay)) + ' days remaining';
+        }
+    };
 
     $scope.addToCalendar = function(type, todo){
         var date = "20140510/20150514";
@@ -60,20 +82,24 @@ angular.module('ToDoManagerApp').controller('ShareCtrl', function($scope, $state
     }
 
     //fetch the data
-    TDMService.fetchSharedData($stateParams.url, $stateParams.type)
-    .success(function(data){
+    TDMService.fetchSharedData($stateParams.url, $stateParams.type,function(data){
         $scope.data = data;
         if($stateParams.type == "todo"){
+            $scope.isList = false;
             $scope.mytodo = data[0];
             $scope.hasSubtodo = $scope.mytodo.subtodos ? true : false;
         }
         else if($stateParams.type == "todolist"){
             console.log("todtolis")
+            $scope.isList = true;
             $scope.mylist = data[0];
             $scope.displayedCollection = [].concat($scope.mylist.todos);
         }
-    }).error(function(){
+    },function(){
         console.log("erreur")
     })
+
+
+
 });
 
