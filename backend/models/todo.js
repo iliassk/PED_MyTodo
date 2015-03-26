@@ -80,6 +80,25 @@ exports.listtodolist_get = function(req, res, next, connection, auth, jwt){
 
 exports.listtodolist_id_delete = function(req, res, next, connection, auth){
    
+ 	connection.query('SELECT * FROM TODO WHERE id_list = ?', req.params.id,function(err, rows) {
+		if (err) {
+			console.log(err);
+			return next("Mysql error, check your query");
+		}else{
+
+		result = rows;
+		rows.forEach(function (elem, index, array) {
+				connection.query('DELETE FROM SUBTODO WHERE id_todo = ?',elem.id_todo ,function(err, rows) {
+				if (err) {
+					console.log(err);
+					return next("Mysql error, check your query");
+				}
+			});
+		})
+
+	}
+	});
+
  	connection.query('DELETE FROM TODO WHERE id_list = ?', req.params.id, function(err, rows) {
 		if (err) {
 			console.log(err);
@@ -95,6 +114,7 @@ exports.listtodolist_id_delete = function(req, res, next, connection, auth){
 			});
 		}
 	});
+
 }
 
 exports.todo_id_delete = function(req, res, next, connection, auth){
