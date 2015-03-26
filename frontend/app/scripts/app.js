@@ -136,6 +136,7 @@ angular.module('ToDoManagerApp', ['ui.router', 'ui.calendar', 'ngAnimate', 'ui.b
       $scope.showProgress = true
       $rootScope.canFetchData = false
       TDMService.sync(function(step) {
+        console.log("[client] step : " + step)
         $scope.percent = step
         if (step >= 100) {
           $rootScope.isWorking = false;

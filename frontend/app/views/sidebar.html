@@ -1,7 +1,6 @@
 
 <div ng-controller="ListTodoListCtrl">
     <div id="sidebar-wrapper">
-     <a  href="#menu-toggle" id="menu-toggle" > <span class="glyphicon glyphicon-align-justify" ></span> </a>
         <ul class="sidebar-nav">
             <h3>Your ToDo Lists</h3> 
 
@@ -13,7 +12,7 @@
                         <a ng-click="hideCompleted()" class="btn btn-sm btn-primary" data-toggle="button">
                             Hide <span style="color:Chartreuse " class="glyphicon glyphicon-ok"></span>
                         </a>
-                        <a ui-sref="todolist" id="addListSideMenu" class="btn btn-sm btn-primary">
+                        <a ui-sref="todolist" ng-show="online" id="addListSideMenu" class="btn btn-sm btn-primary">
                             <span class="glyphicon glyphicon-plus"></span> list</span>
                         </a>
                         <a ui-sref="add/todo" id="addToDoSideMenu" class="btn btn-sm btn-primary">

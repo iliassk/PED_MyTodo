@@ -38,14 +38,16 @@ angular.module('ToDoManagerApp')
 
   ////////////////Submit form /////////////////
   $scope.submit = function() {
+
      TDMService.updateTodo($scope.mytodo, function(res) {
+        $rootScope.refreshCalendarAfterAddTodo = true
+        $rootScope.mustRefresh = true
         //$state.go('calendar')
         //success
       }, function(err) {
         //fail
       });
   };
-
 
 
   ////////////////Completed boolean ///////////
@@ -237,6 +239,8 @@ angular.module('ToDoManagerApp')
 
   $scope.deleteTodo = function () {
     TDMService.deleteToDo(id, function(res) {
+        $rootScope.refreshCalendarAfterAddTodo = true
+        $rootScope.mustRefresh = true
         //success
       }, function(err) {
         //fail

@@ -22,7 +22,10 @@ angular.module('ToDoManagerApp').controller('ViewToDoList', function($scope, $st
 					$scope.list = TDMService.getAList($stateParams.id);
 					console.log($scope.list);
 					$scope.group = TDMService.data.group;
-					$scope.displayedCollection = [].concat($scope.list.todos);
+					if($scope.list.todos != undefined)
+						$scope.displayedCollection = [].concat($scope.list.todos);
+					else
+						$scope.displayedCollection = []
 					$rootScope.isWorking = false;
 			   });
             }
