@@ -10,37 +10,30 @@
 
 angular.module('ToDoManagerApp').controller('CalendarCtrl', function($scope, $window, uiCalendarConfig, alert, TDMService, $rootScope) {
   
-    console.debug("Calendar.js init")
-    
+    $scope.events = [];
+
+    $scope.eventSources = $scope.events;
+
+    $rootScope.$watch('accessData', function(accessData) {
+        
+        console.log("calendar refresh !! : " + accessData)
+
+        if(accessData){
+        	TDMService.refresh(function(){
+		    	$scope.refreshCalendar()
+		    })
+        }
+    });
+
     $rootScope.$watch('refreshCalendar', function(refreshCalendar) {
         
         console.log("refreshCalendar : " + refreshCalendar)
 
         if(refreshCalendar){
-     		console.debug("Calendar.js refresh refreshCalendar")
 			$scope.refreshCalendar()
 		    $rootScope.refreshCalendar = false
         }
     });
-    
-    $scope.events = [];
-
-    $scope.eventSources = $scope.events;
-
-   /* $rootScope.$watch('accessData', function(accessData) {
-        
-        console.log("calendar refresh !! : " + accessData)
-
-        if(accessData){
-
-     		console.debug("Calendar.js refresh accessData")
-        	TDMService.refresh(function(){
-		    	$scope.refreshCalendar()
-		    })
-        }
-    });*/
-
-    
 
     var datas = $scope.events
 
@@ -63,7 +56,7 @@ angular.module('ToDoManagerApp').controller('CalendarCtrl', function($scope, $wi
 	}else{
 		$scope.uiConfig = {
 			calendar:{
-		        height: 550,
+		        //height: 550,
 		        width: 400,
 		        editable: true,
 		                                      
@@ -88,11 +81,11 @@ angular.module('ToDoManagerApp').controller('CalendarCtrl', function($scope, $wi
 			}
 	    };
  	}																																																																																																																																																																																																																																																																																																																																																																																																																													
-	
+			
 	$scope.eventSources = [$scope.events];
 
 	$scope.refreshCalendar = function(){
-		console.debug("Calendar.js refreshCalendar function")
+		console.log("calendar refresh !!")
 		$rootScope.isWorking = true;
 		var data = TDMService.getAllToDo()
 
@@ -102,6 +95,7 @@ angular.module('ToDoManagerApp').controller('CalendarCtrl', function($scope, $wi
 				title: data[i].title, 
 				id:data[i].id_todo,
 				start: data[i].date,
+				url: '/todo/' + data[i].id_todo,
 				backgroundColor: TDMService.getAList(data[i].id_list).color,
 				durationEditable:false
 			};
@@ -110,5 +104,4 @@ angular.module('ToDoManagerApp').controller('CalendarCtrl', function($scope, $wi
 		$rootScope.isWorking = false;
 	}
 
-    $scope.refreshCalendar()
 });
