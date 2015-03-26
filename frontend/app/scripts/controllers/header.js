@@ -21,9 +21,10 @@ angular.module('ToDoManagerApp').controller('HeaderCtrl', function($scope, $auth
         $scope.data = TDMService.data;
         $rootScope.accessData = false
         $rootScope.accessData = true
+
         if($rootScope.refreshCalendarAfterAddTodo)
           $state.go('calendar')
-        
+
       });
      $rootScope.mustRefresh = false
     }
@@ -47,12 +48,12 @@ angular.module('ToDoManagerApp').controller('HeaderCtrl', function($scope, $auth
 
     $scope.data = TDMService.data;
 
-    if($scope.isAuthenticated()){
-        $rootScope.closeMenu = false
-    }else
-        $rootScope.closeMenu = true
+  if($scope.isAuthenticated()){
+      $rootScope.closeMenu = false
+  }else
+      $rootScope.closeMenu = true
 
-    $scope.loaded = function() { console.log("Loaded"); }
+  $scope.loaded = function() { console.log("Loaded"); }
 
 
   ////////////////Attachment file /////////////////

@@ -14,7 +14,7 @@ angular.module('ToDoManagerApp').controller('CalendarCtrl', function($scope, $wi
 
     $scope.eventSources = $scope.events;
 
-    /*$rootScope.$watch('accessData', function(accessData) {
+    $rootScope.$watch('accessData', function(accessData) {
         
         console.log("calendar refresh !! : " + accessData)
 
@@ -23,7 +23,7 @@ angular.module('ToDoManagerApp').controller('CalendarCtrl', function($scope, $wi
 		    	$scope.refreshCalendar()
 		    })
         }
-    });*/
+    });
 
     $rootScope.$watch('refreshCalendar', function(refreshCalendar) {
         

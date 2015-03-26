@@ -181,7 +181,7 @@ exports.todos_put = function(req, res, next, connection, auth){
 			console.log(err);
 			return next("Mysql error, check your query");
 		}
-		return res.status(200)
+		return res.status(200).json({success:"true"});
 	});
 }
 
@@ -193,7 +193,7 @@ exports.todoadd_post = function(req, res, next, connection, auth, jwt){
 	console.log("req.body.mytodo")
 	var errors = req.validationErrors();
 	if (errors) {
-		return res.status(422).json(errors);;
+		return res.status(422).json(errors);
 	}
 	
 	req.body.mytodo.id_owner = _id;

@@ -257,4 +257,5 @@ i.fa.fa-sellsy.disconnected {
 
 .sidebar-nav h3 {
     color: white;
+    display: inline-block;
 }
