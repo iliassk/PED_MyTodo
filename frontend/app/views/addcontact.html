@@ -6,9 +6,13 @@
 
 </div>
 <div ng-switch-default >
+<form class="form-inline text-center">
+      <input ng-model="search.username" class="form-control" placeholder="global search ..." type="text"/>
+</form>
+<br>
 <table class="table table-striped" >
   <tbody>
-    <tr ng-repeat="user in data.usersNocontact" >
+    <tr ng-repeat="user in data.usersNocontact | filter:search" >
        <td ><div class="photo_equipe">
     <img id="photo" ng-src="{{user.avatar_path}}">
       </div></td>
