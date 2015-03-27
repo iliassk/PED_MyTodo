@@ -142,6 +142,7 @@ angular.module('ToDoManagerApp', ['ui.router', 'ui.calendar', 'ngAnimate', 'ui.b
           $rootScope.isWorking = false;
           $rootScope.canFetchData = true
           $modalInstance.close()
+         window.location.reload();
         }
       })
     }
