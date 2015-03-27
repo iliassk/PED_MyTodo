@@ -2,7 +2,7 @@
 
 describe('ToDoManager e2e social login tests', function() {
 
-	beforeEach(function() {
+	/*beforeEach(function() {
 		browser.get('#/login');
 	});
 
@@ -104,6 +104,6 @@ describe('ToDoManager e2e social login tests', function() {
 		browser.sleep(500);
 
 		expect(browser.getCurrentUrl()).toBe(browser.baseUrl + '#/');
-	}, 20000);
+	}, 20000);*/
 
 });
