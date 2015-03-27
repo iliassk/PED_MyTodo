@@ -4,6 +4,7 @@
  * For details, see http://www.apache.org/licenses/LICENSE-2.0.
  */
 
+
 /* viv avatar */
 .photo_equipe{
     background-image:url(../images/avatar.png);
@@ -13,6 +14,25 @@
     height: 60px;
     width: 60px;
     float: left;
+    
+   
+}
+
+.empty_avatar_profile{
+    background-image:url(../images/avatar.png);
+    background-repeat:no-repeat ;
+    background-size: 150px 150px;
+}
+
+.empty_avatar{
+    background-image:url(../images/avatar.png);
+    background-repeat:no-repeat ;
+    background-size: 35px 35px;
+    background-position: center;
+    height: 35px;
+    width: 35px;
+    float: left;
+    display: block;
     
    
 }
@@ -70,7 +90,7 @@
 .sidebar-nav {
     position: absolute;
     top: 0;
-    width: 280px;
+    width: 260px;
     margin: 0;
     padding: 0;
     list-style: none;

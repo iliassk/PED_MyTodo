@@ -1,11 +1,8 @@
-exports.createHash = function(data, callback){
-    bcrypt.genSalt(10, function(err, salt) {
-		if (err) callback(err, null)
+var crypto = require('crypto');
 
-		bcrypt.hash(data, salt, null, function(err, hash) {
-			if (err) callback(err, null)
-			callback(null, hash)
-		});
-    });
+exports.createHash = function(data, salt, callback){
+    var hmac = crypto.createHmac("sha1", salt);
+    hmac.end(data);
+
+    callback(null, hmac.read().toString('hex'))
 }
-

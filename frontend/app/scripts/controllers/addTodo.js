@@ -1,77 +1,97 @@
 'use strict';
 
 angular.module('ToDoManagerApp')
+.controller('AddTodoCtrl', function($scope, $location, $log, $modal, TDMService, $rootScope, alert, $upload,$http, API_URL, $state) {
 
-.controller('AddTodoCtrl', ['$scope', '$location', '$log', '$modal', 'TDMService','alert', '$upload', '$http', 'API_URL', function($scope, $location, $log, $modal, TDMService, alert, $upload,$http, API_URL) {
+  $rootScope.$watch('accessData', function(accessData) {
+        console.log("accessData  addTodo.js")
 
+            if(accessData){
+               TDMService.refresh(function(){
+                  $scope.data = TDMService.data;
+                    $scope.uploading = false;
 
+                });
+            }
+    });
   ////////////////Submit form /////////////////
-  $scope.mytodo = {title: '', description: '', priority: '', context: '', date: '', completed: false, id_owner: '', url: '', attachment_path:'', localization: '', id_list:'', id_category:''};
-  $scope.mytodolist;
-  $scope.file;
-  
 
-  TDMService.listtodolist()
-  .success(function(data) {
-    console.log('success', 'OK!', 'update success');
-    $scope.mytodolist = data;
-  })
-  .error(function() {
-    alert('warning', 'Oops!', 'update failed');
-  });
+  $scope.mytodo = {title: '', description: '', priority: '', context: '', date: '', completed: false, id_owner: '', url: '', attachment_path:'', localization: '', id_list:'', id_category:'', subtodos: new Array()};
+  $scope.subtodo = {title: '', description: ''}
+  $scope.files = '';
+  $scope.isCollapsed = true;
+  $scope.isMapCollapsed = true;
+  $scope.progressPercentage
+
+  $scope.addSubTodo = function(subtodo) {
+    if(subtodo.title != ''){
+      var subtodoTmp = {title : subtodo.title, completed: false, description : subtodo.description}
+      $scope.mytodo.subtodos.push(subtodoTmp)
+      subtodo.title = ""
+      subtodo.description = ""
+    }
+    else
+      alert('warning', 'Empty Subtodo : ', 'If you want to add a subtodo, give it a name!')
+  };
   
   $scope.submit = function() {
-
-    TDMService.addTodo($scope.mytodo) 
-      .success(function(res) {
-        alert('success', 'Todo created!', 'Your todo has been created !');
-      })
-      .error(function(err) {
-        alert('warning', 'Something went wrong :(', err.message);
+    TDMService.addTodo($scope.mytodo, function() {
+        //$state.go('calendar');
+        //success
+      }, function() {
+        //fail
       });
   };
+
+  $scope.openAttachmentUrl = function() {
+     window.open($scope.mytodo.attachment_path,'_blank');
+  }
+
+   $scope.$watch('files', function () {
+        $scope.upload($scope.files);
+    });
+   $scope.myfilepath = ''
+
+    $scope.upload = function (files) {
+        if (files && files.length ) {
+          if(files[0].size<=2000000){
+            $scope.uploading = true;
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+                $upload.upload({
+                    url: API_URL + 'upload',
+                    data: {myObj: $scope.file},
+                    file: file
+                }).progress(function (evt) {
+                    
+
+                    $scope.progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+                    if ($scope.progressPercentage == 100) {
+                      $scope.type = 'success';
+                    } else if ($scope.progressPercentage < 50) {
+                      $scope.type = 'info';
+                    }
+                    console.log('progress: ' + $scope.progressPercentage + '% ' + evt.config.file.name);
+                }).success(function (data, status, headers, config) {
+                   //$scope.mytodo.attachment_path = data['file'].path;
+                   var url =  data['file'].path;
+                   var file = url.split("/")[3]+"/"+url.split("/")[4];
+                   $scope.mytodo.attachment_path =  file;
+                  });
+            }
+          }
+          else{
+                  alert('warning', 'File size : ', 'The size of your file is too high! 2MB is the maximal size.')
+          }
+        }
+  
+    };
 
   ////////////////Attachment file /////////////////
-  angular.element('#input-file').fileinput({showCaption: false,showUpload: false, maxFileSize:2000}); 
-  $scope.onFileSelect = function($files) {
-    //$files: an array of files selected, each file has name, size, and type. 
-    for (var i = 0; i < $files.length; i++) {
-      var file = $files[i];
-      $scope.upload = $upload.upload({
-        url: API_URL + 'upload', //upload.php script, node.js route, or servlet url 
-        //method: 'POST' or 'PUT', 
-        //headers: {'header-key': 'header-value'}, 
-        //withCredentials: true, 
-        data: {myObj: $scope.file},
-        file: file, // or list of files ($files) for html5 only 
-        //fileName: 'doc.jpg' or ['1.jpg', '2.jpg', ...] // to modify the name of the file(s) 
-        // customize file formData name ('Content-Desposition'), server side file variable name.  
-        //fileFormDataName: myFile, //or a list of names for multiple files (html5). Default is 'file'  
-        // customize how data is added to formData. See #40#issuecomment-28612000 for sample code 
-        //formDataAppender: function(formData, key, val){} 
-      }).progress(function(evt) {
-        console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
-      }).success(function(data, status, headers, config) {
-        // file is uploaded successfully 
-        console.log("File : ")
-        console.log(data['file']['path']);
-        $scope.mytodo.attachment_path = data['file']['path'];
-        $scope.file = data['file']['path'];
-        console.log("End of file")
-      });
-      //.error(...) 
-      //.then(success, error, progress);  
-      // access or attach event listeners to the underlying XMLHttpRequest. 
-      //.xhr(function(xhr){xhr.upload.addEventListener(...)}) 
-    }
-    /* alternative way of uploading, send the file binary with the file's content-type.
-       Could be used to upload files to CouchDB, imgur, etc... html5 FileReader is needed. 
-       It could also be used to monitor the progress of a normal http post/put request with large data*/
-    // $scope.upload = $upload.http({...})  see 88#issuecomment-31366487 for sample code. 
-  };
+
   ////////////////Calendar /////////////////
 
-$scope.today = function() {
+  $scope.today = function() {
     var today = new Date();
     /*var dd = today.getDate();
     var mm = today.getMonth()+1; //January is 0!
@@ -106,7 +126,7 @@ $scope.today = function() {
     startingDay: 1
   };
 
-  $scope.format = "EEE MMM dd yyyy HH:mm:ss G'M'TZ '(CET)'";
+  $scope.format = "EEE MMM dd yyyy HH:mm G'M'TZ '(CET)'";
   
   ////////////////Time /////////////////
 
@@ -139,49 +159,17 @@ $scope.today = function() {
     $scope.mytodo.date = null;
   };  
 
+
   ////////////////Localization /////////////////
 
-  $scope.showLocation = function(size){
-
-    var modalInstance = $modal.open({
-      templateUrl: 'localizaton_map.html',
-      controller: 'MapCtrl',
-      size: size
-    });
-
-    modalInstance.result.then(function (address) {
-      $scope.mytodo.localization = address;
-      console.log('result got : ' + address);
-
-    }, function () {
-      $log.info('Modal dismissed at: ' + new Date());
-    });
-  };
-
-}]);
-
-  ////////////////Controller map modal /////////////////
-
-angular.module('ToDoManagerApp')
-.controller('MapCtrl', function ($scope, $modalInstance) {
-
-  $scope.address = '';
-  $scope.init = function(){ 
+  $scope.showMap = function(){ 
+    $scope.isMapCollapsed = false
+    
     getAdresse(['map-canvas', 'input-address', 'type-selector'], function(position, address){
-      console.log(position);
-      console.log(address);
-      $scope.address = address;
+      $scope.mytodo.localization = address;
     }, function(msg){
       console.log(msg);
     });
-  };
-
-  $scope.ok = function () {
-    $modalInstance.close($scope.address);
-  };
-
-  $scope.cancel = function () {
-    $modalInstance.dismiss('cancel');
   };
 });
 

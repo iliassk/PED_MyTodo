@@ -19,6 +19,7 @@ function getAdresse(idTab, successFindingAdresseCallback, errorFindingAdresseCal
 	};
 
 	var map = new google.maps.Map(document.getElementById(idTab[0]), options);
+    google.maps.event.trigger(map, 'resize');
 
 	var marker = new google.maps.Marker({
     	map: map,
@@ -72,11 +73,6 @@ function getAdresse(idTab, successFindingAdresseCallback, errorFindingAdresseCal
          successFindingAdresseCallback(place.geometry.location, place.name)
      });
 
-    setupClickListener('changetype-all', []);
-  	setupClickListener('changetype-address', ['address']);
-  	setupClickListener('changetype-establishment', ['establishment']);
-  	setupClickListener('changetype-geocode', ['geocode']);
-
   	var centerControlDiv = document.createElement('div');
   	localisationControl(centerControlDiv, map);
 
@@ -119,41 +115,46 @@ function getAdresse(idTab, successFindingAdresseCallback, errorFindingAdresseCal
 
 	function localisationControl(controlDiv, map) {
 
-		  // Set CSS for the control border
-		  var controlUI = document.createElement('div');
-		  controlUI.style.backgroundColor = '#fff';
-		  controlUI.style.border = '2px solid #fff';
-		  controlUI.style.borderRadius = '3px';
-		  controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
-		  controlUI.style.cursor = 'pointer';
-		  controlUI.style.marginBottom = '22px';
-		  controlUI.style.textAlign = 'center';
-		  controlUI.title = 'Click to center the map on my position';
-		  controlDiv.appendChild(controlUI);
+		// Set CSS for the control border
+		var controlUI = document.createElement('div');
+		controlUI.style.backgroundColor = '#fff';
+		controlUI.style.border = '2px solid #fff';
+		controlUI.style.borderRadius = '3px';
+		controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
+		controlUI.style.cursor = 'pointer';
+		controlUI.style.marginBottom = '22px';
+		controlUI.style.textAlign = 'center';
+		controlUI.title = 'Click to center the map on my position';
+		controlDiv.appendChild(controlUI);
 
-		  // Set CSS for the control interior
-		  var controlText = document.createElement('div');
-		  controlText.style.color = 'rgb(25,25,25)';
-		  controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
-		  controlText.style.fontSize = '16px';
-		  controlText.style.lineHeight = '38px';
-		  controlText.style.paddingLeft = '5px';
-		  controlText.style.paddingRight = '5px';
-		  controlText.innerHTML = 'Ma position';
-		  controlUI.appendChild(controlText);
+		// Set CSS for the control interior
+		var controlText = document.createElement('div');
+		controlText.style.color = 'rgb(25,25,25)';
+		controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
+		controlText.style.fontSize = '15px';
+		controlText.style.lineHeight = '27px';
+		controlText.style.paddingLeft = '5px';
+		controlText.style.paddingRight = '5px';
+		controlText.innerHTML = 'Ma position';
+		controlUI.appendChild(controlText);
+
+		controlDiv.className = "controls"
+		controlDiv.id = "positionButton"
 
 	  	google.maps.event.addDomListener(controlUI, 'click', function() {
 	    	geolocateMe(map)
 	  	});
 
 	}
+
+	return map;
 }
 
 //google.maps.event.addDomListener(window, 'load', _initialize);
 
 function _initialize() {
 
-	getAdresse(["map-canvas", "input-address", "type-selector"], function(position, address){
+	return getAdresse(["map-canvas", "input-address", "type-selector"], function(position, address){
 		console.log(position)
 		console.log(address)
 

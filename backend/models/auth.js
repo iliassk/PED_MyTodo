@@ -20,7 +20,7 @@ exports.checkAuthorization = function(req, res, jwt) {
 	var payload = jwt.decode(token, 'AGKYW');
 
 	if (!payload.sub) {
-		res.status(401).send({
+		return res.status(401).send({
 			message: 'Authentication failed'
 		});
 	}
@@ -97,11 +97,13 @@ exports.authGoogle = function(req, res, next, connection, jwt, request) {
 				if (rows.length == 1) {
 					return auth.createSendToken(rows[0], connection, req, res, jwt);
 				}
+			//API KEY
 				var data = {
 					username: profile.name,
 					email: profile.email,
 					password: profile.sub, // To add an extra security
-					googleId: profile.sub
+					googleId: profile.sub,
+					avatar_path: profile.picture
 				};
 
 				//Hash passwords
@@ -166,7 +168,8 @@ exports.authFacebook = function(req, res, next, connection, jwt, request) {
 					username: profile.name,
 					email: profile.email,
 					password: profile.id, // To add an extra security
-					facebookId: profile.id
+					facebookId: profile.id,
+					avatar_path: 'http://graph.facebook.com/' + profile.id + '/picture'
 				};
 
 				//Hash passwords
@@ -285,7 +288,7 @@ function createFirstList(req, res, next, connection, jwt, email){
 	connection.query('SELECT id_user FROM USERS WHERE email = ?', email, function(err, rows) {
 					if (err) {
 						console.log(err);
-						res.status(422).send({message: 'MYSQL error, check your query!'});
+						return res.status(422).send({message: 'MYSQL error, check your query!'});
 					}
 
 					if(rows.length !== 1)

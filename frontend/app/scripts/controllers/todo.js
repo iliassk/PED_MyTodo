@@ -1,64 +1,108 @@
 'use strict';
 
 angular.module('ToDoManagerApp')
+.controller('TodoCtrl',  function($scope, $location, $log, $modal, TDMService, alert, $stateParams, $state, $rootScope) {
 
 
-.controller('TodoCtrl', ['$scope', '$location', '$log', '$modal', 'TDMService','alert','$stateParams', function($scope, $location, $log, $modal, TDMService, alert, $stateParams) {
+  $scope.mytodo = {};
+  $scope.files = '';
+  $scope.isCollapsed = true;
+  $scope.isNotEditing = true;
+  $scope.isMapCollapsed = true;
 
-  $scope.todo_id = $stateParams.id;
-
-  $scope.mytodo = {}
-  $scope.mytodolist;
-
-  $scope.fetchData = function(){
-    TDMService.getTodo($scope.todo_id)
-      .success(function(data) {
-        data.completed = (data.completed == 1 ? true: false)
-        $scope.mytodo = data[0];
-        console.log("Success fetchData");
-      })
-      .error(function() {
-        console.log("Faillure fetchData");
+  //This function erases the chosen subtodo
+  $scope.eraseSubtodo = function(index, id){
+    $scope.mytodo.subtodos.splice(index, 1);
+    if(id)
+      TDMService.deleteSubToDo(id, function(){
+        //success
+      }, function(){
+        //fail
       });
 
-
-    TDMService.listtodolist()
-    .success(function(data) {
-      console.log('success', 'OK!', 'update success');
-      $scope.mytodolist = data;
-      console.log($scope.mytodolist)
-    })
-    .error(function() {
-      alert('warning', 'Oops!', 'update failed');
-    });
   }
 
-  $scope.fetchData();
+  $scope.addSubTodo = function(subtodo) {
+    if(subtodo.title != ''){
+      var subtodoTmp = {id_subtodo:'', title : subtodo.title, completed: false, description : subtodo.description}
+
+      if(!$scope.mytodo.subtodos)
+        $scope.mytodo.subtodos = []
+      $scope.mytodo.subtodos.push(subtodoTmp)
+      subtodo.title = ""
+      subtodo.description = ""
+    }
+    else
+      alert('warning', 'Empty Subtodo : ', 'If you want to add a subtodo, give it a name!')
+  };
 
   ////////////////Submit form /////////////////
   $scope.submit = function() {
-     TDMService.updateTodo($scope.mytodo) 
-      .success(function(res) {
-        alert('success', 'Todo edited!', 'Your todo has been edited !');
-      })
-      .error(function(err) {
-        alert('warning', 'Something went wrong :(', err.message);
+
+     TDMService.updateTodo($scope.mytodo, function(res) {
+        $rootScope.refreshCalendarAfterAddTodo = true
+        $rootScope.mustRefresh = true
+        //$state.go('calendar')
+        //success
+      }, function(err) {
+        //fail
       });
   };
 
+
   ////////////////Completed boolean ///////////
 
-  $scope.onTodoModified = function(todo){
-
-    mytodo.completed = (mytodo.completed ? 1 : 0)
+  $scope.onTodoModified = function(){
+    $scope.mytodo.completed = ($scope.mytodo.completed ? 1 : 0)
   }
 
   ////////////////Attachment file /////////////////
-  angular.element('#input-file').fileinput({showCaption: false,showUpload: false, maxFileSize:2000}); 
+ 
+    $scope.openAttachmentUrl = function() {
+     window.open($scope.mytodo.attachment_path,'_blank');
+  }
+
+  $scope.$watch('files', function () {
+        $scope.upload($scope.files);
+    });
+    $scope.myfilepath = ''
+    $scope.upload = function (files) {
+    if (files && files.length ) {
+      if(files[0].size<=2000000){
+        $scope.uploading = true;
+        for (var i = 0; i < files.length; i++) {
+            var file = files[i];
+            $upload.upload({
+                url: API_URL + 'upload',
+                data: {myObj: $scope.file},
+                file: file
+            }).progress(function (evt) {
+                
+
+                $scope.progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+                if ($scope.progressPercentage == 100) {
+                  $scope.type = 'success';
+                } else if ($scope.progressPercentage < 50) {
+                  $scope.type = 'info';
+                }
+                console.log('progress: ' + $scope.progressPercentage + '% ' + evt.config.file.name);
+            }).success(function (data, status, headers, config) {
+               //$scope.mytodo.attachment_path = data['file'].path;
+               var url =  data['file'].path;
+               var file = url.split("/")[3]+"/"+url.split("/")[4];
+               $scope.mytodo.attachment_path =  file;
+              });
+        }
+      }
+      else{
+              alert('warning', 'File size : ', 'The size of your file is too high! 2MB is the maximal size.')
+      }
+    }
+  };
 
   ////////////////Calendar /////////////////
 
-$scope.today = function() {
+  $scope.today = function() {
     var today = new Date();
     /*var dd = today.getDate();
     var mm = today.getMonth()+1; //January is 0!
@@ -70,7 +114,7 @@ $scope.today = function() {
     $scope.mytodo.date = today;
 
   };
-  $scope.today();
+  
 
   $scope.clear = function () {
     $scope.mytodo.date = null;
@@ -79,7 +123,6 @@ $scope.today = function() {
   $scope.toggleMin = function() {
     $scope.minDate = $scope.minDate ? null : new Date();
   };
-  $scope.toggleMin();
 
   $scope.open = function($event) {
     $event.preventDefault();
@@ -93,7 +136,7 @@ $scope.today = function() {
     startingDay: 1
   };
 
-  $scope.format = "EEE MMM dd yyyy HH:mm:ss G'M'TZ '(CET)'";
+  $scope.format = "EEE MMM dd yyyy HH:mm G'M'TZ '(CET)'";
   
   ////////////////Time /////////////////
 
@@ -128,27 +171,24 @@ $scope.today = function() {
 
   ////////////////Localization /////////////////
 
-  $scope.showLocation = function(size){
-
-    var modalInstance = $modal.open({
-      templateUrl: 'localizaton_map.html',
-      controller: 'MapCtrl',
-      size: size
-    });
-
-    modalInstance.result.then(function (address) {
+   $scope.showMap = function(){ 
+    $scope.isMapCollapsed = false
+    
+    getAdresse(['map-canvas', 'input-address', 'type-selector'], function(position, address){
       $scope.mytodo.localization = address;
-      console.log('result got : ' + address);
-
-    }, function () {
-      $log.info('Modal dismissed at: ' + new Date());
+    }, function(msg){
+      console.log(msg);
     });
   };
+
+  $scope.showMapButton = function(place){
+        return place == "" || place == undefined || place == null
+    }
 
   ////////////////Delete todo /////////////////
 
 
- $scope.delete = function () {
+  $scope.delete = function () {
 
     var modalInstance = $modal.open({
       templateUrl: 'modalDelete.html',
@@ -167,34 +207,30 @@ $scope.today = function() {
     });
   };
 
-}]);
+  $scope.data = TDMService.data;
+
+  $rootScope.$watch('accessData', function(accessData) {
+    if(accessData){
+      TDMService.refresh(function(){
+        console.log("=======================================refresh on todo.js")
+        $scope.uploading = false;
+        $scope.mytodo = TDMService.getAToDo($stateParams.id);
+        
+        //$scope.isMapCollapsed = $scope.mytodo.localization == "" ? true : false;
+
+        $scope.data = TDMService.data;
+        $scope.toggleMin();
+      })
+    }
+  });
+
+
+});
 
   
 
   ////////////////Controller map modal /////////////////
 
-angular.module('ToDoManagerApp')
-.controller('MapCtrl', function ($scope, $modalInstance) {
-
-  $scope.address = '';
-  $scope.init = function(){ 
-    getAdresse(['map-canvas', 'input-address', 'type-selector'], function(position, address){
-      console.log(position);
-      console.log(address);
-      $scope.address = address;
-    }, function(msg){
-      console.log(msg);
-    });
-  };
-
-  $scope.ok = function () {
-    $modalInstance.close($scope.address);
-  };
-
-  $scope.cancel = function () {
-    $modalInstance.dismiss('cancel');
-  };
-});
 
 angular.module('ToDoManagerApp')
 .controller('deleteTodoCtrl', function ($scope, $modalInstance, id, $state, TDMService) {
@@ -202,12 +238,12 @@ angular.module('ToDoManagerApp')
   $scope.id = id;
 
   $scope.deleteTodo = function () {
-    TDMService.deleteToDo(id).success(function(res) {
-        console.log('success', 'Todo deleted!', 'Your todo has been deleted !');
-        $state.go('main');
-      })
-      .error(function(err) {
-        alert('warning', 'Something went wrong :(', err.message);
+    TDMService.deleteToDo(id, function(res) {
+        $rootScope.refreshCalendarAfterAddTodo = true
+        $rootScope.mustRefresh = true
+        //success
+      }, function(err) {
+        //fail
       });
     $modalInstance.close();
   };

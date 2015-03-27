@@ -14,6 +14,15 @@ angular.module('ToDoManagerApp').config(function($urlRouterProvider, $stateProvi
 			templateUrl: '/views/register.html',
 			controller: 'RegisterCtrl'
 		})
+		.state('calendar', {
+			url: '/calendar',
+			templateUrl: '/views/calendar.html',
+			controller: 'CalendarCtrl'
+		})
+		.state('profile', {
+			url: '/profile',
+			templateUrl: '/views/profil.html'
+		})
 		.state('todolist', {
 			url: '/todolist',
 			templateUrl: '/views/todolist.html',
@@ -21,18 +30,18 @@ angular.module('ToDoManagerApp').config(function($urlRouterProvider, $stateProvi
 		})
 		.state('viewToDoList', {
 			url: '/todolist/:id',
-			templateUrl: '/views/ViewToDoList.html',
+			templateUrl: '/views/viewToDoList.html',
 			controller: 'ViewToDoList'
+		})
+		.state('viewSharedToDoList', {
+			url: '/sharedtodolist/:id',
+			templateUrl: '/views/SharedViewToDoList.html',
+			controller: 'SharedViewToDoList'
 		})
 		.state('login', {
 			url: '/login',
 			templateUrl: '/views/login.html',
 			controller: 'LoginCtrl'
-		})
-		.state('todos', {
-			url: '/todos',
-			templateUrl: '/views/todos.html',
-			controller: 'TodosCtrl'
 		})
 		.state('add/todo', {
 			url: '/add/todo',
@@ -44,9 +53,14 @@ angular.module('ToDoManagerApp').config(function($urlRouterProvider, $stateProvi
 			templateUrl: '/views/todo.html',
 			controller: 'TodoCtrl'
 		})
-		.state('listcontact', {
-			url: '/listcontact',
-			templateUrl: '/views/listcontact.html',
+		.state('sharedtodo/', {
+			url: '/sharedtodo/:id',
+			templateUrl: '/views/sharedtodo.html',
+			controller: 'sharedTodoCtrl'
+		})
+		.state('addcontact', {
+			url: '/addcontact',
+			templateUrl: '/views/addcontact.html',
 			controller: 'contactCtrl'
 		})
 		.state('logout', {
@@ -55,6 +69,11 @@ angular.module('ToDoManagerApp').config(function($urlRouterProvider, $stateProvi
 		})
 		.state('uploads/',{
 			url: '/uploads/:id'
+		})
+		.state('share',{
+			url: '/share/:url/:type',
+			templateUrl: '/views/shareTodo.html',
+			controller: 'ShareCtrl'
 		});
 
 	// Manage Satellizer authentication providers (Login, Register, Social Login : Google, Facebook ...) with API_URL (port 3000)
@@ -84,3 +103,7 @@ angular.module('ToDoManagerApp').config(function($urlRouterProvider, $stateProvi
 })
 
 .constant('API_URL', 'http://localhost:3000/')
+.constant('APP_URL', 'http://localhost:9000/#/')
+
+.constant('_', window._);
+

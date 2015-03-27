@@ -7,7 +7,7 @@
  * # 
  * Service in the ToDoManagerApp.
  */
-angular.module('ToDoManagerApp').service('CMService', function ($http, API_URL, authToken, $state) {
+angular.module('ToDoManagerApp').service('CMService', function ($http, API_URL, $state) {
 
 	/**
 	* Manage todolist 

@@ -1,3 +1,16 @@
+#avatar{
+  /*background-image:url(../images/avatar.png);*/
+  background-repeat:no-repeat ;
+  background-position: center;
+  background-size: 35px 35px;
+  width:35px;
+  height:35px;
+  margin-top:-0.5em;
+  margin-bottom:-2em;
+ 
+}
+
+
 #left_menu_tabs{
 border-bottom: 3px solid #bdbdbd;
 margin-top: 25px;

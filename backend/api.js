@@ -43,7 +43,7 @@ else{
 
 /*Configure the multer.*/
 
-app.use(multer({ dest: './upload/',
+app.use(multer({ dest: '../frontend/app/upload/',
  rename: function (fieldname, filename) {
     return filename+Date.now();
   },
@@ -68,7 +68,7 @@ passport.deserializeUser(function(user, done) {
 app.use(passport.initialize());
 
 // To enable CORS (works with satellizer)
-var whitelist = ['http://localhost:9000'];
+var whitelist = ['http://localhost:9000', 'http://localhost:9001'];
 app.use(cors({
 	origin: function(origin, callback) {
 		var originIsWhitelisted = whitelist.indexOf(origin) !== -1;
@@ -83,7 +83,7 @@ passport.use('local-register', LocalStrategy.register);
 passport.use('local-login', LocalStrategy.login);
 
 app.post('/register', passport.authenticate('local-register'), function(req, res) {
-	emailVerification.sendEmail(req.user.email);
+	emailVerification.sendEmail(req.user.email, res);
 	auth.createSendToken(req.user, connection, req, res, jwt);
 });
 
@@ -107,8 +107,6 @@ app.get('/auth/twitter', function(req, res, next) {
 	auth.authTwitter(req, res, next, connection, jwt, request);
 });
 
-
-
 app.post('/todolist', function(req, res, next) {
 	todo.todolist_post(req, res, next, connection, auth, jwt)
 });
@@ -129,26 +127,46 @@ app.get('/listtodolistwithtodos', function(req, res, next) {
 	todo.listtodolistwithtodos_get(req, res, next, connection, auth, jwt)
 });
 
+app.get('/listsharedtodolistwithtodos', function(req, res, next) {
+	todo.listsharedtodolistwithtodos_get(req, res, next, connection, auth, jwt)
+});
+
+app.get('/todosharedtodolistwithtodos', function(req, res, next) {
+	todo.todosharedtodolistwithtodos_get(req, res, next, connection, auth, jwt)
+});
+
 app.get('/listgroupe', function(req, res, next) {
-	contact.listgroupe_get(req, res, next, connection, auth)
+	contact.listgroupe_get(req, res, next, connection, auth, jwt)
 });
 
 app.post('/addgroup', function(req, res, next) {
-	contact.addgroup_post(req, res, next, connection, auth)
+	contact.addgroup_post(req, res, next, connection, auth, jwt)
 });
 
 app.get('/userslist', function(req, res, next) {
 	contact.userslist_get(req, res, next, connection, auth)
 });
 
-app.post('/addcontact', function(req, res, next) {
-	console.log("toto debut")
-	contact.addcontact_post(req, res, next, connection, auth)
-	console.log("toto fin")
+app.get('/user/:id', function(req, res, next) {
+	contact.userid_get(req, res, next, connection, auth)
 });
 
-app.get('/listcontact', function(req, res, next) {	
-	contact.listcontact_get(req, res, next, connection, auth)
+app.post('/addcontact', function(req, res, next) {
+console.log('debut user')	
+	contact.addcontact_post(req, res, jwt, next, connection, auth)		
+console.log('fin user')	
+});
+
+app.delete('/deletecontact/:id', function(req, res, next) {	
+	contact.deletecontact_delete(req, res, jwt, next, connection, auth)	
+});
+
+app.delete('/deletegroup/:id', function(req, res, next) {	
+	contact.deletegroup_delete(req, res, jwt, next, connection, auth)	
+});
+
+app.get('/listuserNocontact/:id', function(req, res, next) {	
+	contact.listuserNocontact_id_get(req, res, jwt, next, connection, auth)
 });
 
 app.delete('/listtodolist/:id', function(req, res, next) {
@@ -159,8 +177,21 @@ app.delete('/todo/:id', function(req, res, next) {
 	todo.todo_id_delete(req, res, next, connection, auth)
 });
 
+app.delete('/subtodo/:id', function(req, res, next) {
+	todo.subtodo_id_delete(req, res, next, connection, auth)
+});
+
 app.put('/todo/:id', function(req, res, next) {
 	todo.todo_id_put(req, res, next, connection, auth)
+});
+
+app.put('/todos', function(req, res, next) {
+	todo.todos_put(req, res, next, connection, auth)
+});
+
+
+app.get('/todo', function(req, res, next) {
+	todo.todo_get(req, res, next, connection, auth, jwt)
 });
 
 
@@ -190,8 +221,28 @@ app.get('/share/todolist/:id', function(req, res, next) {
 })
 
 /**
+ * Renvoi les données correspondant à la donnée partagée
+ */
+app.get('/share/data/:url/:type', function(req, res, next) {
+   	todo.getSharedData(req, res, next, connection, utils)
+})
+
+/**
+ * Partage un todo avec un autre utilisateur
+ */
+app.post('/share/todo/:id_todo/:id_user', function(req, res, next) {
+   	todo.shareTodoContact(req, res, next, connection, utils)
+})
+
+/**
+ * Partage une liste avec un autre utilisateur
+ */
+app.post('/share/todolist/:id_todolist/:id_user', function(req, res, next) {
+   	todo.shareListContact(req, res, next, connection, utils)
+})
+
+/**
 * Permet l'upload de fichier
-*
 */
 app.post('/upload',function(req,res){
   if(done==true){
@@ -199,12 +250,25 @@ app.post('/upload',function(req,res){
     res.status(200).json(req.files);
     res.end("File uploaded.");
   }
-});
+})
+
+app.post('/avatarpath', function(req, res, next) {
+	console.log('debut')
+    todo.avatarpath_post(req, res, next, connection, auth, utils, jwt)
+    console.log('fin')
+})
 
 /**
 * Permet de récuperer un fichier
 */
 app.get('/upload/:id', function(req, res, next) {
+});
+
+// to check connection status of the server from the client
+app.get('/connected', function(req, res, next) {
+	res.send({
+		status : true
+	});
 });
 
 var server = app.listen(3000, function() {

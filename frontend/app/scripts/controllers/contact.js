@@ -8,31 +8,25 @@
  * Controller of the ToDoManagerApp
  */
 
-angular.module('ToDoManagerApp').controller('contactCtrl', function ($scope, CMService){
-	
-  
-  CMService.userslist()
-	.success(function(data) {
-		alert('success', 'OK!', 'update success');
-		$scope.users = data;
-	})
-	.error(function() {
-		alert('warning', 'Oops!', 'update failed');
-	});
+angular.module('ToDoManagerApp').controller('contactCtrl', function ($scope, CMService, TDMService, $rootScope){
 
-	CMService.listGroupe()
-	.success(function(data) {
-		alert('success', 'OK!', 'update success');
-		$scope.groups = data;
-	})
+
+	$rootScope.$watch('accessData', function(accessData) {
+        console.log("accessData  ViewToDoList")
+        if(accessData){
+           TDMService.refresh(function(){
+		    	$scope.data = TDMService.data;
+		   })
+        }
+    });
 
 	$scope.addContact=function(id, item){
-		CMService.addContact(id, item).success(function() {
-			alert('success', 'OK!', 'add contact success');
-		})
-		.error(function() {
-			alert('warning', 'Oops!', 'add contact failed');
-		});
+		TDMService.addContact(id, item, function() {
+			//success
+		}, function() {
+			//fail
+		}) 	
+
 	}
  
 
