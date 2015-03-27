@@ -102,7 +102,7 @@
 		<div class="btn-group" role="group">
 			<button type="button" ng-click="hideCompleted()" class="btn btn-sm btn-info" data-toggle="button">Hide <span style="color:Chartreuse " class="glyphicon glyphicon-ok"></span></button>
 			<button type="button" ng-show="online" ng-click="shareList(list)" class="btn btn-sm btn-info">Share <span class="glyphicon glyphicon-share"></span></button>
-			<button ng-click="openShareListInfo(list)" type="button" class="btn btn-sm btn-warning">Share <i class="glyphicon glyphicon-user"></i></button>
+			<button ng-click="openShareListInfo(list)" ng-show="online" type="button" class="btn btn-sm btn-warning">Share <i class="glyphicon glyphicon-user"></i></button>
 			<button ng-click="deleteTodoList(list)" type="button" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-trash"></i></button>
 		</div>
 	</form>
@@ -132,7 +132,7 @@
 			<td><span title="{{row.date | date:'medium'}}">{{showDate(row.date)}}</span></td>
 			<td>
 				<div class="pull-right">
-					<a target="_blank" title="Show on maps" ng-hide="showMapButton(row.localization)" class="btn btn-sm btn-info" href="https://maps.google.com/?q={{row.localization}}"><i class="glyphicon glyphicon-map-marker" ></i></a>
+					<a target="_blank" title="Show on maps" ng-hide="showMapButton(row.localization) || online==false" class="btn btn-sm btn-info" href="https://maps.google.com/?q={{row.localization}}"><i class="glyphicon glyphicon-map-marker" ></i></a>
 
 					<span ng-show="online" class="dropdown" dropdown>
 				      <a href title="Add to calendar" class="btn btn-sm btn-primary" class="dropdown-toggle" dropdown-toggle>
